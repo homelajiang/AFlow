@@ -1,0 +1,13 @@
+{{#each posts}}
+    <div class="post">
+            <h2 class="post-title">
+                <a href="{{href '/post/' _id}}">{{{title}}}</a>
+            </h2>
+        <div class="post-meta">
+            {{date format="MMMM DD , YYYY"}}
+        </div>
+        <div class="post-content">
+            {{description words="100"}}
+        </div>
+    </div>
+{{/each}}

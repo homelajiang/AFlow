@@ -1,0 +1,45 @@
+<h1 class="doc-title mdui-text-color-theme">上传新的多媒体文件</h1>
+<div class="mdui-shadow-2 mdui-valign" style="height: 200px;">
+  <div class="mdui-center">
+    <div class="mdui-center mdui-text-center">将文件拖至这里</div>
+    <div class="mdui-center mdui-text-center">或者</div>
+    <div>
+      <input (change)="selectFile($event)" accept="image/*" type="file">
+      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-center">选择文件</button>
+    </div>
+  </div>
+</div>
+<div>
+  最大上传文件大小：2 MB。
+</div>
+<div>
+  <ul class="mdui-list">
+    <li class="mdui-list-item mdui-ripple">
+      <div class="mdui-list-item-avatar"><img src="http://via.placeholder.com/80x80"/></div>
+      <div class="mdui-list-item-content">Brendan Lim</div>
+      <button class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: '永久删除'}">
+        <i class="mdui-icon material-icons">delete_forever</i>
+      </button>
+    </li>
+    <li class="mdui-list-item mdui-ripple">
+      <div class="mdui-list-item-avatar"><img src="http://via.placeholder.com/80x80"/></div>
+      <div class="mdui-list-item-content" >文件名</div>
+      <!--<i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble</i>-->
+      <div class="mdui-spinner mdui-spinner-colorful" mdui-tooltip="{content: '处理中'}"></div>
+    </li>
+    <li class="mdui-list-item mdui-ripple">
+      <div class="mdui-list-item-avatar"><img src="http://via.placeholder.com/80x80"/></div>
+      <div class="mdui-list-item-content">Grace Ng</div>
+      <button class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: '永久删除'}">
+        <i class="mdui-icon material-icons">delete_forever</i>
+      </button>
+    </li>
+    <li class="mdui-list-item mdui-ripple">
+      <div class="mdui-list-item-avatar"><img src="http://via.placeholder.com/80x80"/></div>
+      <div class="mdui-list-item-content">Kerem Suer</div>
+      <button class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: '永久删除'}">
+        <i class="mdui-icon material-icons">delete_forever</i>
+      </button>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#E0E0E0</color>
+    <color name="colorAccent">#FD4B7D</color>
+    <color name="background">#FEFEFE</color>
+    <color name="colorText">#837099</color>
+    <color name="gray">#CAC2CE</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="font_black">#333333</color>
+    <color name="font_blue">#147ed4</color>
+    <color name="font_danger">#dd3b44</color>
+    <color name="font_darker">#2b2d3a</color>
+    <color name="font_light">#c3c3c3</color>
+    <color name="font_lighter">#adafb9</color>
+    <color name="font_normal">#626574</color>
+    <color name="font_white">#fafafa</color>
+    <color name="color_prompt">#ffaa30</color>
+    <color name="color_prompt_toast">#e6ffaa30</color>
+    <color name="flow_card_divider">#EEEEEE</color>
+</resources>

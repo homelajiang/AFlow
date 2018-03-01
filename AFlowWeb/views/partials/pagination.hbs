@@ -1,0 +1,15 @@
+{{#page_info}}
+    <div class="page-navigator">
+        {{#if prev}}
+            <a class="pre" href="{{page_url prev}}">&larr;</a>
+        {{/if}}
+
+        {{#each page}}
+            <a class="{{#if current}} current {{/if}}" href="{{page_url No}}">{{No}}</a>
+        {{/each}}
+
+        {{#if next}}
+            <a class="next" href="{{page_url next}}"> &rarr;</a>
+        {{/if}}
+    </div>
+{{/page_info}}

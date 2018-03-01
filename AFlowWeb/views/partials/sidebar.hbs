@@ -1,0 +1,26 @@
+<div id="sidebar">
+    <section class="widget">
+        <div id="search_bar">
+            <input id="search_posts_keywords" placeholder="搜索" type="text" value="">
+        </div>
+    </section>
+
+    {{#if latest_posts }}
+        <section class="widget">
+            <h3 class="widget-title">最新</h3>
+            <ul class="widget-list">
+                {{#each latest_posts}}
+                    <li><a href="{{href '/post/' _id}}">{{{title}}}</a></li>
+                {{/each}}
+            </ul>
+        </section>
+    {{/if}}
+
+    {{!<section class="widget">
+        <h3 class="widget-title">Meta</h3>
+        <ul class="widget-list">
+            <li><a href="/rss/">Site RSS</a></li>
+            <li><a href="/ghost/">Site Admin</a></li>
+        </ul>
+    </section>}}
+</div>

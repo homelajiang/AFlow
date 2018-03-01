@@ -1,0 +1,77 @@
+<h1 class="doc-title mdui-text-color-theme">标签</h1>
+<div class="mdui-row">
+  <div class="mdui-col-xs-4">
+    <h3 class="mdui-typo-subheading">添加新标签</h3>
+    <div class="mdui-textfield mdui-textfield-floating-label">
+      <label class="mdui-textfield-label">标签名称</label>
+      <input class="mdui-textfield-input" type="text"/>
+      <div class="mdui-typo-caption-opacity">这将是它在站点上显示的名字。</div>
+    </div>
+    <div class="mdui-textfield mdui-textfield-floating-label">
+      <label class="mdui-textfield-label">标签别名</label>
+      <input class="mdui-textfield-input" type="text"/>
+      <div class="mdui-typo-caption-opacity">“别名”是在URL中使用的别称，它可以令URL更美观。通常使用小写，只能包含字母，数字和连字符（-）。</div>
+    </div>
+    <div>
+      <li class="mdui-list-item mdui-ripple">
+        <div class="mdui-list-item-avatar"><img src="http://via.placeholder.com/80x80"/></div>
+        <div class="mdui-list-item-content"></div>
+        <i class="mdui-list-item-icon mdui-icon material-icons">chat_bubble</i>
+      </li>
+    </div>
+    <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple">添加标签</button>
+  </div>
+  <div class="mdui-col-xs-8">
+    <div>
+      <select class="mdui-select" mdui-select>
+        <option value="1">批量操作</option>
+        <option value="2">删除</option>
+      </select>
+      <button class="mdui-btn mdui-color-theme-accent mdui-ripple">应用</button>
+      <div class="mdui-textfield mdui-textfield-expandable mdui-float-right" style="max-width: 250px;">
+        <button class="mdui-textfield-icon mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i>
+        </button>
+        <input class="mdui-textfield-input" type="text" placeholder="Search"/>
+        <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">close</i>
+        </button>
+      </div>
+    </div>
+    <div>
+      <table class="mdui-table mdui-table-hoverable mdui-table-selectable">
+        <thead>
+        <tr>
+          <th>名称</th>
+          <th>图像描述</th>
+          <th>别名</th>
+          <th>总数</th>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Hello world!</td>
+          <td>
+            <div class="mdui-list-item-avatar"><img src="http://via.placeholder.com/80x80"/></div>
+          </td>
+          <td>未分类</td>
+          <td>30</td>
+        </tr>
+        <tr>
+          <td>Hello world!</td>
+          <td>
+            <div class="mdui-list-item-avatar"><img src="http://via.placeholder.com/80x80"/></div>
+          </td>
+          <td>未分类</td>
+          <td>30</td>
+        </tr>
+        <tr>
+          <td>Hello world!</td>
+          <td>
+            <div class="mdui-list-item-avatar"><img src="http://via.placeholder.com/80x80"/></div>
+          </td>
+          <td>未分类</td>
+          <td>30</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

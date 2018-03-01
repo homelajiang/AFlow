@@ -1,0 +1,23 @@
+{
+  "name": "pink-server-v2",
+  "description": "pink app",
+  "main": "pink.js",
+  "authors": [
+    "homelajiang <homelajiang@163.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "pink"
+  ],
+  "homepage": "http://localhost:3000",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}
