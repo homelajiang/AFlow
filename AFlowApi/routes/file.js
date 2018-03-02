@@ -1,5 +1,6 @@
-var base_url_file = require('../config/config').base_url;
-var Promise = require('bluebird');
+const base_url_file = require('../config/config').base_url;
+const Promise = require('bluebird');
+const Config = require('../config/config');
 const Bounce = require('bounce');
 const Boom = require('boom');
 const Joi = require('joi');
@@ -10,7 +11,7 @@ var UUID = require('uuid/v1');
 var seneca = require('seneca')()
     .use("basic")
     .use("entity")
-    .client(5201);
+    .client(Config.image_hosting.port);
 // Promisify the .act() method; to learn more about this technique see:
 // http://bluebirdjs.com/docs/features.html#promisification-on-steroids
 var act = Promise.promisify(seneca.act, {context: seneca});

@@ -1,4 +1,4 @@
-var Media = require("../models/media");
+var Media = require("../../../models/media");
 var MediaType = require("../constant/media_type");
 var options = {
     headers: {
