@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Post} from '../../app.component';
 
+// import mdui from 'mdui';
+
 @Component({
   selector: 'app-blog-edit',
   templateUrl: './edit.component.html',
@@ -14,7 +16,13 @@ export class EditBlogComponent implements OnInit {
   }
 
   save() {
-    alert('saved');
+    if (!this.post.title) {
+      /*      mdui.snackbar({
+              message: '标题不能为空',
+              position: 'right-top'
+            });*/
+    }
+
   }
 
   editTitle(event: any) {

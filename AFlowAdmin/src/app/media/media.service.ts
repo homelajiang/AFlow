@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {MediaFile, PageModel} from '../app.component';
 
 @Injectable()
 export class MediaService {
@@ -30,20 +31,4 @@ export class MediaService {
     return this.http.post('/file', formData, httpOptions);
   }
 
-}
-
-export interface PageModel<T> {
-  pageSize: number;
-  pageNum: number;
-  size: number;
-  list: Array<T>;
-}
-
-export interface MediaFile {
-  name: string;
-  path: string;
-  mimetype: string;
-  size: number;
-  createDate: string;
-  id: string;
 }

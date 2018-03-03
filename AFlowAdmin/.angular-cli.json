@@ -18,10 +18,16 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
+      "addons": [
+        "../node_modules/mdui/fonts/roboto/*.+(eot|svg|ttf|woff|woff2)",
+        "../node_modules/mdui/icons/material-icon/*.+(eot|svg|ttf|woff|woff2)"
+      ],
       "scripts": [
+        "../node_modules/mdui/dist/js/mdui.js"
       ],
       "styles": [
-        "styles.css"
+        "styles.css",
+        "../node_modules/mdui/dist/css/mdui.css"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

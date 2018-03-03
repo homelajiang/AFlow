@@ -109,7 +109,8 @@ module.exports = [
             try {
                 return await act({role: "file", cmd: "remove", id: request.params.id});
             } catch (err) {
-                throw Boom.notFound();
+                Bounce.rethrow(err, {name: 'ValidationError'});       // rethrow any non validation errors, or
+                throw Boom.badGateway();
             }
         },
         config: {

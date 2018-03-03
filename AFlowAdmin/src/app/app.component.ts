@@ -39,19 +39,30 @@ export class Profile {
 }
 
 export class Tag {
-  public title: string;
+  public name: string;
   public image: string;
   public _id: string;
 
 }
 
 export class Category {
-  public title: string;
+  public name: string;
   public image: string;
   public _id: string;
 }
 
-export class Media {
-  public _id: string;
-  public url: string;
+export interface MediaFile {
+  name: string;
+  path: string;
+  mimetype: string;
+  size: number;
+  createDate: string;
+  id: string;
+}
+
+export interface PageModel<T> {
+  pageSize: number;
+  pageNum: number;
+  size: number;
+  list: Array<T>;
 }
