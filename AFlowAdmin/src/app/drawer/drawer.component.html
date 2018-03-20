@@ -1,61 +1,67 @@
-<div class="mdui-drawer mdui-drawer-open" id="main-drawer">
-  <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
-    <div class="mdui-list-item mdui-ripple">
-      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">near_me</i>
-      <div class="mdui-list-item-content">工作台</div>
-    </div>
+<div class="main" igxLayout>
+  <igx-nav-drawer id="navigation" [isOpen]="drawerState.open" [(pin)]="drawerState.pin">
+    <ng-template igxDrawer>
+      <nav>
+        <span igxDrawerItem [isHeader]="true">Components</span>
 
-    <div class="mdui-collapse-item">
-      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange">layers</i>
-        <div class="mdui-list-item-content">博客管理</div>
-        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-      </div>
-      <div class="mdui-collapse-item-body mdui-list" style="">
-        <a href="#" class="mdui-list-item mdui-ripple ">撰写博客</a>
-        <a href="#" class="mdui-list-item mdui-ripple ">文章管理</a>
-        <a href="#" class="mdui-list-item mdui-ripple ">评论管理</a>
-        <a href="#" class="mdui-list-item mdui-ripple ">分类管理</a>
-        <a href="#" class="mdui-list-item mdui-ripple ">标签管理</a>
-        <a href="#" class="mdui-list-item mdui-ripple ">页面</a>
-        <a href="#" class="mdui-list-item mdui-ripple ">设置</a>
-      </div>
-    </div>
+        <span *ngFor="let item of navItems" igxDrawerItem [active]="item.text === selected" igxRipple (click)="navigate(item)">
+          <igx-icon fontSet="material" name="{{ item.name }}"></igx-icon>
+          <span>{{ item.text }}</span>
+        </span>
+      </nav>
+    </ng-template>
 
-    <div class="mdui-collapse-item">
-      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-green">widgets</i>
-        <div class="mdui-list-item-content">多媒体</div>
-        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-      </div>
-      <div class="mdui-collapse-item-body mdui-list" style="">
-        <a href="./button" class="mdui-list-item mdui-ripple ">添加多媒体</a>
-        <a href="./ripple" class="mdui-list-item mdui-ripple ">多媒体列表</a>
-        <a href="./ripple" class="mdui-list-item mdui-ripple ">设置</a>
-      </div>
-    </div>
+    <ng-template igxDrawerMini *ngIf="drawerState.miniTemplate">
+      <nav>
+          <span *ngFor="let item of navItems" igxDrawerItem [active]="item.text === selected" igxRipple (click)="navigate(item)">
+            <igx-icon fontSet="material" name="{{ item.name }}"></igx-icon>
+          </span>
+      </nav>
+    </ng-template>
+  </igx-nav-drawer>
 
-    <div class="mdui-collapse-item">
-      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">view_carousel</i>
-        <div class="mdui-list-item-content">JavaScript 插件</div>
-        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-      </div>
-      <div class="mdui-collapse-item-body mdui-list" style="">
-        <a href="./collapse" class="mdui-list-item mdui-ripple ">Collapse</a>
-        <a href="./headroom" class="mdui-list-item mdui-ripple ">Headroom</a>
-      </div>
-    </div>
+  <main igxFlex [class.mini-padding]="!drawerState.pin && drawerState.miniTemplate">
+<!--    <span igxButton="icon" igxToggleAction="navigation" [closeOnOutsideClick]="false">
+      <igx-icon fontSet="material" name="menu"></igx-icon>
+    </span>-->
 
-    <div class="mdui-collapse-item">
-      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple">local_mall</i>
-        <div class="mdui-list-item-content">资源</div>
-        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+    <h2>
+      Selected: <span class="setting-title">{{ selected }}</span>
+    </h2>
+    <section>
+      <h5 class="setting-title">Mode</h5>
+      <div>
+        <igx-switch (ngModelChange)="drawer.toggle()" >
+          Pin
+        </igx-switch>
       </div>
-      <div class="mdui-collapse-item-body mdui-list" style="">
-        <a href="./material_icon" class="mdui-list-item mdui-ripple ">Material 图标</a>
+      <div>
+        <igx-switch (ngModelChange)="drawer.toggle()" >
+          Mini variant
+        </igx-switch>
       </div>
-    </div>
-  </div>
+    </section>
+    <section>
+      <h5 class="setting-title">Touch gestures</h5>
+      <div>
+        <igx-switch  [checked]="true" [disabled]="drawerState.pin">
+          Enable gestures
+        </igx-switch>
+        <p class="setting-note">
+          Swipe or drag from the edge area to open or to close.
+          Unpin and try it out on a mobile device.
+        </p>
+      </div>
+    </section>
+    <section>
+      <h5 class="setting-title">Position</h5>
+      <div class="setting-container radio">
+        <igx-radio *ngFor="let item of ['left', 'right']" value="{{item}}" name="group"
+                   [disabled]="drawerState.pin">{{item}}</igx-radio>
+        <p class="setting-note">
+          Unpin to try it out.
+        </p>
+      </div>
+    </section>
+  </main>
 </div>

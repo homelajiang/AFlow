@@ -1,4 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 
 import {appRouting} from './app.router';
@@ -18,6 +19,19 @@ import {EditBlogComponent} from './blog/edit/edit.component';
 import {MediaAddComponent} from './media/media-add/media-add.component';
 import {MediaListComponent} from './media/media-list/media-list.component';
 import {HttpClientModule} from '@angular/common/http';
+
+// import the IgxDatePickerModule that will be used
+import {
+  IgxButtonModule,
+  IgxIconModule,
+  IgxLayoutModule,
+  IgxNavigationDrawerModule,
+  IgxRippleModule,
+  IgxToggleModule,
+  IgxNavbarModule,
+  IgxSwitchModule,
+  IgxRadioModule
+} from 'igniteui-angular/main';
 
 @NgModule({
   declarations: [
@@ -39,7 +53,16 @@ import {HttpClientModule} from '@angular/common/http';
   imports: [
     BrowserModule,
     appRouting,
-    HttpClientModule
+    HttpClientModule,
+    IgxButtonModule,
+    IgxIconModule,
+    IgxLayoutModule,
+    IgxNavigationDrawerModule,
+    IgxRippleModule,
+    IgxToggleModule,
+    IgxNavbarModule,
+    IgxSwitchModule,
+    IgxRadioModule
   ],
   providers: [],
   bootstrap: [AppComponent]

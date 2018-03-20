@@ -18,16 +18,13 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
-      "addons": [
-        "../node_modules/mdui/fonts/roboto/*.+(eot|svg|ttf|woff|woff2)",
-        "../node_modules/mdui/icons/material-icon/*.+(eot|svg|ttf|woff|woff2)"
-      ],
+      "addons": [],
       "scripts": [
-        "../node_modules/mdui/dist/js/mdui.js"
+        "../node_modules/hammerjs/hammer.min.js"
       ],
       "styles": [
         "styles.css",
-        "../node_modules/mdui/dist/css/mdui.css"
+        "../node_modules/igniteui-angular/styles/igniteui-angular.css"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
