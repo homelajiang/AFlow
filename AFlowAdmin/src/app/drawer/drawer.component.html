@@ -5,7 +5,7 @@
     <mat-nav-list>
       <mat-list-item *ngFor="let link of links">
         <mat-icon matListIcon>folder</mat-icon>
-        <a matLine href="...">{{ link }}</a>
+        <a matLine href="#">{{ link }}</a>
       </mat-list-item>
     </mat-nav-list>
 
@@ -14,10 +14,10 @@
 
   <mat-drawer-content>
     <mat-toolbar>
+      <span>AFlow</span>
       <button type="button" mat-button (click)="drawer.toggle()">
         Toggle sidenav
       </button>
-      <span>My Application</span>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-drawer-content>
