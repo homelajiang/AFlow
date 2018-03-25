@@ -23,8 +23,7 @@
         "../node_modules/hammerjs/hammer.min.js"
       ],
       "styles": [
-        "styles.css",
-        "../node_modules/igniteui-angular/styles/igniteui-angular.css"
+        "styles.css"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
