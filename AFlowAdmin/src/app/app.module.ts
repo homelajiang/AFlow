@@ -8,7 +8,6 @@ import {LoginComponent} from './login/login.component';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {DrawerComponent} from './drawer/drawer.component';
-import {StarterComponent} from './starter/starter.component';
 import {WorkbenchComponent} from './workbench/workbench.component';
 import {BlogsComponent} from './blog/blogs/blogs.component';
 import {CommentsComponent} from './blog/comments/comments.component';
@@ -26,7 +25,6 @@ import {HttpClientModule} from '@angular/common/http';
     HeaderComponent,
     FooterComponent,
     DrawerComponent,
-    StarterComponent,
     WorkbenchComponent,
     BlogsComponent,
     CommentsComponent,

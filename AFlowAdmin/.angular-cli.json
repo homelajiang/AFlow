@@ -26,8 +26,8 @@
         "../node_modules/mdui/dist/js/mdui.js"
       ],
       "styles": [
-        "styles.css",
-        "../node_modules/mdui/dist/css/mdui.css"
+        "../node_modules/mdui/dist/css/mdui.css",
+        "styles.css"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
