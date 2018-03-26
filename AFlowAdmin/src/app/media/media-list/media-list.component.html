@@ -1,4 +1,3 @@
-<h1 class="doc-title mdui-text-color-theme">媒体库</h1>
 <div>
   <a href="#">全部(20)</a>
   <a href="#">图片(16)</a>
@@ -7,42 +6,25 @@
   <a href="#">其他(0)</a>
 </div>
 
-<div>
-  <select class="mdui-select" mdui-select>
-    <option value="1">全部类型</option>
-    <option value="2">图片</option>
-    <option value="3">音乐</option>
-    <option value="4">视频</option>
-    <option value="5">其他</option>
-  </select>
-  <select class="mdui-select" mdui-select>
-    <option value="1">上传日期</option>
-    <option value="2">最近一年</option>
-    <option value="3">三个月内</option>
-    <option value="4">一个月内</option>
-  </select>
-  <button class="mdui-btn mdui-color-theme-accent mdui-ripple">筛选</button>
-  <div class="mdui-textfield mdui-textfield-expandable mdui-float-right" style="max-width: 300px;">
-    <button class="mdui-textfield-icon mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></button>
-    <input class="mdui-textfield-input" type="text" placeholder="Search"/>
-    <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">close</i></button>
-  </div>
-</div>
-<div>
-  <div class="mdui-row-xs-3 mdui-row-sm-4 mdui-row-md-5 mdui-row-lg-6 mdui-row-xl-7 mdui-grid-list">
-    <div class="mdui-col" *ngFor="let file of fileList">
-      <div class="mdui-grid-tile">
-        <img src="{{file.path}}"/>
-        <div class="mdui-grid-tile-actions">
-          <div class="mdui-grid-tile-text">
-            <div class="mdui-grid-tile-title">{{file.name}}</div>
-            <div class="mdui-grid-tile-subtitle"><i class="mdui-icon material-icons">grid_on</i>Ellie Goulding</div>
-          </div>
-          <div class="mdui-grid-tile-buttons">
-            <button class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">star_border</i></button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<mat-grid-list cols="4" rowHeight="1:1">
+  <mat-grid-tile>
+    <img src="http://iph.href.lu/200x200">
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <img src="http://iph.href.lu/200x200">
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <img src="http://iph.href.lu/200x200">
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <img src="http://iph.href.lu/200x200">
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <img src="http://iph.href.lu/200x200">
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <img src="http://iph.href.lu/200x200">
+  </mat-grid-tile>
+
+</mat-grid-list>
+
