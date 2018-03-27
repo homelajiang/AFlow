@@ -218,6 +218,8 @@ h1.doc-title {
 .doc-footer-nav {
   height: 96px;
   margin-top: -96px;
+  clear: both; /* 清除浮动元素格式 */
+  position: relative;
 }
 
 .doc-footer-nav-left,
