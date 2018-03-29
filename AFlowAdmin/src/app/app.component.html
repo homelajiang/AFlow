@@ -1,8 +1,14 @@
 <app-drawer></app-drawer>
 <div class="mdui-container">
-  <div class="mdui-card-primary">
-    <div class="mdui-card-primary-title">欢迎使用</div>
-    <div class="mdui-card-primary-subtitle">Subtitle</div>
+  <div class="mdui-row mdui-valign">
+    <div class="mdui-card-primary mdui-col-xs-9">
+      <div class="mdui-card-primary-title">欢迎使用</div>
+      <div class="mdui-card-primary-subtitle">Subtitle</div>
+    </div>
+    <div class="mdui-textfield mdui-col-xs-3" style="background-color: #ffffff;padding:8px;margin-top: 5px;">
+      <i class="mdui-icon material-icons">search</i>
+      <input class="mdui-textfield-input" type="email" style="border-bottom: none;" placeholder="search"/>
+    </div>
   </div>
   <router-outlet></router-outlet>
   <div style="height: 96px;"></div>

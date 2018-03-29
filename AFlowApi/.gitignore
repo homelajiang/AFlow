@@ -10,4 +10,4 @@ gen
 /node_modules
 package-lock.json
 /dist/
-/public/upload/
+/public/uploads/
