@@ -1,8 +1,10 @@
+///<reference path="../../../../node_modules/mdui/types/mdui.d.ts"/>
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpEventType} from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs/Observable';
 import {MediaService} from '../media.service';
+import {MediaFile} from '../../app.component';
 
 @Component({
   selector: 'app-media-list',
@@ -32,4 +34,11 @@ export class MediaListComponent implements OnInit {
     ;
   }
 
+  copyPath(image: MediaFile) {
+    mdui.snackbar({message: '已复制'});
+  }
+
+  deleteImg(image: MediaFile) {
+    mdui.snackbar({message: '已删除'});
+  }
 }

@@ -1,4 +1,3 @@
-
 var File = require('../../../models/file');
 /*
 var seneca = require('seneca')();
@@ -42,6 +41,11 @@ module.exports = function file(options) {
                 .sort('-create_date')
                 .skip(pageSize * (pageNum - 1))
                 .limit(pageSize);
+
+            for (index in files) {
+                files[index].path = msg.host + files[index].path;
+            }
+
             var data = {
                 pageSize: pageSize,
                 pageNum: pageNum,

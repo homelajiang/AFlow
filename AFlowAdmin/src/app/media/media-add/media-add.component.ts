@@ -16,11 +16,16 @@ export class MediaAddComponent implements OnInit {
   ngOnInit() {
   }
 
-  selectFile(event: any) {
+  onSelectFile(event: any) {
     this.mediaService.uploadMediaFile(event.target.files)
       .subscribe(
         data => console.log(data),
         error => console.log(error)
       );
+  }
+
+  selectFile(event: any) {
+    document.getElementById('selectFile')
+      .click();
   }
 }

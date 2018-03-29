@@ -1,13 +1,14 @@
 <div class="mdui-valign" style="padding-top: 100px;padding-bottom: 220px;">
   <div class="mdui-center">
     <div class="mdui-typo-display-3">upload or share your images</div>
-    <div class="mdui-typo-subheading mdui-text-center">选择图片上传，或者直接拖动图片到此处</div>
-    <div>
-      <input (change)="selectFile($event)" accept="image/*" type="file">
-      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-center">选择文件</button>
-    </div>
+    <div class="mdui-typo-subheading mdui-text-center mdui-m-t-2">选择图片上传，或者直接拖动图片到此处</div>
+      <input id="selectFile" (change)="onSelectFile($event)" accept="image/*" type="file" style="display: none;">
+      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-center mdui-m-t-5" (click)="selectFile()">
+        选择文件
+      </button>
   </div>
 </div>
+
 
 <div>
   最近上传
