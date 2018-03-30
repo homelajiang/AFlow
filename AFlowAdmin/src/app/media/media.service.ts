@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {MediaFile, PageModel} from '../app.component';
 
 @Injectable()
@@ -10,7 +10,15 @@ export class MediaService {
   }
 
   getMediaList(pageNum: number, pageSize: number) {
-    return this.http.get<PageModel<MediaFile>>('/file');
+    const Params = new HttpParams();
+    Params.set('pageNum', pageNum.toString());
+    Params.set('pageSize', pageSize.toString());
+    return this.http.get<PageModel<MediaFile>>('/file', {
+      params: {
+        pageNum: pageNum.toString(),
+        pageSize: pageSize.toString()
+      }
+    });
   }
 
   uploadMediaFile(files: FileList) {

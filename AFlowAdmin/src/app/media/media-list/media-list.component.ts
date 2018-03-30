@@ -24,7 +24,7 @@ export class MediaListComponent implements OnInit {
 
 
   getFileList() {
-    this.mediaService.getMediaList(1, 10)
+    this.mediaService.getMediaList(1, 100)
       .subscribe(
         data => {
           this.fileList = data.list;
