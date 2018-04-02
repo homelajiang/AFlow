@@ -23,7 +23,7 @@ const router: Routes = [
     component: BlogsComponent
   },
   {
-    path: 'blogs/add',
+    path: 'blog/add',
     component: EditBlogComponent
   },
   {
@@ -35,15 +35,15 @@ const router: Routes = [
     component: CategoriesComponent
   },
   {
-    path: 'comments',
+    path: 'comment',
     component: CommentsComponent
   },
   {
-    path: 'medias',
+    path: 'media',
     component: MediaListComponent
   },
   {
-    path: 'medias/add',
+    path: 'media/add',
     component: MediaAddComponent
   }
 ];

@@ -41,4 +41,8 @@ export class MediaListComponent implements OnInit {
   deleteImg(image: MediaFile) {
     mdui.snackbar({message: '已删除'});
   }
+
+  loadMore() {
+
+  }
 }

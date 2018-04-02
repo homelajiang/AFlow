@@ -1,39 +1,36 @@
-<div class="mdui-valign" style="padding-top: 100px;padding-bottom: 220px;">
-  <div class="mdui-center">
+<div class="mdui-valign">
+
+  <div class="mdui-center" style="margin-top: 100px;margin-bottom: 220px;">
     <div class="mdui-typo-display-3">upload or share your images</div>
     <div class="mdui-typo-subheading mdui-text-center mdui-m-t-2">选择图片上传，或者直接拖动图片到此处</div>
-      <input id="selectFile" (change)="onSelectFile($event)" accept="image/*" type="file" style="display: none;">
-      <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-center mdui-m-t-5" (click)="selectFile()">
-        选择文件
-      </button>
+    <input id="selectFile" (change)="onSelectFile($event)" accept="image/*" type="file" style="display: none;">
+    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-center mdui-m-t-5"
+            (click)="selectFile()">
+      选择文件
+    </button>
   </div>
-</div>
+<!--  <div>
+    <div class="mdui-card mdui-col mdui-shadow-1"
+         style="padding: 20px;margin-left: 15px;margin-right: 15px;margin-bottom: 30px;width: 440px;min-height: 340px;">
+      <div class="mdui-card-media mdui-valign media_covered" style="height: 100%;">
+        <img src="https://cdn.dribbble.com/users/1070781/screenshots/3865751/__1x.gif"/>
 
+        <div class="mdui-card-media-covered media_covered_area" style="height: 100%;">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">Title</div>
+            <div class="mdui-card-primary-subtitle">Subtitle</div>
+          </div>
+          <div class="mdui-card-actions">
+            <button class="mdui-btn mdui-btn-icon mdui-float-right"
+                    mdui-tooltip="{content: '删除', position: 'top'}">
+              <i class="mdui-icon material-icons">delete</i></button>
+            <button class="mdui-btn mdui-btn-icon mdui-float-right"
+                    mdui-tooltip="{content: '复制', position: 'top'}">
+              <i class="mdui-icon material-icons">copyright</i></button>
+          </div>
+        </div>
 
-<div>
-  最近上传
-</div>
-
-<div class="mdui-row-xs-3 mdui-row-sm-4 mdui-row-md-5 mdui-row-lg-6 mdui-row-xl-7 mdui-grid-list">
-  <div class="mdui-grid-tile mdui-col">
-    <img src="https://mdui-aliyun.cdn.w3cbus.com/docs/assets/docs/img/card.jpg"/>
-
-    <div class="mdui-grid-tile-actions mdui-grid-tile-actions-top mdui-grid-tile-actions-transparent">
-      <div class="mdui-grid-tile-text">
-      </div>
-      <div class="mdui-grid-tile-buttons">
-        <button class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">close</i></button>
       </div>
     </div>
-
-    <div class="mdui-grid-tile-actions mdui-grid-tile-actions-transparent">
-      <div class="mdui-grid-tile-text">
-        <div class="mdui-grid-tile-title">Halcyon Days</div>
-      </div>
-      <div class="mdui-grid-tile-buttons">
-        <button class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">art_track</i></button>
-      </div>
-    </div>
-
-  </div>
+  </div>-->
 </div>
