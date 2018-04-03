@@ -46,12 +46,8 @@ module.exports = function file(options) {
                 files[index].path = msg.host + files[index].path;
             }
 
-            var data = {
-                pageSize: pageSize,
-                pageNum: pageNum,
-                size: count,
-                list: files
-            };
+            var data = handlePageNum(pageNum, pageSize, count);
+            data.list = files;
             respond(null, data);
         } catch (err) {
             respond(err, null);
@@ -126,4 +122,19 @@ module.exports = function file(options) {
                     respond(err, entity);
                 });*/
     });
+
+
+    function handlePageNum(page, size, count) {
+        return {
+            pageSize: size,
+            pageNum: page,
+            size: count,
+            firstPage: page === 1,
+            lastPage: page * size >= count,
+            hasNextPage: (page + 1) * size <= count,
+            hasPreviousPage: (page - 1) * size <= count && (page - 1) > 0,
+            list: []
+        };
+
+    }
 };

@@ -61,6 +61,10 @@ export interface MediaFile {
 }
 
 export interface PageModel<T> {
+  firstPage: boolean;
+  lastPage: boolean;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
   pageSize: number;
   pageNum: number;
   size: number;

@@ -19,6 +19,8 @@ import {MediaAddComponent} from './media/media-add/media-add.component';
 import {MediaListComponent} from './media/media-list/media-list.component';
 import {HttpClientModule} from '@angular/common/http';
 
+import {ClipboardModule} from 'ngx-clipboard';
+
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -107,6 +109,7 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
+    ClipboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
