@@ -31,12 +31,12 @@
             <i class="mdui-icon material-icons">copyright</i></button>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
 <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple"
+        disabled.bind="!canLoadMore"
         [ngClass]="{'disabled': !canLoadMore}"
         (click)="loadMore()">{{loadMoreStatusText}}
 </button>

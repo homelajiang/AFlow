@@ -18,25 +18,45 @@ export class MediaListComponent implements OnInit {
   public pageModel: PageModel<MediaFile>;
   public pageNum = 1;
   public pageSize = 10;
-  public canLoadMore = false;
+  public canLoadMore = true;
   public loadMoreStatusText = '加载更多';
+  public showLoadMore = false;
+  public loadMoreIng = false;
 
   constructor(private mediaService: MediaService) {
   }
 
   ngOnInit() {
-    this.getFileList();
+    this.loadMore();
   }
 
 
-  getFileList() {
+  loadMore() {
+    if (this.loadMoreIng) {
+      return;
+    } else {
+      this.loadMoreIng = true;
+    }
     this.mediaService.getMediaList(this.pageNum, this.pageSize)
       .subscribe(
         data => {
           this.pageModel = data;
           this.fileList = data.list;
+          this.fileList.concat(data.list);
+          if (this.pageModel.hasNextPage) {
+            this.canLoadMore = true;
+            this.loadMoreStatusText = '加载更多';
+          } else {
+            this.canLoadMore = false;
+            this.loadMoreStatusText = '没有更多了';
+          }
+          this.showLoadMore = true;
+          this.loadMoreIng = false;
         },
-        error => console.log(error)
+        error => {
+          this.loadMoreIng = false;
+          console.log(error);
+        }
       )
     ;
   }
@@ -49,7 +69,4 @@ export class MediaListComponent implements OnInit {
     mdui.snackbar({message: '已删除'});
   }
 
-  loadMore() {
-
-  }
 }
