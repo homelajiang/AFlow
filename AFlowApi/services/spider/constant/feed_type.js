@@ -18,5 +18,10 @@ module.exports = {
         "id": 4,
         "value": "musics",
         "name": "音乐"
+    },
+    rich_text: {
+        id: 5,
+        value: 'rich_text',
+        name: '富文本'
     }
 };

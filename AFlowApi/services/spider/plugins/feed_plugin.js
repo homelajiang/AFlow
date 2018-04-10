@@ -1,10 +1,11 @@
 var AcFun = require("../api/acfun_api");
-var Media = require("../../../models/media");
+var Feed = require("../../../models/feed");
 var mongoose = require('mongoose');
-var config = require('../config.js');
+var config = require('../../../config');
 var async = require('async');
-var Menu = require("../../../models/menu");
-var menu_data = require("../constant/features");
+var FeedTask = require("../../../models/feed_task");
+var FeedType = require('../constant/feed_type');
+var FeedSource = require('../constant/feed_source');
 var schedule = require('node-schedule');
 var schedules = [];
 var UUID = require('uuid/v1');
@@ -31,28 +32,19 @@ logger.level = 'INFO';
 var opts = {
     useMongoClient: true
 };
-var Spider = {
-    start: function () {
-        initSpider(function (err) {
-            if (err) {
-                logger.error("Spider init error!\n" + err);
-            } else {
-                startUpSpider()
-            }
-        });
-    }
-};
 
-function startUpSpider() {
-    Menu.getChildMenus(function (err, menus) {
-        if (err) {
-            console.error(err);
-            return;
+module.exports = function feed(options) {
+    //开始抓取
+    this.add('role:feed,cmd:start', async function (msg, respond) {
+        try {
+            const feedTasks = await FeedTask.find({});
+            createScheduleJobs(feedTasks);
+            respond(null);
+        } catch (err) {
+            respond(err);
         }
-        createScheduleJobs(menus);
-        logger.info("Spider start success!");
-    })
-}
+    });
+};
 
 function initSpider(callback) {
     var raw_menus = menu_data;
@@ -139,7 +131,7 @@ function createScheduleJobs(menus) {
                 j = schedule.scheduleJob(menu.update_interval, function (temp) {
                     scheduleJobStart(temp);
                     temp.uuid = UUID();
-                    AcFun.getVideoByBanana(temp, saveMediaCallback)
+                    startBananaVideoJob(temp);
                 }
                     .bind(null, menu));
                 break;
@@ -147,7 +139,7 @@ function createScheduleJobs(menus) {
                 j = schedule.scheduleJob(menu.update_interval, function (temp) {
                     scheduleJobStart(temp);
                     temp.uuid = UUID();
-                    AcFun.getArticleByUser(temp, "499083", 1, 5, saveMediaCallback)
+                    AcFun.getArticlesByUser(temp, "499083", 1, 5, saveMediaCallback)
                 }
                     .bind(null, menu));
                 break;
@@ -155,13 +147,26 @@ function createScheduleJobs(menus) {
                 j = schedule.scheduleJob(menu.update_interval, function (temp) {
                     scheduleJobStart(temp);
                     temp.uuid = UUID();
-                    AcFun.getArticleByUser(temp, "335261", 1, 5, saveMediaCallback)
+                    AcFun.getArticlesByUser(temp, "335261", 1, 5, saveMediaCallback)
                 }
                     .bind(null, menu));
                 break;
         }
         schedules.push(j);
     }
+}
+
+async function startBananaVideoJob(menu) {
+    // AcFun.getVideoListByBanana(temp, saveMediaCallback)
+    const videos = await  AcFun.getVideoListByBanana(menu);
+    for (i in videos) {
+        var video = videos[i];
+        var tempVideo = await Feed.findOne({contentId: video.href, source: FeedSource.acfun});
+        var videoInfo = await AcFun.getVideoInfo(video.contentId);
+        console.log("111");
+        //todo 组装数据
+    }
+
 }
 
 //保存media
@@ -181,7 +186,7 @@ function saveMediaCallback(err, medias, menu) {
                     i++;
                     async.waterfall([
                         function (cb) {//查询数据是否存在
-                            Media.find({
+                            Feed.find({
                                 contentId: medias[i - 1].contentId,
                                 source: medias[i - 1].source,
                                 type: medias[i - 1].type
@@ -190,9 +195,9 @@ function saveMediaCallback(err, medias, menu) {
                         },
                         function (data, cb) {
                             if (data.length === 0) {//删除数据
-                                Media.create(medias[i - 1], cb);
+                                Feed.create(medias[i - 1], cb);
                             } else { //更新数据
-                                Media.update({
+                                Feed.update({
                                         contentId: medias[i - 1].contentId,
                                         source: medias[i - 1].source,
                                         type: medias[i - 1].type
@@ -204,19 +209,19 @@ function saveMediaCallback(err, medias, menu) {
                 }, callback
             );
         },
-        function (data, cb) {//更新子菜单
-            Menu.findByIdAndUpdate(menu._id, {update_date: Date.now(), uuid: menu.uuid}, cb);
-        },
-        function (data, cb) {//查找主菜单
-            Menu.findById(menu.parent_id, cb);
-        },
-        function (data, cb) {//更新主菜单
-            if (data == null) {
-                cb(null, null);
-            } else {
-                Menu.findByIdAndUpdate(data._id, {update_date: Date.now(), uuid: menu.uuid}, cb);
-            }
-        }
+        /*        function (data, cb) {//更新子菜单
+                    Menu.findByIdAndUpdate(menu._id, {update_date: Date.now(), uuid: menu.uuid}, cb);
+                },
+                function (data, cb) {//查找主菜单
+                    Menu.findById(menu.parent_id, cb);
+                },
+                function (data, cb) {//更新主菜单
+                    if (data == null) {
+                        cb(null, null);
+                    } else {
+                        Menu.findByIdAndUpdate(data._id, {update_date: Date.now(), uuid: menu.uuid}, cb);
+                    }
+                }*/
     ], function (err, res) {
         scheduleJobEnd(err, menu);
     });
@@ -232,11 +237,4 @@ function scheduleJobEnd(err, menu) {
     } else {
         logger.info("[res] " + menu.id + " - " + menu.title);
     }
-}
-
-
-if (require.main === module) {
-    Spider.start();
-} else {
-    module.exports = Spider;
 }

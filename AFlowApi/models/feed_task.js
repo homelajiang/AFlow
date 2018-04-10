@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var MenuSchema = new Schema({
+var FeedTaskSchema = new Schema({
     id: {type: Number, require: true},
     title: {type: String, require: true},
     description: {type: String},
@@ -17,7 +17,7 @@ var MenuSchema = new Schema({
     versionKey: false
 });
 
-MenuSchema.virtual('model')
+FeedTaskSchema.virtual('model')
     .get(function () {
         return {
             id: this.id,
@@ -27,23 +27,23 @@ MenuSchema.virtual('model')
         };
     });
 
-MenuSchema.static({
+FeedTaskSchema.static({
     /**
      * 获取父菜单列表
      * @param cb
      */
     getParentMenus: function (cb) {
-        Menu.find({parent_id: {$exists: false}})
+        FeedTask.find({parent_id: {$exists: false}})
             .sort({create_date: -1})
             .exec(cb);
     },
     getChildMenus: function (cb) {
-        Menu.find({parent_id: {$exists: true}})
+        FeedTask.find({parent_id: {$exists: true}})
             .sort({create_date: -1})
             .exec(cb);
     }
 });
 
-var Menu = mongoose.model("Menu", MenuSchema);
+var FeedTask = mongoose.model("feed_task", FeedTaskSchema);
 
-module.exports = Menu;
+module.exports = FeedTask;

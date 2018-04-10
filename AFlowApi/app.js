@@ -3,7 +3,7 @@ const Path = require('path');
 const Hapi = require('hapi');
 const Inert = require('inert');
 const  routes = require('./routes/index');
-const plugins = require('./config/plugin_config');
+const plugins = require('./plugin_config');
 
 // Create a server with a host and port
 const server = Hapi.server({

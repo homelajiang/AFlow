@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var MediaSchema = new Schema({
+var FeedSchema = new Schema({
     type: {
         id: Number,
         value: String,
@@ -12,17 +12,18 @@ var MediaSchema = new Schema({
     title: String,
     description: String,
     url: String,
-    image: [{
-        url: String,
-        title: String,
-        description: String
+    cover:String,
+    attachment: [{
+        source: String,
+        description: String,
+        danmakuId:String
     }],
     update_date: Number,
     visit: {
         views: Number,
         score: Number,
         comments: Number,
-        danmaKuSize: Number
+        danmakuSize: Number
     },
     owner: {
         id: Number,
@@ -35,7 +36,7 @@ var MediaSchema = new Schema({
     }
 });
 
-MediaSchema.static({
+FeedSchema.static({
     /**
      * 通过uuid查询多媒体信息
      * @param uuid 要查询的多媒体的uuid
@@ -53,6 +54,6 @@ MediaSchema.static({
 });
 
 
-var Media = mongoose.model("Media", MediaSchema);
+var Feed = mongoose.model("Feed", FeedSchema);
 
-module.exports = Media;
+module.exports = Feed;

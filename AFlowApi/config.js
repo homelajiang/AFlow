@@ -8,7 +8,7 @@ module.exports = {
         port: 5202,
         db_connection: "mongodb://localhost:27017/aflow"
     },
-    feed_spider: {
+    spider: {
         port: 5203,
         db_connection: "mongodb://localhost:27017/aflow"
     },

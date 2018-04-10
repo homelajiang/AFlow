@@ -11,3 +11,4 @@ gen
 package-lock.json
 /dist/
 /public/uploads/
+/services/spider/logs/
