@@ -29,13 +29,9 @@ var options_acfun = {
 };
 var request = require('request');
 
-var url_article = "http://www.acfun.cn/z/ac";
-var url_video = "http://www.acfun.cn/v/ac";
-var url_host = "http://www.acfun.cn";
-
 module.exports = {
     //获取acfun香蕉数最多的视频
-    getVideoListByBanana: function (menu) {
+    getVideoListByBanana: function () {
         return new Promise(function (resolve, reject) {
             var options = options_acfun;
             options.url = "http://apipc.app.acfun.cn/v2/ranks/1?range=86400000&page={num:1,size:10}";
@@ -49,44 +45,9 @@ module.exports = {
                     reject(err);
                     return;
                 }
-
-                var datas = [];
-                var vdataList = body.vdata.list;
-                for (index in vdataList) {
-                    var media = {};
-                    media.type = MediaType.video;
-                    media.uuid = menu.uuid;
-                    media.contentId = vdataList[index].contentId;
-                    media.title = vdataList[index].title;
-                    media.description = vdataList[index].description;
-                    media.url = url_video + vdataList[index].contentId;
-                    media.image = [{
-                        title: null,
-                        description: null,
-                        url: vdataList[index].image
-                    }];
-                    media.update_date = vdataList[index].releaseDate;
-                    media.visit = {
-                        "comments": vdataList[index].visit.comments,
-                        "score": vdataList[index].visit.goldBanana,
-                        "danmakuSize": vdataList[index].visit.danmakuSize,
-                        "views": vdataList[index].visit.views
-                    };
-                    media.owner = {
-                        "name": vdataList[index].owner.name,
-                        "avatar": vdataList[index].owner.avatar,
-                        "id": vdataList[index].owner.id
-                    };
-                    media.source = {
-                        "name": "Acfun",
-                        "url": url_host
-                    };
-                    datas.push(media);
-                }
-                resolve(datas);
+                resolve(body.vdata.list);
             });
         })
-
     },
 //获取视频详情
     getVideoInfo: function (id) {
@@ -108,71 +69,42 @@ module.exports = {
         })
     },
     //获取用户发布的文章
-    getArticlesByUser: function (menu, userId, pageNo, pageSize, cb) {
-        var options = options_acfun;
-        options.url = "http://apipc.app.acfun.cn/v2/user/content?userId=" + userId + "&type=1&sort=1&pageNo=" + pageNo + "&pageSize=" + pageSize;
-        request(options, function (err, result, body) {
-            if (err) {
-                cb(err);
-                return;
-            }
-            body = JSON.parse(body);
-            if (body.errorid !== 0) {
-                cb(err);
-                return;
-            }
-
-            var datas = [];
-            var vdataList = body.vdata.list;
-            for (index in vdataList) {
-                var media = {};
-                media.type = MediaType.web;
-                media.uuid = menu.uuid;
-                media.contentId = vdataList[index].id;
-                media.title = vdataList[index].title;
-                media.description = vdataList[index].description;
-                media.url = url_article + vdataList[index].id;
-                media.image = [{
-                    title: null,
-                    description: null,
-                    url: vdataList[index].cover
-                }];
-                media.update_date = vdataList[index].releaseDate;
-                media.visit = {
-                    "comments": vdataList[index].comments,
-                    "score": 0,
-                    "danmakuSize": 0,
-                    "views": vdataList[index].views
-                };
-                media.owner = {
-                    "name": vdataList[index].user.username,
-                    "avatar": vdataList[index].user.userImg,
-                    "id": vdataList[index].user.id
-                };
-                media.source = {
-                    "name": "Acfun",
-                    "url": url_host
-                };
-                datas.push(media);
-            }
-            cb(null, datas, menu);
+    getArticlesByUser: function (userId, pageNo, pageSize) {
+        return new Promise(function (resolve, reject) {
+            var options = options_acfun;
+            options.url = "http://apipc.app.acfun.cn/v2/user/content?userId="
+                + userId + "&type=1&sort=1&pageNo=" + pageNo + "&pageSize=" + pageSize;
+            request(options, function (err, result, body) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                body = JSON.parse(body);
+                if (body.errorid !== 0) {
+                    reject(err);
+                    return;
+                }
+                resolve(body.vdata.list);
+            })
         })
     },
 //获取文章详情
-    getArticleInfo: function (id, cb) {
-        var options = options_acfun;
-        options.url = "http://apipc.app.acfun.cn/v2/articles/" + id;
-        request(options, function (err, result, body) {
-            if (err) {
-                cb(err);
-                return;
-            }
-            body = JSON.parse(body);
-            if (body.errorid !== 0) {
-                cb(body.errorid);
-                return;
-            }
-            cb(null, body.vdata);
+    getArticleInfo: function (id) {
+        return new Promise(function (resolve, reject) {
+            var options = options_acfun;
+            options.url = "http://apipc.app.acfun.cn/v2/articles/" + id;
+            request(options, function (err, result, body) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                body = JSON.parse(body);
+                if (body.errorid !== 0) {
+                    reject(body.errorid);
+                    return;
+                }
+                resolve(body.vdata);
+            })
         })
     }
 };

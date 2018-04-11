@@ -7,18 +7,20 @@ var FeedSchema = new Schema({
         value: String,
         name: String
     },
+    channel: {type: Number, default: 0},//feed类型，0 默认类型（feed） 1 活动
     uuid: String,
     contentId: String,
     title: String,
     description: String,
     url: String,
-    cover:String,
+    cover: String,
     attachment: [{
         source: String,
         description: String,
-        danmakuId:String
+        danmakuId: String,
+        _id: false
     }],
-    update_date: Number,
+    releaseDate: Number,
     visit: {
         views: Number,
         score: Number,
@@ -45,7 +47,7 @@ FeedSchema.static({
      * @param cb
      */
     getMediasByUuid: function (uuid, pageNo, pageSize, cb) {
-        Media.find({uuid: uuid})
+        Feed.find({uuid: uuid})
             .skip((pageNo - 1) * pageSize)
             .limit(pageSize)
             .sort({releaseDate: -1})
