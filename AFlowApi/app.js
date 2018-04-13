@@ -78,21 +78,6 @@ const init = async () => {
         server.route(r);
     });
 
-    server.route([
-        {
-            method: "GET", path: '/', config: {auth: false},
-            handler: function (request, h) {
-                return "hello world!";
-            }
-        },
-        {
-            method: "GET", path: '/token', config: {auth: "jwt"},
-            handler: function (request, h) {
-                return "hello world!";
-            }
-        }
-    ]);
-
     await server.start();
     return server;
 };

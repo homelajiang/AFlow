@@ -1,17 +1,17 @@
 var mongoose = require('mongoose');
 
-var userSchema = mongoose.Schema({
+var profileSchema = mongoose.Schema({
     confirmed: {type: Boolean, default: false},//用户是否被验证
     role: {type: Number, default: 0},
     username: {type: String, required: true},
     userImg: {type: String, default: '/sa/simg/CN_Logo_Gray.png'},
     gender: {type: Number, default: 0},
-    email: {type: String, default: null},
-    signature: {type: String, default: "default signature"},
-    lastLoginDate: {type: Date, default: Date.now},
+    email: {type: String, required: true},
+    signature: {type: String, default: "我这个人很勤，但是什么都没有写。"},
     joinDate: {type: Date, default: Date.now},
+    lastLoginDate: {type: Date, default: Date.now},
     mobile: {type: String, default: null},//
-    exp: {type: Number, default: 0},//
+    exp: {type: Number, default: 0},//经验
     time: {type: Number, default: 0}//积分
 }, {
     versionKey: false // You should be aware of the outcome after set to false
@@ -19,7 +19,7 @@ var userSchema = mongoose.Schema({
 
 //virtual
 
-userSchema.virtual('model')
+profileSchema.virtual('model')
     .get(function () {
         return {
             nickname: this.nickname,
@@ -39,7 +39,7 @@ userSchema.virtual('model')
     });
 
 
-userSchema.static({
+profileSchema.static({
     getUpdateMode: function (model) {
         var temp = {};
         model.nickname ? temp.nickname = model.nickname : '';
@@ -72,11 +72,11 @@ userSchema.static({
 //    }
 // });
 
-// User.findOne();
+// Profile.findOne();
 
-var User = mongoose.model('User', userSchema);
+var Profile = mongoose.model('Profile', profileSchema);
 
-module.exports = User;
+module.exports = Profile;
 
 function getLevel(exp) {
     //TODO set level

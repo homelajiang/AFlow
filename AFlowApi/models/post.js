@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var Categories = require('./categories');
 var Tag = require('./tag');
-var User = require('./user');
+var User = require('./profile');
 const DRAFT = 0;
 const PUBLISHED = 1;
 const DELETED = -1;
