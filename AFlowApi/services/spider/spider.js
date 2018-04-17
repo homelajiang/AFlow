@@ -6,9 +6,9 @@ mongoose.connect(config.spider.db_connection, {}, (err) => {
     if (err)
         return console.log("数据库链接失败。");
 
-    seneca.use(require('./plugins/feed_plugin'))
+    seneca.use(require('./plugins/spider_plugin'))
         .listen(config.spider.port);
-    seneca.act('role:feed,cmd:start');
+    seneca.act('role:spider,cmd:init');
 
     // require('./plugins/feed_plugin').start();
 });

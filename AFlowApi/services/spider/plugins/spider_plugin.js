@@ -9,6 +9,7 @@ var FeedSource = require('../constant/feed_source');
 var schedule = require('node-schedule');
 var scheduleJobs = {};
 var UUID = require('uuid/v1');
+var tasks = require('../constant/tasks');
 const log4js = require('log4js');
 log4js.configure({
     appenders: {
@@ -28,28 +29,59 @@ log4js.configure({
 });
 var logger = log4js.getLogger("Spider");
 logger.level = 'INFO';
+const Boom = require('boom');
 
 var opts = {
     useMongoClient: true
 };
 
 module.exports = function feed(options) {
-    //开始抓取
-    this.add('role:feed,cmd:start', async function (msg, respond) {
+
+    //初始化feed task
+    this.add('role:spider,cmd:init', async function (msg, respond) {
         try {
+            var taskCount = await SpiderTask.count({});
+            if (!taskCount)
+                await SpiderTask.create(tasks);
+            // await this.act('role:spider,cmd:start');
             const feedTasks = await SpiderTask.find({});
-            initScheduleJobs(feedTasks);
+            updateScheduleJobs(feedTasks);
+            respond(null);
+        } catch (e) {
+            respond(Boom.badRequest("init fail."))
+        }
+    });
+
+    //开始所有任务
+    this.add('role:spider,cmd:start', async function (msg, respond) {
+        try {
+            await SpiderTask.updateMany({}, {$set: {start_up: true}});
+            const feedTasks = await SpiderTask.find({});
+            updateScheduleJobs(feedTasks);
             respond(null);
         } catch (err) {
             respond(err);
         }
     });
-    //开启/关闭task
-    this.add('role:feed,cmd:update', async function (msg, respond) {
+    //停止所有任务
+    this.add('role:spider,cmd:stop', async function (msg, respond) {
         try {
-            await SpiderTask.where({_id: msg.taskId})
-                .update({start_up: msg.start_up});
-            const task = await SpiderTask.findOne({_id: msg.taskId});
+            await SpiderTask.updateMany({}, {$set: {start_up: false}});
+
+            const feedTasks = await SpiderTask.find({});
+            updateScheduleJobs(feedTasks);
+            respond(null);
+        } catch (e) {
+            respond(e);
+        }
+    });
+    //修改task状态
+    this.add('role:spider,cmd:update', async function (msg, respond) {
+        try {
+            var task = await SpiderTask.findOne({id: msg.taskId});
+            await SpiderTask.where({id: msg.taskId})
+                .update({start_up: !task.start_up});
+            task = await SpiderTask.findOne({id: msg.taskId});
             updateScheduleJob(task);
             respond(task);
         } catch (err) {
@@ -57,10 +89,14 @@ module.exports = function feed(options) {
         }
     });
     //获取所有task信息
-    this.add('role:feed,cmd:list', async function (msg, respond) {
+    this.add('role:spider,cmd:list', async function (msg, respond) {
         try {
             const tasks = await  SpiderTask.find({});
-            respond(tasks);
+            var ts = [];
+            for (index in tasks) {
+                ts.push(tasks[index].model);
+            }
+            respond(ts);
         } catch (err) {
             respond(err);
         }
@@ -68,7 +104,7 @@ module.exports = function feed(options) {
 };
 
 //check all schedule status
-function initScheduleJobs(tasks) {
+function updateScheduleJobs(tasks) {
     for (index in tasks) {
         updateScheduleJob(tasks[index])
     }
@@ -148,9 +184,8 @@ async function startBananaVideoJob(task) {
         task.update_date = Date.now();
         if (task.status_record.length > 5)
             task.status_record = task.status_record.slice(-5);
-        console.log(task.status_record.toString());
         await SpiderTask.findOne({_id: task._id})
-            .update(task);
+            .update({update_date: task.update_date, status_record: task.status_record});
     }
 }
 
@@ -183,8 +218,8 @@ async function startArticlesJob(task, userId) {
         task.update_date = Date.now();
         if (task.status_record.length > 5)
             task.status_record = task.status_record.slice(-5);
-        await SpiderTask.findOne({_id: task.id})
-            .update(task);
+        await SpiderTask.findOne({_id: task._id})
+            .update({update_date: task.update_date, status_record: task.status_record});
     }
 }
 

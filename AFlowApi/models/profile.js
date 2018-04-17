@@ -1,3 +1,7 @@
+const moment = require('moment');
+const config = require('../config');
+const Path = require('path');
+
 var mongoose = require('mongoose');
 
 var profileSchema = mongoose.Schema({
@@ -10,9 +14,7 @@ var profileSchema = mongoose.Schema({
     signature: {type: String, default: "我这个人很勤，但是什么都没有写。"},
     joinDate: {type: Date, default: Date.now},
     lastLoginDate: {type: Date, default: Date.now},
-    mobile: {type: String, default: null},//
-    exp: {type: Number, default: 0},//经验
-    time: {type: Number, default: 0}//积分
+    mobile: {type: String, default: null}
 }, {
     versionKey: false // You should be aware of the outcome after set to false
 });
@@ -22,20 +24,28 @@ var profileSchema = mongoose.Schema({
 profileSchema.virtual('model')
     .get(function () {
         return {
-            nickname: this.nickname,
-            userImg: require('../lib/static.js').map(this.userImg),
+            username: this.username,
+            userImg: Path.join(config.base_url, this.userImg),
+            // require('../lib/static.js').map(this.userImg),
             gender: this.gender,
             email: this.email,
             signature: this.signature,
             confirmed: this.confirmed,
             role: this.role,
-            lastLoginDate: this.lastLoginDate,
-            joinDate: this.joinDate,
-            mobile: getMobile(this.mobile),
-            exp: this.exp,
-            level: getLevel(this.exp),
-            time: this.time
+            lastLoginDate: this._lastLoginDate,
+            joinDate: this._joinDate,
+            mobile: getMobile(this.mobile)
         };
+    });
+
+profileSchema.virtual('_joinDate')
+    .get(function () {
+        return moment(this.joinDate).format("YYYY-MM-DD HH:mm:ss");
+    });
+
+profileSchema.virtual('_lastLoginDate')
+    .get(function () {
+        return moment(this.lastLoginDate).format("YYYY-MM-DD HH:mm:ss");
     });
 
 
@@ -77,11 +87,6 @@ profileSchema.static({
 var Profile = mongoose.model('Profile', profileSchema);
 
 module.exports = Profile;
-
-function getLevel(exp) {
-    //TODO set level
-    return exp;
-}
 
 function getMobile(mobile) {
     //TODO set mobile
