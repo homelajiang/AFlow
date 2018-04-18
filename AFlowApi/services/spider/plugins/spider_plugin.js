@@ -35,7 +35,7 @@ var opts = {
     useMongoClient: true
 };
 
-module.exports = function feed(options) {
+module.exports = function spider_plugin(options) {
 
     //初始化feed task
     this.add('role:spider,cmd:init', async function (msg, respond) {

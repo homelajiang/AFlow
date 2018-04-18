@@ -5,6 +5,7 @@ const Path = require('path');
 var mongoose = require('mongoose');
 
 var profileSchema = mongoose.Schema({
+    id:this._id,
     confirmed: {type: Boolean, default: false},//用户是否被验证
     role: {type: Number, default: 0},
     username: {type: String, required: true},

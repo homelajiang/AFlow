@@ -17,5 +17,6 @@ routes = routes
     .concat(require('./auth.js'))
     .concat(require('./file.js'))
     .concat(require('./blog.js'))
-    .concat(require('./spider.js'));
+    .concat(require('./spider.js'))
+    .concat(require('./feed.js'));
 module.exports = routes;

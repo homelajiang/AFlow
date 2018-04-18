@@ -38,6 +38,44 @@ var FeedSchema = new Schema({
     }
 });
 
+
+FeedSchema.virtual('list_model')
+    .get(function () {
+        return {
+            id: this._id,
+            type: this.type,
+            channel: this.channel,
+            contentId: this.contentId,
+            title: this.title,
+            description: this.description,
+            url: this.url,
+            cover: this.cover,
+            releaseDate: this.releaseDate,
+            visit: this.visit,
+            owner: this.owner,
+            source: this.source
+        }
+    });
+FeedSchema.virtual('model')
+    .get(function () {
+        return {
+            id: this._id,
+            type: this.type,
+            channel: this.channel,
+            contentId: this.contentId,
+            title: this.title,
+            description: this.description,
+            url: this.url,
+            cover: this.cover,
+            releaseDate: this.releaseDate,
+            visit: this.visit,
+            owner: this.owner,
+            attachment: this.attachment,
+            source: this.source
+        }
+    });
+
+
 FeedSchema.static({
     /**
      * 通过uuid查询多媒体信息

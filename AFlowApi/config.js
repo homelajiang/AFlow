@@ -15,5 +15,9 @@ module.exports = {
     auth: {
         port: 5204,
         db_connection: 'mongodb://localhost:27017/aflow'
+    },
+    feed: {
+        port: 5205,
+        db_connection: 'mongodb://localhost:27017/aflow'
     }
 };
