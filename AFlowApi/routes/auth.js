@@ -13,7 +13,7 @@ var act = Promise.promisify(seneca.act, {context: seneca});
 module.exports = [
     {
         method: 'POST',
-        path: '/signIn',
+        path: '/api/v1/signIn',
         handler: async (request, h) => {
             try {
                 return await act({
@@ -53,7 +53,7 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/signUp',
+        path: '/api/v1/signUp',
         handler: async (request, h) => {
             try {
                 return await act({
@@ -82,7 +82,7 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/profile/{id}',
+        path: '/api/v1/profile/{id}',
         handler: async (request, h) => {
             try {
                 return await act({

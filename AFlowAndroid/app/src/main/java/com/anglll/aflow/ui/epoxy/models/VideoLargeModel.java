@@ -9,7 +9,7 @@ import com.airbnb.epoxy.EpoxyModelClass;
 import com.airbnb.epoxy.EpoxyModelWithHolder;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseEpoxyHolder;
-import com.anglll.aflow.data.model.MultiMedia;
+import com.anglll.aflow.data.model.Feed;
 import com.anglll.aflow.utils.FuzzyDateFormatter;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.fresco.helper.Phoenix;
@@ -22,11 +22,11 @@ import butterknife.BindView;
 @EpoxyModelClass(layout = R.layout.model_video_large)
 public abstract class VideoLargeModel extends EpoxyModelWithHolder<VideoLargeModel.ViewModel> {
     @EpoxyAttribute
-    MultiMedia multiMedia;
+    Feed feed;
 
     @Override
     public void bind(ViewModel holder) {
-        holder.bindData(multiMedia);
+        holder.bindData(feed);
     }
 
     @Override
@@ -35,7 +35,7 @@ public abstract class VideoLargeModel extends EpoxyModelWithHolder<VideoLargeMod
     }
 
 
-    public static class ViewModel extends BaseEpoxyHolder<MultiMedia> {
+    public static class ViewModel extends BaseEpoxyHolder<Feed> {
         @BindView(R.id.avatar)
         SimpleDraweeView mAvatar;
         @BindView(R.id.owner_name)
@@ -56,20 +56,20 @@ public abstract class VideoLargeModel extends EpoxyModelWithHolder<VideoLargeMod
         TextView mBananaCount;
 
         @Override
-        protected void bindData(MultiMedia data) {
+        protected void bindData(Feed data) {
             Phoenix.with(mAvatar).load(data.getOwner().getAvatar());
-            Phoenix.with(mCover).load(data.getImage());
+            Phoenix.with(mCover).load(data.getCover());
             mOwnerName.setText(data.getOwner().getName());
             mTitle.setText(data.getTitle());
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                mContent.setText(Html.fromHtml(data.getIntro(), Html.FROM_HTML_MODE_LEGACY));
+                mContent.setText(Html.fromHtml(data.getDescription(), Html.FROM_HTML_MODE_LEGACY));
             } else {
-                mContent.setText(Html.fromHtml(data.getIntro()));
+                mContent.setText(Html.fromHtml(data.getDescription()));
             }
             mReleaseTime.setText(FuzzyDateFormatter.getTimeAgo(context, data.getReleaseDate()));
             mPlayContent.setText(String.valueOf(data.getVisit().getViews()));
             mCommentCount.setText(String.valueOf(data.getVisit().getComments()));
-            mBananaCount.setText(String.valueOf(data.getVisit().getGoldBanana()));
+            mBananaCount.setText(String.valueOf(data.getVisit().getScore()));
         }
 
         public int dp2px(float dpVal) {

@@ -1,10 +1,9 @@
 package com.anglll.aflow.data.source;
 
-import com.anglll.aflow.data.model.MultiMedia;
+import com.anglll.aflow.data.model.Feed;
+import com.anglll.aflow.data.model.PageModel;
 import com.anglll.aflow.data.retrofit.RetrofitAPI;
 import com.anglll.aflow.data.retrofit.api.RemoteService;
-
-import java.util.List;
 
 import io.reactivex.Flowable;
 
@@ -29,17 +28,17 @@ public class AppRepository implements AppContract {
     }
 
     @Override
-    public Flowable<List<MultiMedia>> getDiscovery() {
-        return remoteService.getDiscovery();
+    public Flowable<PageModel<Feed>> getFeedList(int page, int size) {
+        return remoteService.getFeedList(page, size);
     }
 
     @Override
-    public Flowable<List<MultiMedia>> getRecommend() {
-        return remoteService.getDiscovery();
+    public Flowable<PageModel<Feed>> getActivityList(int page, int size) {
+        return remoteService.getActivityList(page, size);
     }
 
     @Override
-    public Flowable<List<MultiMedia>> getRecommendCarousels() {
-        return remoteService.getDiscovery();
+    public Flowable<Feed> getFeedInfo(String feedId) {
+        return remoteService.getFeedInfo(feedId);
     }
 }

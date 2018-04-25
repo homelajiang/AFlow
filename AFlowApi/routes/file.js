@@ -20,7 +20,7 @@ var act = Promise.promisify(seneca.act, {context: seneca});
 module.exports = [
     {
         method: 'GET',
-        path: '/uploads/{fileName}',
+        path: '/api/v1/uploads/{fileName}',
         handler: {
             directory: {
                 path: 'uploads/',
@@ -31,7 +31,7 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/file/{id}',
+        path: '/api/v1/file/{id}',
         handler: async (request, h) => {
             try {
                 return await act({
@@ -48,7 +48,7 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/file',
+        path: '/api/v1/file',
         handler: async function (request, h) {
             try {
                 return await act({
@@ -74,7 +74,7 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/file',
+        path: '/api/v1/file',
         config: {
             payload: {
                 output: 'stream',
@@ -104,7 +104,7 @@ module.exports = [
     },
     {
         method: 'DELETE',
-        path: '/file/{id}',
+        path: '/api/v1/file/{id}',
         handler: async function (request, h) {
             try {
                 return await act({role: "file", cmd: "remove", id: request.params.id});

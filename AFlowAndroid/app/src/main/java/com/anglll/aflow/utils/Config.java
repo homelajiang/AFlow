@@ -5,7 +5,7 @@ package com.anglll.aflow.utils;
  */
 
 public class Config {
-    public static final String HOST = "http://10.0.0.7:3000";
-    public static final String HOST_PRODUCTION = "http://10.0.0.7:3000";
+    public static final String HOST = "http://10.0.0.39:8000";
+    public static final String HOST_PRODUCTION = "http://10.0.0.39:8000";
 
 }

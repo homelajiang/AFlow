@@ -6,6 +6,7 @@ module.exports = function feed_plugin(options) {
 //获取feed列表
     this.add('role:feed,cmd:list', async (msg, respond) => {
         try {
+            const count = await Feed.count();
             var feeds = await Feed.find({channel: msg.channel})
                 .limit(msg.size)
                 .skip((msg.page - 1) * msg.size)
@@ -14,7 +15,9 @@ module.exports = function feed_plugin(options) {
             for (index in feeds) {
                 tm.push(feeds[index].list_model);
             }
-            respond(null, tm);
+            var data = handlePageNum(msg.page, msg.size, count);
+            data.list = tm;
+            respond(null, data);
         } catch (e) {
             respond(Boom.badRequest("数据查询失败"));
         }
@@ -33,4 +36,18 @@ module.exports = function feed_plugin(options) {
             respond(e);
         }
     });
+
+    function handlePageNum(page, size, count) {
+        return {
+            pageSize: size,
+            pageNum: page,
+            size: count,
+            firstPage: page === 1,
+            lastPage: page * size >= count,
+            hasNextPage: (page + 1) * size <= count,
+            hasPreviousPage: (page - 1) * size <= count && (page - 1) > 0,
+            list: []
+        };
+
+    }
 };

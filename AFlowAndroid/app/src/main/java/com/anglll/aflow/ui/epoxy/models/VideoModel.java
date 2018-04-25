@@ -8,7 +8,7 @@ import com.airbnb.epoxy.EpoxyModelClass;
 import com.airbnb.epoxy.EpoxyModelWithHolder;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseEpoxyHolder;
-import com.anglll.aflow.data.model.MultiMedia;
+import com.anglll.aflow.data.model.Feed;
 import com.anglll.aflow.utils.FuzzyDateFormatter;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.fresco.helper.Phoenix;
@@ -21,11 +21,11 @@ import butterknife.BindView;
 @EpoxyModelClass(layout = R.layout.model_video)
 public abstract class VideoModel extends EpoxyModelWithHolder<VideoModel.ViewModel> {
     @EpoxyAttribute
-    MultiMedia multiMedia;
+    Feed feed;
 
     @Override
     public void bind(ViewModel holder) {
-        holder.bindData(multiMedia);
+        holder.bindData(feed);
     }
 
     @Override
@@ -33,7 +33,7 @@ public abstract class VideoModel extends EpoxyModelWithHolder<VideoModel.ViewMod
         return totalSpanCount;
     }
 
-    public static class ViewModel extends BaseEpoxyHolder<MultiMedia> {
+    public static class ViewModel extends BaseEpoxyHolder<Feed> {
         @BindView(R.id.cover)
         SimpleDraweeView mCover;
         @BindView(R.id.layout_cover)
@@ -50,9 +50,9 @@ public abstract class VideoModel extends EpoxyModelWithHolder<VideoModel.ViewMod
         TextView mViewCount;
 
         @Override
-        protected void bindData(MultiMedia data) {
+        protected void bindData(Feed data) {
             Phoenix.with(mAvatar).load(data.getOwner().getAvatar());
-            Phoenix.with(mCover).load(data.getImage());
+            Phoenix.with(mCover).load(data.getCover());
             mOwnerName.setText(data.getOwner().getName());
             mTitle.setText(data.getTitle());
             mPublishTime.setText(FuzzyDateFormatter.getTimeAgo(context, data.getReleaseDate()));

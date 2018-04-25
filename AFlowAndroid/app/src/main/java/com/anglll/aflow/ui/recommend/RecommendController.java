@@ -2,20 +2,15 @@ package com.anglll.aflow.ui.recommend;
 
 import com.airbnb.epoxy.AutoModel;
 import com.airbnb.epoxy.TypedEpoxyController;
-import com.anglll.aflow.R;
-import com.anglll.aflow.data.model.MultiMedia;
-import com.anglll.aflow.data.model.Recommend;
-import com.anglll.aflow.data.model.Title;
-import com.anglll.aflow.ui.epoxy.LinearLayoutTwoVGroup;
+import com.anglll.aflow.data.model.Discovery;
 import com.anglll.aflow.ui.epoxy.models.FeaturesModel_;
 import com.anglll.aflow.ui.epoxy.models.TitleModel_;
-import com.anglll.aflow.ui.epoxy.models.VideoModel_;
 
 /**
  * Created by yuan on 2017/12/5 0005.
  */
 
-public class RecommendController extends TypedEpoxyController<Recommend> {
+public class RecommendController extends TypedEpoxyController<Discovery> {
 
 
     private final RecommendCallback callback;
@@ -31,11 +26,11 @@ public class RecommendController extends TypedEpoxyController<Recommend> {
     }
 
     @Override
-    protected void buildModels(Recommend data) {
+    protected void buildModels(Discovery data) {
 
         add(featuresBlock);
 
-        if (data.getCarousels() != null) {
+/*        if (data.getCarousels() != null) {
             add(carouselsTitle
             .title(new Title("精品推荐", R.mipmap.ic_launcher_round)));
             add(new LinearLayoutTwoVGroup(data.getCarousels()));
@@ -49,7 +44,7 @@ public class RecommendController extends TypedEpoxyController<Recommend> {
                         .id(media.getContentId())
                         .multiMedia(media));
             }
-        }
+        }*/
     }
 
     interface RecommendCallback {

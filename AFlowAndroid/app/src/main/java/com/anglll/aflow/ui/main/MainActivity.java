@@ -2,7 +2,6 @@ package com.anglll.aflow.ui.main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatImageButton;
 import android.view.View;
@@ -13,9 +12,7 @@ import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseActivity;
 import com.anglll.aflow.ui.discovery.DiscoveryFragment;
 import com.anglll.aflow.ui.home.HomeFragment;
-import com.anglll.aflow.ui.recommend.RecommendFragment;
 import com.anglll.aflow.ui.user.UserFragment;
-import com.jaeger.library.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +32,10 @@ public class MainActivity extends BaseActivity {
     AppCompatImageButton titleRight;
     @BindView(R.id.view_pager)
     ViewPager viewPager;
-    private int[] titleRes = {R.string.title_home, R.string.title_discovery, R.string.title_recommend, R.string.profile};
-    private int[] unSelectedRes = {R.drawable.ic_home, R.drawable.ic_discover, R.drawable.ic_recommend, R.drawable.ic_discover};
-    private int[] selectedRes = {R.drawable.ic_home_selected, R.drawable.ic_discover_selected, R.drawable.ic_recommend_selected, R.drawable.ic_discover_selected};
-    @BindViews({R.id.home, R.id.discovery, R.id.recommend, R.id.user})
+    private int[] titleRes = {R.string.title_home, R.string.title_discovery, R.string.profile};
+    private int[] unSelectedRes = {R.drawable.ic_home, R.drawable.ic_discover, R.drawable.ic_discover};
+    private int[] selectedRes = {R.drawable.ic_home_selected, R.drawable.ic_discover_selected, R.drawable.ic_discover_selected};
+    @BindViews({R.id.home, R.id.discovery, R.id.user})
     List<ImageView> imageViews;
 
     @Override
@@ -46,7 +43,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        StatusBarUtil.setColor(this, ContextCompat.getColor(getContext(), R.color.white));
+//        StatusBarUtil.setColor(this, ContextCompat.getColor(getContext(), R.color.white));
         selectNavBar(0);
         initView();
     }
@@ -55,7 +52,6 @@ public class MainActivity extends BaseActivity {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new HomeFragment());
         fragments.add(new DiscoveryFragment());
-        fragments.add(new RecommendFragment());
         fragments.add(new UserFragment());
         MainPagerAdapter pagerAdapter
                 = new MainPagerAdapter(getSupportFragmentManager(), fragments);
@@ -66,7 +62,7 @@ public class MainActivity extends BaseActivity {
         viewPager.addOnPageChangeListener(simpleOnPageChangeListener);
     }
 
-    @OnClick({R.id.home_layout, R.id.discovery_layout, R.id.recommend_layout, R.id.user_layout})
+    @OnClick({R.id.home_layout, R.id.discovery_layout,R.id.user_layout})
     void onNavBarClick(View view) {
         int position = 0;
         switch (view.getId()) {
@@ -76,11 +72,8 @@ public class MainActivity extends BaseActivity {
             case R.id.discovery_layout:
                 position = 1;
                 break;
-            case R.id.recommend_layout:
-                position = 2;
-                break;
             case R.id.user_layout:
-                position = 3;
+                position = 2;
                 break;
         }
         selectNavBar(position);

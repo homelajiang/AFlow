@@ -1,7 +1,6 @@
 package com.anglll.aflow.ui.epoxy.models;
 
 import android.support.v7.widget.CardView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airbnb.epoxy.EpoxyAttribute;
@@ -9,7 +8,7 @@ import com.airbnb.epoxy.EpoxyModelClass;
 import com.airbnb.epoxy.EpoxyModelWithHolder;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseEpoxyHolder;
-import com.anglll.aflow.data.model.MultiMedia;
+import com.anglll.aflow.data.model.Feed;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.fresco.helper.Phoenix;
 
@@ -21,11 +20,11 @@ import butterknife.BindView;
 @EpoxyModelClass(layout = R.layout.model_media)
 public abstract class MediaModel extends EpoxyModelWithHolder<MediaModel.ViewModel> {
     @EpoxyAttribute
-    MultiMedia multiMedia;
+    Feed feed;
 
     @Override
     public void bind(ViewModel holder) {
-        holder.bindData(multiMedia);
+        holder.bindData(feed);
     }
 
     @Override
@@ -33,7 +32,7 @@ public abstract class MediaModel extends EpoxyModelWithHolder<MediaModel.ViewMod
         return totalSpanCount;
     }
 
-    static class ViewModel extends BaseEpoxyHolder<MultiMedia> {
+    static class ViewModel extends BaseEpoxyHolder<Feed> {
         @BindView(R.id.card_bg)
         SimpleDraweeView mCardBg;
         @BindView(R.id.title)
@@ -44,10 +43,10 @@ public abstract class MediaModel extends EpoxyModelWithHolder<MediaModel.ViewMod
         CardView mMyImageView;
 
         @Override
-        protected void bindData(MultiMedia data) {
-            Phoenix.with(mCardBg).load(data.getImage());
-            mTitle.setText(data.getTitle());
-            mDes.setText(data.getIntro());
+        protected void bindData(Feed feed) {
+            Phoenix.with(mCardBg).load(feed.getCover());
+            mTitle.setText(feed.getTitle());
+            mDes.setText(feed.getDescription());
         }
     }
 }

@@ -38,20 +38,6 @@
             android:src="@drawable/ic_discover" />
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/recommend_layout"
-        style="@style/AFlow.ClickableLayoutBorderless"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <ImageView
-            android:id="@+id/recommend"
-            android:layout_width="@dimen/bar_icon_size"
-            android:layout_height="@dimen/bar_icon_size"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_recommend" />
-    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/user_layout"

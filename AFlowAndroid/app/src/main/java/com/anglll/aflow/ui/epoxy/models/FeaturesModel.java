@@ -7,7 +7,7 @@ import com.airbnb.epoxy.EpoxyModelClass;
 import com.airbnb.epoxy.EpoxyModelWithHolder;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseEpoxyHolder;
-import com.anglll.aflow.data.model.MultiMedia;
+import com.anglll.aflow.data.model.Feed;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import butterknife.OnClick;
 public abstract class FeaturesModel extends EpoxyModelWithHolder<FeaturesModel.ViewModel> {
 
     @EpoxyAttribute
-    List<MultiMedia> multiMediaList;
+    List<Feed> multiMediaList;
 
     @Override
     public void bind(ViewModel holder) {
@@ -33,7 +33,7 @@ public abstract class FeaturesModel extends EpoxyModelWithHolder<FeaturesModel.V
         return totalSpanCount;
     }
 
-    static class ViewModel extends BaseEpoxyHolder<List<MultiMedia>> {
+    static class ViewModel extends BaseEpoxyHolder<List<Feed>> {
 
         @OnClick({R.id.card1, R.id.card2, R.id.card3, R.id.card4})
         public void onViewClicked(View view) {
@@ -50,7 +50,7 @@ public abstract class FeaturesModel extends EpoxyModelWithHolder<FeaturesModel.V
         }
 
         @Override
-        protected void bindData(List<MultiMedia> datas) {
+        protected void bindData(List<Feed> data) {
 
         }
     }

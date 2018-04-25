@@ -1,9 +1,8 @@
 package com.anglll.aflow.ui.discovery;
 
-import com.anglll.aflow.data.model.MultiMedia;
+import com.anglll.aflow.data.model.Feed;
+import com.anglll.aflow.data.model.PageModel;
 import com.anglll.aflow.data.source.AppRepository;
-
-import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -20,6 +19,9 @@ public class DiscoveryPresenter implements DiscoveryContract.Presenter {
     private DiscoveryContract.View view;
     private final ListCompositeDisposable listCompositeDisposable;
     private final AppRepository appRepository;
+    private int page = 1;
+    private int FEED_SIZE = 10;
+    private int ACTIVITY_SIZE = 8;
 
     public DiscoveryPresenter(DiscoveryContract.View view) {
         this.view = view;
@@ -42,19 +44,38 @@ public class DiscoveryPresenter implements DiscoveryContract.Presenter {
     }
 
     @Override
-    public void getDiscovery() {
-        Disposable disposable = appRepository.getDiscovery()
+    public void getFeedList() {
+        Disposable disposable = appRepository.getFeedList(page, FEED_SIZE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MultiMedia>>() {
+                .subscribe(new Consumer<PageModel<Feed>>() {
                     @Override
-                    public void accept(List<MultiMedia> multiMedia) throws Exception {
-                        view.getDiscovery(multiMedia);
+                    public void accept(PageModel<Feed> feedPageModel) throws Exception {
+                        view.getDiscovery(feedPageModel);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        view.getDiscoveryFail();
+                        view.getDiscoveryFail(throwable);
+                    }
+                });
+        listCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void getActivity() {
+        Disposable disposable = appRepository.getFeedList(1, ACTIVITY_SIZE)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<PageModel<Feed>>() {
+                    @Override
+                    public void accept(PageModel<Feed> feedPageModel) throws Exception {
+                        view.getActivity(feedPageModel);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        view.getActivityFail(throwable);
                     }
                 });
         listCompositeDisposable.add(disposable);

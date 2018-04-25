@@ -11,9 +11,10 @@ import android.view.ViewGroup;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseFragment;
-import com.anglll.aflow.data.model.MultiMedia;
+import com.anglll.aflow.data.model.Discovery;
+import com.anglll.aflow.data.model.Feed;
+import com.anglll.aflow.data.model.PageModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,8 +28,8 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private DiscoveryController controller = new DiscoveryController(null, null);
-    private List<MultiMedia> mediaList = new ArrayList<>();
     private DiscoveryContract.Presenter presenter;
+    private Discovery discovery = new Discovery();
 
     @Nullable
     @Override
@@ -49,11 +50,12 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
         mRecyclerView.setAdapter(controller.getAdapter());
         updateController();
         new DiscoveryPresenter(this);
-        presenter.getDiscovery();
+        presenter.getActivity();
+        presenter.getFeedList();
     }
 
     private void updateController() {
-        controller.setData(mediaList);
+        controller.setData(discovery);
     }
 
     @Override
@@ -62,13 +64,22 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
     }
 
     @Override
-    public void getDiscovery(List<MultiMedia> mediaList) {
-        this.mediaList = mediaList;
-        updateController();
+    public void getDiscovery(PageModel<Feed> feedPage) {
+
     }
 
     @Override
-    public void getDiscoveryFail() {
+    public void getDiscoveryFail(Throwable throwable) {
         TT(R.string.get_discovery_fail);
+    }
+
+    @Override
+    public void getActivity(PageModel<Feed> activityPage) {
+
+    }
+
+    @Override
+    public void getActivityFail(Throwable throwable) {
+
     }
 }

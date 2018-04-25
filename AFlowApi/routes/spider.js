@@ -13,7 +13,7 @@ var act = Promise.promisify(seneca.act, {context: seneca});
 module.exports = [
     {
         method: 'GET',
-        path: '/spider/tasks',
+        path: '/api/v1/spider/tasks',
         handler: async (request, h) => {
             try {
                 return await act({
@@ -30,7 +30,7 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/spider/start',
+        path: '/api/v1/spider/start',
         handler: async (request, h) => {
             try {
                 return await act({
@@ -47,7 +47,7 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/spider/stop',
+        path: '/api/v1/spider/stop',
         handler: async (request, h) => {
             try {
                 return await act({
@@ -64,7 +64,7 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/spider/update/{id}',
+        path: '/api/v1/spider/update/{id}',
         handler: async (request, h) => {
             try {
                 return await act({
