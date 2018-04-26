@@ -31,7 +31,7 @@ const validate = async function (decoded, request, h) {
 
 // Create a server with a host and port
 const server = Hapi.server({
-    host: 'localhost',
+    // host: 'localhost',
     port: 8000,
     routes: {
         files: {

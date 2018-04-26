@@ -4,6 +4,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.airbnb.epoxy.TypedEpoxyController;
 import com.anglll.aflow.data.model.Discovery;
+import com.anglll.aflow.data.model.Feed;
+import com.anglll.aflow.ui.epoxy.LinearLayoutTwoVGroup;
+import com.anglll.aflow.ui.epoxy.models.VideoLargeModel_;
 
 /**
  * Created by yuan on 2017/12/2 0002.
@@ -19,18 +22,18 @@ public class DiscoveryController extends TypedEpoxyController<Discovery> {
         this.recyclerViewPool = recycledViewPool;
     }
 
-/*    @Override
-    protected void buildModels(List<MultiMedia> data) {
-        for (MultiMedia media : data) {
-            add(new VideoLargeModel_()
-                    .id(media.getContentId())
-                    .multiMedia(media));
-        }
-    }*/
-
     @Override
     protected void buildModels(Discovery data) {
 
+        if (!data.getActivityList().isEmpty())
+            add(new LinearLayoutTwoVGroup(data.getActivityList()));
+
+        if (!data.getFeedList().isEmpty())
+            for (Feed feed : data.getFeedList()) {
+                add(new VideoLargeModel_()
+                        .id(feed.getId())
+                        .feed(feed));
+            }
     }
 
     public interface DiscoverCallback {

@@ -65,7 +65,9 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
 
     @Override
     public void getDiscovery(PageModel<Feed> feedPage) {
-
+        // TODO: 2018/4/26 0026
+        discovery.addFeedList(feedPage.getList());
+        updateController();
     }
 
     @Override
@@ -75,11 +77,12 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
 
     @Override
     public void getActivity(PageModel<Feed> activityPage) {
+        discovery.setActivityList(activityPage.getList());
+        updateController();
 
     }
 
     @Override
     public void getActivityFail(Throwable throwable) {
-
     }
 }

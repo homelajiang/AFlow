@@ -1,5 +1,6 @@
 package com.anglll.aflow.data.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,8 +8,8 @@ import java.util.List;
  */
 
 public class Discovery {
-    private List<Feed> feedList;
-    private List<Feed> activityList;
+    private List<Feed> feedList = new ArrayList<>();
+    private List<Feed> activityList = new ArrayList<>();
 
     public List<Feed> getFeedList() {
         return feedList;
@@ -16,6 +17,10 @@ public class Discovery {
 
     public void setFeedList(List<Feed> feedList) {
         this.feedList = feedList;
+    }
+
+    public void addFeedList(List<Feed> feedList) {
+        this.feedList.addAll(feedList);
     }
 
     public List<Feed> getActivityList() {

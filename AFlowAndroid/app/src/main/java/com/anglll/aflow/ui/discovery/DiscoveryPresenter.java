@@ -64,7 +64,7 @@ public class DiscoveryPresenter implements DiscoveryContract.Presenter {
 
     @Override
     public void getActivity() {
-        Disposable disposable = appRepository.getFeedList(1, ACTIVITY_SIZE)
+        Disposable disposable = appRepository.getActivityList(1, ACTIVITY_SIZE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<PageModel<Feed>>() {
