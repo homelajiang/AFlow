@@ -27,7 +27,12 @@ public class HomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
+        initView();
         return view;
+    }
+
+    private void initView() {
+        mBeeLayout.setAdapter(new HomeBeeAdapter());
     }
 
 }

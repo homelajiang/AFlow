@@ -11,9 +11,25 @@
         android:layout_height="wrap_content"
         android:background="@color/background" />
 
-    <com.anglll.beelayout.BeeLayout
-        android:id="@+id/bee_layout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <com.anglll.beelayout.BeeImageView
+            app:beeBorderWidth="2dp"
+            app:beeHasBorder="true"
+            app:beeSpaceWidth="6dp"
+            android:src="@drawable/ic_test_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.anglll.beelayout.BeeLayout
+            android:id="@+id/bee_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:beeBorderWidth="2dp"
+            app:beeHasBorder="true"
+            app:beeSpaceWidth="6dp" />
+    </FrameLayout>
 
 </LinearLayout>

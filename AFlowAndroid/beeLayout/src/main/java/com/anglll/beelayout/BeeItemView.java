@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
@@ -50,6 +51,8 @@ public class BeeItemView extends FrameLayout {
     public void setBorderWidth(float borderWidth) {
         this.borderWidth = borderWidth;
         strokePaint.setStrokeWidth(borderWidth);
+        //边框宽度
+        strokeR = (float) (borderWidth / 2 / Math.sin(60 * Math.PI / 180));
     }
 
     public void hasBorder(boolean hasBorder) {

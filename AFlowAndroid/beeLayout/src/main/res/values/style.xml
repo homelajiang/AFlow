@@ -12,4 +12,17 @@
         <!--圆角程度比例 (0-1) -->
         <attr name="beeRoundCorner" format="float" />
     </declare-styleable>
+
+    <declare-styleable name="BeeImageView">
+        <!--是否有边框，默认无-->
+        <attr name="beeIvHasBorder" format="boolean" />
+        <!--边框颜色-->
+        <attr name="beeIvBorderColor" format="color|reference" />
+        <!--边框宽度-->
+        <attr name="beeIvBorderWidth" format="dimension|reference" />
+        <!--间距宽度-->
+        <attr name="beeIvSpaceWidth" format="dimension|reference" />
+        <!--圆角程度比例 (0-1) -->
+        <attr name="beeIvRoundCorner" format="float" />
+    </declare-styleable>
 </resources>
