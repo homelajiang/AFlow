@@ -10,6 +10,7 @@ module.exports = function feed_plugin(options) {
             var feeds = await Feed.find({channel: msg.channel})
                 .limit(msg.size)
                 .skip((msg.page - 1) * msg.size)
+                .sort({releaseDate: -1})
                 .exec();
             var tm = [];
             for (index in feeds) {
