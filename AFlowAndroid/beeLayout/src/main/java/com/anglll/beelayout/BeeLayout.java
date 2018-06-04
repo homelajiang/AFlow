@@ -63,7 +63,8 @@ public class BeeLayout extends FrameLayout {
             beeItemView.hasBorder(hasBorder);
             beeItemView.setSpaceWidth(spaceWidth);
             beeItemView.setRoundCorner(roundCorner);
-            BeeViewHolder holder = this.adapter.onCreateViewHolder(beeItemView);
+            BeeViewHolder holder =
+                    this.adapter.onCreateViewHolder(beeItemView, adapter.getItemViewType(i));
             if (holder == null) {
                 Log.e("beeLayout", "BeeViewHolder can not null!");
                 return;

@@ -1,1 +1,2 @@
-include ':app','beeLayout'
+include ':app',':beeLayout',":eleven"
+include ':musicSimple',':beeLayoutSimple'
