@@ -40,7 +40,7 @@ public class ElevenApplication extends Application {
         // Enable strict mode logging
         enableStrictMode();
         // Turn off logging for jaudiotagger.
-//        Logger.getLogger("org.jaudiotagger").setLevel(Level.OFF);
+        Logger.getLogger("org.jaudiotagger").setLevel(Level.OFF);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ElevenApplication extends Application {
     }
 
     private void enableStrictMode() {
-        if (DEBUG) {
+        if (BuildConfig.DEBUG) {
             final StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder()
                     .detectAll().penaltyLog();
             final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder()

@@ -16,7 +16,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by yuan on 2017/11/25 0025.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     private CompositeDisposable mCompositeDisposable;
 
     @Override

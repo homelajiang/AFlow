@@ -79,7 +79,7 @@ public class BeeImageView extends AppCompatImageView {
         a.recycle();
 
         zonePaint.setAntiAlias(true);
-        zonePaint.setColor(0xFFD0D0D0);
+        zonePaint.setColor(0xFFFFFFFF);
 
         strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         strokePaint.setStrokeWidth(borderWidth);

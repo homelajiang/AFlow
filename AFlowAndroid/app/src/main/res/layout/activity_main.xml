@@ -17,4 +17,8 @@
 
     <include layout="@layout/bottom_navbar" />
 
+    <com.anglll.aflow.widget.NavBottomBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

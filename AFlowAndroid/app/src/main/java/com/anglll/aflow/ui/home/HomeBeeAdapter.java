@@ -11,7 +11,6 @@ import com.anglll.beelayout.BeeAdapter;
 import com.anglll.beelayout.BeeViewHolder;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
 
@@ -39,7 +38,7 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 6)
+        if (position == 5)
             return TYPE_INFO;
         return TYPE_ICON;
     }
@@ -52,7 +51,8 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
 
         public HomeMusicInfoHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            mTitle = itemView.findViewById(R.id.title);
+            mSubTitle = itemView.findViewById(R.id.sub_title);
         }
 
         public void bindData(int position) {
@@ -62,18 +62,38 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
     }
 
     class HomeBeeViewHolder extends BeeViewHolder {
-        @BindView(R.id.bee_bg)
-        ImageView mBeeBg;
-        @BindView(R.id.text)
+        ImageView mIcon;
         TextView textView;
 
         public HomeBeeViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            mIcon = itemView.findViewById(R.id.icon);
+            textView = itemView.findViewById(R.id.text);
         }
 
         public void bindData(int position) {
-            textView.setText(String.valueOf(position));
+            switch (position) {
+                case 0:
+                    mIcon.setImageResource(R.drawable.ic_skip_next_black_42dp);
+                    break;
+                case 1:
+                    mIcon.setImageResource(R.drawable.ic_playlist_play_black_36dp);
+                    break;
+                case 2:
+                    mIcon.setImageResource(R.drawable.ic_repeat_one_black_36dp);
+                    break;
+                case 3:
+                    mIcon.setImageResource(R.drawable.ic_skip_previous_black_42dp);
+                    break;
+                case 4:
+                    mIcon.setImageResource(R.drawable.ic_queue_music_black_36dp);
+                    break;
+                case 6:
+                    mIcon.setImageResource(R.drawable.ic_play_arrow_black_56dp);
+                    break;
+                default:
+            }
         }
     }
 }
+

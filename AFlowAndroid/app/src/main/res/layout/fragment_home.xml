@@ -19,7 +19,6 @@
             app:beeBorderWidth="2dp"
             app:beeHasBorder="true"
             app:beeSpaceWidth="6dp"
-            android:src="@drawable/ic_test_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

@@ -1,9 +1,12 @@
 package com.anglll.aflow;
 
-import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.facebook.fresco.helper.Phoenix;
 import com.squareup.leakcanary.LeakCanary;
+
+import org.lineageos.eleven.ElevenApplication;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -11,7 +14,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  * Created by yuan on 2017/11/25 0025.
  */
 
-public class AFApplication extends Application {
+public class AFApplication extends ElevenApplication {
     private static AFApplication application;
 
     public static AFApplication getApplication() {
@@ -25,6 +28,12 @@ public class AFApplication extends Application {
         initLeakCanary();
         initFresco();
         initCalligraphy();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     private void initCalligraphy() {

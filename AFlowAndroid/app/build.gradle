@@ -9,6 +9,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary= true
     }
@@ -57,5 +58,7 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:1.5.0'
     implementation 'com.facebook.fresco:imagepipeline-okhttp3:1.5.0'
     implementation 'com.facebook.fresco.helper:fresco-helper:2.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
     implementation project(':beeLayout')
+    implementation project(':eleven')
 }
