@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseFragment;
+import com.anglll.aflow.ui.main.MainActivity;
 import com.anglll.beelayout.BeeLayout;
 
 import butterknife.BindView;
@@ -17,10 +18,11 @@ import butterknife.ButterKnife;
  * Created by yuan on 2017/11/30.
  */
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements MusicStateChangeListener {
 
     @BindView(R.id.bee_layout)
     BeeLayout mBeeLayout;
+    private HomeBeeAdapter adapter;
 
     @Nullable
     @Override
@@ -31,8 +33,49 @@ public class HomeFragment extends BaseFragment {
         return view;
     }
 
-    private void initView() {
-        mBeeLayout.setAdapter(new HomeBeeAdapter());
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getContainingActivity().setMusicStateListener(this);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getContainingActivity().removeMusicStateListener(this);
+    }
+
+    private void initView() {
+        adapter = new HomeBeeAdapter(getActivity());
+        mBeeLayout.setAdapter(adapter);
+    }
+
+    public MainActivity getContainingActivity() {
+        return (MainActivity) getActivity();
+    }
+
+    @Override
+    public void restartLoader() {
+
+    }
+
+    @Override
+    public void onPlaylistChanged() {
+
+    }
+
+    @Override
+    public void onMetaChanged() {
+        adapter.updateMeta();
+    }
+
+    @Override
+    public void onUpdateController() {
+        adapter.updateController();
+    }
+
+    @Override
+    public void cacheUnpaused() {
+
+    }
 }

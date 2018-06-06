@@ -12,6 +12,8 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary= true
+        renderscriptTargetApi 27
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {

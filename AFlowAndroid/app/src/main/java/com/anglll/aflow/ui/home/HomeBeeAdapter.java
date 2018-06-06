@@ -1,14 +1,18 @@
 package com.anglll.aflow.ui.home;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anglll.aflow.R;
 import com.anglll.beelayout.BeeAdapter;
 import com.anglll.beelayout.BeeViewHolder;
+
+import org.lineageos.eleven.utils.MusicUtils;
 
 import butterknife.BindView;
 
@@ -16,11 +20,16 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
 
     private static final int TYPE_ICON = 0;
     private static final int TYPE_INFO = 1;
+    private final Context context;
+
+    public HomeBeeAdapter(Context context) {
+        this.context = context;
+    }
 
     @Override
     public BeeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_INFO) {
-            return new HomeBeeViewHolder(LayoutInflater.from(parent.getContext())
+            return new HomeMusicInfoHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_home_bee_music_info_item, parent, false));
         }
         return new HomeBeeViewHolder(LayoutInflater.from(parent.getContext())
@@ -43,6 +52,16 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
         return TYPE_ICON;
     }
 
+    public void updateMeta() {
+        ((HomeMusicInfoHolder) getViewHolder(5))
+                .updateInfo();
+    }
+
+    public void updateController() {
+        ((HomeBeeViewHolder) getViewHolder(6))
+                .updateController();
+    }
+
     class HomeMusicInfoHolder extends BeeViewHolder {
         @BindView(R.id.title)
         TextView mTitle;
@@ -55,9 +74,18 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
             mSubTitle = itemView.findViewById(R.id.sub_title);
         }
 
-        public void bindData(int position) {
-            mTitle.setText("你好，");
-            mSubTitle.setText("世界！");
+        public void bindData(final int position) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context,String.valueOf(position),Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        public void updateInfo() {
+            mTitle.setText(MusicUtils.getTrackName());
+            mSubTitle.setText(MusicUtils.getArtistName());
         }
     }
 
@@ -71,7 +99,13 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
             textView = itemView.findViewById(R.id.text);
         }
 
-        public void bindData(int position) {
+        public void bindData(final int position) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context,String.valueOf(position),Toast.LENGTH_SHORT).show();
+                }
+            });
             switch (position) {
                 case 0:
                     mIcon.setImageResource(R.drawable.ic_skip_next_black_42dp);
@@ -92,6 +126,16 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
                     mIcon.setImageResource(R.drawable.ic_play_arrow_black_56dp);
                     break;
                 default:
+            }
+        }
+
+        public void updateController() {
+            if (MusicUtils.isPlaying()) {
+                mIcon.setContentDescription(context.getString(R.string.accessibility_pause));
+                mIcon.setImageResource(R.drawable.ic_pause_black_56dp);
+            } else {
+                mIcon.setContentDescription(context.getString(R.string.accessibility_play));
+                mIcon.setImageResource(R.drawable.ic_play_arrow_black_56dp);
             }
         }
     }

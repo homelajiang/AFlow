@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatImageButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.anglll.aflow.R;
-import com.anglll.aflow.base.BaseActivity;
+import com.anglll.aflow.base.BaseMusicActivity;
 import com.anglll.aflow.ui.discovery.DiscoveryFragment;
 import com.anglll.aflow.ui.home.HomeFragment;
 import com.anglll.aflow.ui.user.UserFragment;
@@ -22,7 +24,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseMusicActivity {
 
     @BindView(R.id.title_left)
     AppCompatImageButton titleLeft;
@@ -37,6 +39,8 @@ public class MainActivity extends BaseActivity {
     private int[] selectedRes = {R.drawable.ic_home_selected, R.drawable.ic_discover_selected, R.drawable.ic_discover_selected};
     @BindViews({R.id.home, R.id.discovery, R.id.user})
     List<ImageView> imageViews;
+    @BindView(R.id.root)
+    LinearLayout mLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -38,7 +38,8 @@ public class AFApplication extends ElevenApplication {
 
     private void initCalligraphy() {
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+//                .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
+                .setDefaultFontPath("fonts/helvetica_neue.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );

@@ -9,21 +9,32 @@ import android.content.ServiceConnection;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 
+
+import com.anglll.aflow.ui.home.MusicStateChangeListener;
+
+import org.lineageos.eleven.Config;
 import org.lineageos.eleven.IElevenService;
 import org.lineageos.eleven.MusicPlaybackService;
-import org.lineageos.eleven.MusicStateListener;
 import org.lineageos.eleven.cache.ICacheListener;
 import org.lineageos.eleven.cache.ImageFetcher;
+import org.lineageos.eleven.loaders.SongLoader;
+import org.lineageos.eleven.model.Song;
+import org.lineageos.eleven.sectionadapter.SectionCreator;
+import org.lineageos.eleven.sectionadapter.SectionListContainer;
 import org.lineageos.eleven.utils.Lists;
 import org.lineageos.eleven.utils.MusicUtils;
+import org.lineageos.eleven.utils.SectionCreatorUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-public abstract class BaseMusicActivity extends BaseActivity implements ServiceConnection,
-        MusicStateListener,
+public class BaseMusicActivity extends BaseActivity implements ServiceConnection,
+        MusicStateChangeListener,
         ICacheListener {
 
     private MusicUtils.ServiceToken mToken;
@@ -31,7 +42,7 @@ public abstract class BaseMusicActivity extends BaseActivity implements ServiceC
     /**
      * Playstate and meta change listener
      */
-    private final ArrayList<MusicStateListener> mMusicStateListener = Lists.newArrayList();
+    private final ArrayList<MusicStateChangeListener> mMusicStateChangeListener = Lists.newArrayList();
     private PlaybackStatus mPlaybackStatus;
 
 
@@ -55,8 +66,44 @@ public abstract class BaseMusicActivity extends BaseActivity implements ServiceC
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         mService = IElevenService.Stub.asInterface(service);
-        updatePlayControl();
+        onUpdateController();
         onMetaChanged();
+        // TODO: 2018/6/6 0006 开始播放
+        startPlay();
+    }
+
+    private void startPlay() {
+        getSupportLoaderManager().initLoader(1, null, new LoaderManager.LoaderCallbacks<SectionListContainer<Song>>() {
+            @NonNull
+            @Override
+            public Loader<SectionListContainer<Song>> onCreateLoader(int id, @Nullable Bundle args) {
+                // get the context
+                Context context = BaseMusicActivity.this;
+
+                // create the underlying song loader
+                SongLoader songLoader = new SongLoader(context);
+
+                // get the song comparison method to create the headers with
+                SectionCreatorUtils.IItemCompare<Song> songComparison = SectionCreatorUtils.createSongComparison(context);
+
+                // return the wrapped section creator
+                return new SectionCreator<Song>(context, songLoader, songComparison);
+            }
+
+            @Override
+            public void onLoadFinished(@NonNull Loader<SectionListContainer<Song>> loader, SectionListContainer<Song> data) {
+                long[] ret = new long[data.mListResults.size()];
+                for (int i = 0; i < data.mListResults.size(); i++) {
+                    ret[i] = data.mListResults.get(i).mSongId;
+                }
+                MusicUtils.playAll(BaseMusicActivity.this, ret, 5, -1, Config.IdType.NA, false);
+            }
+
+            @Override
+            public void onLoaderReset(@NonNull Loader<SectionListContainer<Song>> loader) {
+
+            }
+        });
     }
 
     @Override
@@ -69,23 +116,23 @@ public abstract class BaseMusicActivity extends BaseActivity implements ServiceC
         cacheUnpaused();
     }
 
-    public void setMusicStateListener(MusicStateListener status) {
+    public void setMusicStateListener(MusicStateChangeListener status) {
         if (status == this) {
             throw new UnsupportedOperationException("Override the method, don't add a listener");
         }
         if (status != null)
-            mMusicStateListener.add(status);
+            mMusicStateChangeListener.add(status);
     }
 
-    public void removeMusicStateListener(final MusicStateListener state) {
+    public void removeMusicStateListener(final MusicStateChangeListener state) {
         if (state != null)
-            mMusicStateListener.remove(state);
+            mMusicStateChangeListener.remove(state);
     }
 
     @Override
     public void restartLoader() {
         // Let the listener know to update a list
-        for (final MusicStateListener listener : mMusicStateListener) {
+        for (final MusicStateChangeListener listener : mMusicStateChangeListener) {
             if (listener != null) {
                 listener.restartLoader();
             }
@@ -95,7 +142,7 @@ public abstract class BaseMusicActivity extends BaseActivity implements ServiceC
     @Override
     public void onPlaylistChanged() {
         // Let the listener know to update a list
-        for (final MusicStateListener listener : mMusicStateListener) {
+        for (final MusicStateChangeListener listener : mMusicStateChangeListener) {
             if (listener != null) {
                 listener.onPlaylistChanged();
             }
@@ -103,12 +150,32 @@ public abstract class BaseMusicActivity extends BaseActivity implements ServiceC
     }
 
     @Override
+    public void onUpdateController() {
+        // Let the listener know to the meta chnaged
+        for (final MusicStateChangeListener listener : mMusicStateChangeListener) {
+            if (listener != null) {
+                listener.onUpdateController();
+            }
+        }
+    }
+
+    @Override
+    public void cacheUnpaused() {
+        // Let the listener know to the meta chnaged
+        for (final MusicStateChangeListener listener : mMusicStateChangeListener) {
+            if (listener != null) {
+                listener.cacheUnpaused();
+            }
+        }
+    }
+
+    @Override
     public void onMetaChanged() {
         // update action bar info
-        updateMusicInfo();
+        onUpdateController();
 
         // Let the listener know to the meta chnaged
-        for (final MusicStateListener listener : mMusicStateListener) {
+        for (final MusicStateChangeListener listener : mMusicStateChangeListener) {
             if (listener != null) {
                 listener.onMetaChanged();
             }
@@ -133,23 +200,17 @@ public abstract class BaseMusicActivity extends BaseActivity implements ServiceC
         }
 
         //Remove any music status listeners
-        mMusicStateListener.clear();
+        mMusicStateChangeListener.clear();
 
         //remove cache listeners
         ImageFetcher.getInstance(this).removeCacheListener(this);
     }
 
-    abstract void updatePlayControl();
-
-    abstract void updateMusicInfo();
-
-    abstract void cacheUnpaused();
-
     @Override
     protected void onResume() {
         super.onResume();
         // Set the playback control drawables
-        updatePlayControl();
+        onUpdateController();
         // Current info
         onMetaChanged();
     }
@@ -171,7 +232,6 @@ public abstract class BaseMusicActivity extends BaseActivity implements ServiceC
         registerReceiver(mPlaybackStatus, filter);
     }
 
-
     /**
      * Used to monitor the state of playback
      */
@@ -190,7 +250,7 @@ public abstract class BaseMusicActivity extends BaseActivity implements ServiceC
             if (action.equals(MusicPlaybackService.META_CHANGED)) {
                 baseMusicActivity.onMetaChanged();
             } else if (action.equals(MusicPlaybackService.PLAYSTATE_CHANGED)) {
-                baseMusicActivity.updatePlayControl();
+                baseMusicActivity.onUpdateController();
             } else if (action.equals(MusicPlaybackService.REFRESH)) {
                 baseMusicActivity.restartLoader();
             } else if (action.equals(MusicPlaybackService.PLAYLIST_CHANGED)) {
