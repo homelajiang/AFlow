@@ -106,5 +106,11 @@
         <item name="android:paddingEnd">10dp</item>
     </style>
 
+    <style name="AFlow.MusicController" parent="AFlow.ClickableLayoutBorderless">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
     <color name="content_des">#BDBDBD</color>
 </resources>

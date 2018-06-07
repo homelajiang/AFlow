@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_discover"
+    app:cardCornerRadius="@dimen/card_radius">
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/play_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/ic_play_arrow_black_56dp" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/card_bg"
+        app:viewAspectRatio="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/gradient_dark" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/TextAppearance.ContentTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/des"
+            android:lines="1"
+            android:textColor="@color/font_white"
+            tools:text="Cooking time" />
+
+        <TextView
+            android:id="@+id/des"
+            style="@style/TextAppearance.Content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/font_white"
+            tools:text="Wake you every morning beautiful music" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

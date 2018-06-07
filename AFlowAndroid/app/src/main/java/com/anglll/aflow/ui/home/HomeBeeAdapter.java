@@ -1,20 +1,25 @@
 package com.anglll.aflow.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.anglll.aflow.R;
+import com.anglll.aflow.ui.music.PlayActivity;
+import com.anglll.aflow.ui.music.playlist.PlayListActivity;
 import com.anglll.beelayout.BeeAdapter;
 import com.anglll.beelayout.BeeViewHolder;
 
+import org.lineageos.eleven.MusicPlaybackService;
 import org.lineageos.eleven.utils.MusicUtils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
 
@@ -67,20 +72,22 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
         TextView mTitle;
         @BindView(R.id.sub_title)
         TextView mSubTitle;
+        private int position = -1;
+
+        @OnClick(R.id.item_layout)
+        void onItemLayoutClick() {
+            if (position == 5) {
+                context.startActivity(new Intent(context, PlayActivity.class));
+            }
+        }
 
         public HomeMusicInfoHolder(View itemView) {
             super(itemView);
-            mTitle = itemView.findViewById(R.id.title);
-            mSubTitle = itemView.findViewById(R.id.sub_title);
+            ButterKnife.bind(this, itemView);
         }
 
         public void bindData(final int position) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context,String.valueOf(position),Toast.LENGTH_SHORT).show();
-                }
-            });
+            this.position = position;
         }
 
         public void updateInfo() {
@@ -90,22 +97,44 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
     }
 
     class HomeBeeViewHolder extends BeeViewHolder {
+        @BindView(R.id.icon)
         ImageView mIcon;
+        @BindView(R.id.text)
         TextView textView;
+        private int position = -1;
+
+        @OnClick(R.id.item_layout)
+        void onItemLayoutClick() {
+            switch (position) {
+                case 0:// play next
+                    MusicUtils.next();
+                    break;
+                case 1:
+
+                    break;
+                case 2:
+                    MusicUtils.cycleRepeatAndShuffle();
+                    updateRepeatAndShuffleStatus();
+                    break;
+                case 3:
+                    MusicUtils.previous(context, false);
+                    break;
+                case 4:
+                    context.startActivity(new Intent(context, PlayListActivity.class));
+                    break;
+                case 6:
+                    MusicUtils.playOrPause();
+                    break;
+            }
+        }
 
         public HomeBeeViewHolder(View itemView) {
             super(itemView);
-            mIcon = itemView.findViewById(R.id.icon);
-            textView = itemView.findViewById(R.id.text);
+            ButterKnife.bind(this, itemView);
         }
 
         public void bindData(final int position) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context,String.valueOf(position),Toast.LENGTH_SHORT).show();
-                }
-            });
+            this.position = position;
             switch (position) {
                 case 0:
                     mIcon.setImageResource(R.drawable.ic_skip_next_black_42dp);
@@ -114,7 +143,7 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
                     mIcon.setImageResource(R.drawable.ic_playlist_play_black_36dp);
                     break;
                 case 2:
-                    mIcon.setImageResource(R.drawable.ic_repeat_one_black_36dp);
+                    updateRepeatAndShuffleStatus();
                     break;
                 case 3:
                     mIcon.setImageResource(R.drawable.ic_skip_previous_black_42dp);
@@ -136,6 +165,22 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
             } else {
                 mIcon.setContentDescription(context.getString(R.string.accessibility_play));
                 mIcon.setImageResource(R.drawable.ic_play_arrow_black_56dp);
+            }
+        }
+
+        private void updateRepeatAndShuffleStatus() {
+            switch (MusicUtils.getRepeatAndShuffleModel()) {
+                case MusicPlaybackService.REPEAT_NONE:
+                    mIcon.setImageResource(R.drawable.ic_shuffle_black_36dp);
+                    break;
+                case MusicPlaybackService.REPEAT_CURRENT:
+                    mIcon.setImageResource(R.drawable.ic_repeat_one_black_36dp);
+                    break;
+                case MusicPlaybackService.REPEAT_ALL:
+                    mIcon.setImageResource(R.drawable.ic_repeat_black_36dp);
+                    break;
+                default:
+                    break;
             }
         }
     }
