@@ -51,7 +51,7 @@ public class PlayListActivity extends BaseMusicActivity implements
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(controller.getAdapter());
 
-        initLoader(null, this);
+        initLoader(2, null,this);
     }
 
     private void updateController() {
@@ -74,17 +74,4 @@ public class PlayListActivity extends BaseMusicActivity implements
     public void onLoaderReset(@NonNull Loader<List<Playlist>> loader) {
 
     }
-
-    protected void initLoader(Bundle args, LoaderManager.LoaderCallbacks<? extends Object> callback) {
-        getContainingLoaderManager().initLoader(2, args, callback);
-    }
-
-    protected void restartLoader(Bundle args, LoaderManager.LoaderCallbacks<? extends Object> callback) {
-        getContainingLoaderManager().restartLoader(2, args, callback);
-    }
-
-    public LoaderManager getContainingLoaderManager() {
-        return getSupportLoaderManager();
-    }
-
 }

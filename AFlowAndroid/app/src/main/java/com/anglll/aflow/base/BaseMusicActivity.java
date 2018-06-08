@@ -232,6 +232,19 @@ public class BaseMusicActivity extends BaseActivity implements ServiceConnection
         registerReceiver(mPlaybackStatus, filter);
     }
 
+
+    protected void initLoader(int loaderId, Bundle args, LoaderManager.LoaderCallbacks<? extends Object> callback) {
+        getContainingLoaderManager().initLoader(loaderId, args, callback);
+    }
+
+    protected void restartLoader(int loaderId, Bundle args, LoaderManager.LoaderCallbacks<? extends Object> callback) {
+        getContainingLoaderManager().restartLoader(loaderId, args, callback);
+    }
+
+    public LoaderManager getContainingLoaderManager() {
+        return getSupportLoaderManager();
+    }
+
     /**
      * Used to monitor the state of playback
      */

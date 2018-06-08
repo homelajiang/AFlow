@@ -108,7 +108,7 @@
 
     <style name="AFlow.MusicController" parent="AFlow.ClickableLayoutBorderless">
         <item name="android:layout_width">wrap_content</item>
-        <item name="layout_height">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">5dp</item>
     </style>
 

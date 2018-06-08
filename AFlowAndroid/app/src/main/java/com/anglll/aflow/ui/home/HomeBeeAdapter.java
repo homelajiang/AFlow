@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anglll.aflow.R;
-import com.anglll.aflow.ui.music.PlayActivity;
+import com.anglll.aflow.ui.music.PlayerActivity;
 import com.anglll.aflow.ui.music.playlist.PlayListActivity;
 import com.anglll.beelayout.BeeAdapter;
 import com.anglll.beelayout.BeeViewHolder;
@@ -77,7 +77,7 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
         @OnClick(R.id.item_layout)
         void onItemLayoutClick() {
             if (position == 5) {
-                context.startActivity(new Intent(context, PlayActivity.class));
+                context.startActivity(new Intent(context, PlayerActivity.class));
             }
         }
 

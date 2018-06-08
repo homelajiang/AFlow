@@ -26,7 +26,8 @@
         </activity>
 
         <activity android:name=".ui.music.playlist.PlayListActivity" />
-        <activity android:name=".ui.music.PlayActivity" />
+        <activity android:name=".ui.music.PlayerActivity" />
+        <activity android:name=".ui.music.playlist.detail.DetailActivity" />
     </application>
 
 </manifest>
