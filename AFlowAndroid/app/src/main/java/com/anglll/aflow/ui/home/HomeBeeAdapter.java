@@ -51,6 +51,33 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
     }
 
     @Override
+    public void notifyItemChanged(int position) {
+        BeeViewHolder viewHolder = getViewHolder(position);
+        if (viewHolder == null)
+            return;
+        switch (position) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                ((HomeBeeViewHolder) viewHolder).updateRepeatAndShuffleStatus();
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                ((HomeMusicInfoHolder) viewHolder).updateInfo();
+                break;
+            case 6:
+                ((HomeBeeViewHolder) viewHolder).updateController();
+                break;
+            default:
+        }
+    }
+
+    @Override
     public int getItemViewType(int position) {
         if (position == 5)
             return TYPE_INFO;
@@ -58,13 +85,13 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
     }
 
     public void updateMeta() {
-        ((HomeMusicInfoHolder) getViewHolder(5))
-                .updateInfo();
+        notifyItemChanged(5);
+        notifyItemChanged(2);
+
     }
 
     public void updateController() {
-        ((HomeBeeViewHolder) getViewHolder(6))
-                .updateController();
+        notifyItemChanged(6);
     }
 
     class HomeMusicInfoHolder extends BeeViewHolder {
@@ -158,6 +185,7 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
             }
         }
 
+
         public void updateController() {
             if (MusicUtils.isPlaying()) {
                 mIcon.setContentDescription(context.getString(R.string.accessibility_pause));
@@ -168,7 +196,7 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
             }
         }
 
-        private void updateRepeatAndShuffleStatus() {
+        public void updateRepeatAndShuffleStatus() {
             switch (MusicUtils.getRepeatAndShuffleModel()) {
                 case MusicPlaybackService.REPEAT_NONE:
                     mIcon.setImageResource(R.drawable.ic_shuffle_black_36dp);

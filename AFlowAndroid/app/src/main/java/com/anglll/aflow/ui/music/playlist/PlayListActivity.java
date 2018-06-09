@@ -1,5 +1,6 @@
 package com.anglll.aflow.ui.music.playlist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseMusicActivity;
+import com.anglll.aflow.ui.music.playlist.detail.DetailActivity;
 
 import org.lineageos.eleven.loaders.PlaylistLoader;
 import org.lineageos.eleven.model.Playlist;
@@ -22,13 +24,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PlayListActivity extends BaseMusicActivity implements
-        LoaderManager.LoaderCallbacks<List<Playlist>> {
+        LoaderManager.LoaderCallbacks<List<Playlist>> ,PlayListController.MusicPlayListCallback{
     @BindView(R.id.toolBar)
     Toolbar mToolBar;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
-    private PlayListController controller = new PlayListController(null, null);
+    private PlayListController controller = new PlayListController(this, null);
     private List<Playlist> playLists;
 
     @Override
@@ -72,6 +74,17 @@ public class PlayListActivity extends BaseMusicActivity implements
 
     @Override
     public void onLoaderReset(@NonNull Loader<List<Playlist>> loader) {
+
+    }
+
+    @Override
+    public void onPlayListClick(Playlist playlist) {
+        startActivity(new Intent(this,DetailActivity.class));
+
+    }
+
+    @Override
+    public void onPlayPlayList(Playlist playlist) {
 
     }
 }

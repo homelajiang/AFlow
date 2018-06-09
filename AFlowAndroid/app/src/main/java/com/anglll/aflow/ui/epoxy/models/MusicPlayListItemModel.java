@@ -16,7 +16,7 @@ import org.lineageos.eleven.model.Song;
 import butterknife.BindView;
 
 @EpoxyModelClass(layout = R.layout.model_music_playlist_item)
-public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicPlayListItemModel.ViewHolder>{
+public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicPlayListItemModel.ViewHolder> {
     @EpoxyAttribute
     Song song;
 
@@ -39,7 +39,8 @@ public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicP
 
         @Override
         protected void bindData(Song data) {
-
+            mTitle.setText(data.mSongName);
+            mSubTitle.setText(String.valueOf(data.mAlbumName + "-" + data.mArtistName));
         }
     }
 }

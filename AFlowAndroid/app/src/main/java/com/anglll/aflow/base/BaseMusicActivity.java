@@ -68,8 +68,6 @@ public class BaseMusicActivity extends BaseActivity implements ServiceConnection
         mService = IElevenService.Stub.asInterface(service);
         onUpdateController();
         onMetaChanged();
-        // TODO: 2018/6/6 0006 开始播放
-        startPlay();
     }
 
     private void startPlay() {

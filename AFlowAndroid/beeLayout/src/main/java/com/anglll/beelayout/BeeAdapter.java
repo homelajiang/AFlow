@@ -27,6 +27,8 @@ public abstract class BeeAdapter<VH extends BeeViewHolder> {
 
     public abstract void onBindViewHolder(VH viewHolder, int position);
 
+    public abstract void notifyItemChanged(int position);
+
     public void setViewHolders(List<VH> viewHolders) {
         this.beeViewHolderList = viewHolders;
     }

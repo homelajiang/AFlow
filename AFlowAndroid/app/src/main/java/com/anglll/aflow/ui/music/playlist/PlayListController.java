@@ -23,11 +23,14 @@ public class PlayListController extends TypedEpoxyController<List<Playlist>> {
         for (Playlist playlist : data) {
             add(new MusicPlayListModel_()
                     .id(playlist.mPlaylistId)
+                    .callback(callback)
                     .playlist(playlist));
         }
     }
 
     public interface MusicPlayListCallback {
+        void onPlayListClick(Playlist playlist);
 
+        void onPlayPlayList(Playlist playlist);
     }
 }
