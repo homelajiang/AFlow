@@ -1,9 +1,14 @@
 package com.anglll.aflow.ui.music;
 
+import android.content.ComponentName;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -15,11 +20,16 @@ import com.anglll.aflow.base.BaseMusicActivity;
 import org.lineageos.eleven.MusicPlaybackService;
 import org.lineageos.eleven.utils.MusicUtils;
 
+import java.lang.ref.WeakReference;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PlayerActivity extends BaseMusicActivity {
+public class PlayerActivity extends BaseMusicActivity implements
+        SeekBar.OnSeekBarChangeListener {
+    private static final String TAG = "Player activity";
+    private static final int SEEKBAR_MAX_PROGRESS = 1000;
     @BindView(R.id.title_left)
     AppCompatImageButton mTitleLeft;
     @BindView(R.id.title)
@@ -57,6 +67,19 @@ public class PlayerActivity extends BaseMusicActivity {
     @BindView(R.id.sub_title)
     TextView mSubTitle;
 
+    // Message to refresh the time
+    private static final int REFRESH_TIME = 1;
+
+    /**
+     * seekbar is dragging
+     */
+    private boolean isDragging;
+    private TimeHandler mTimeHandler;
+    /**
+     * is pause
+     */
+    private boolean mIsPaused;
+
     //https://blog.csdn.net/lmj623565791/article/details/78011599?utm_source=tuicool&utm_medium=referral
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,10 +87,26 @@ public class PlayerActivity extends BaseMusicActivity {
         setContentView(R.layout.activity_music_play);
         ButterKnife.bind(this);
         initView();
+        initData();
     }
+
+    private void initData() {
+        mTimeHandler = new TimeHandler(this);
+    }
+
 
     private void initView() {
         mSubTitle.setVisibility(View.VISIBLE);
+        mSeekBar.setMax(SEEKBAR_MAX_PROGRESS);
+        mSeekBar.setOnSeekBarChangeListener(this);
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        super.onServiceConnected(name, service);
+        queueNextRefresh(1);
+        updateMeta();
+        updateController();
     }
 
     @Override
@@ -95,7 +134,49 @@ public class PlayerActivity extends BaseMusicActivity {
     public void onMetaChanged() {
         super.onMetaChanged();
         updateMeta();
-        updateRepeatAndShuffleStatus();
+    }
+
+    private long refreshCurrentTime() {
+        if (mService == null)
+            return MusicUtils.UPDATE_FREQUENCY_MS;
+        try {
+            final long pos = MusicUtils.position();
+            if (pos >= 0 && MusicUtils.duration() > 0) {
+                refreshCurrentTimeText(pos);
+                if (isDragging) {
+                    return MusicUtils.UPDATE_FREQUENCY_FAST_MS;
+                } else if (MusicUtils.isPlaying()) {
+                    return Math.max(20, 1000 - pos % 1000);
+                } else {
+                    // blink the counter
+                }
+            } else {
+                mCurrentTime.setText("--:--");
+            }
+
+        } catch (Exception ignored) {
+            if (ignored.getMessage() != null) {
+                Log.e(TAG, ignored.getMessage());
+            }
+        }
+        return MusicUtils.UPDATE_FREQUENCY_MS;
+    }
+
+    private void refreshCurrentTimeText(long pos) {
+        if (isDragging) {
+            pos = MusicUtils.duration() * mSeekBar.getProgress() / SEEKBAR_MAX_PROGRESS;
+        } else {
+            mSeekBar.setProgress((int) (pos * SEEKBAR_MAX_PROGRESS / MusicUtils.duration()));
+        }
+        mCurrentTime.setText(MusicUtils.makeShortTimeString(getContext(), pos / 1000));
+    }
+
+    private void queueNextRefresh(final long delay) {
+        if (!mIsPaused) {
+            final Message message = mTimeHandler.obtainMessage(REFRESH_TIME);
+            mTimeHandler.removeMessages(REFRESH_TIME);
+            mTimeHandler.sendMessageDelayed(message, delay);
+        }
     }
 
     private void updateController() {
@@ -109,8 +190,13 @@ public class PlayerActivity extends BaseMusicActivity {
     }
 
     private void updateMeta() {
+        String totalTime = MusicUtils.makeShortTimeString(this, MusicUtils.duration() / 1000);
+        if (!mTotalTime.getText().toString().equals(totalTime))
+            mTotalTime.setText(totalTime);
+
         mTitle.setText(MusicUtils.getTrackName());
         mSubTitle.setText(MusicUtils.getArtistName());
+        updateRepeatAndShuffleStatus();
     }
 
     private void updateRepeatAndShuffleStatus() {
@@ -153,6 +239,56 @@ public class PlayerActivity extends BaseMusicActivity {
                 break;
             case R.id.more:
                 break;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final long next = refreshCurrentTime();
+        queueNextRefresh(next);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mIsPaused = false;
+        mTimeHandler.removeMessages(REFRESH_TIME);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        isDragging = true;
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        isDragging = false;
+        MusicUtils.seek(MusicUtils.duration() * seekBar.getProgress() / SEEKBAR_MAX_PROGRESS);
+    }
+
+    private static final class TimeHandler extends Handler {
+        private final WeakReference<PlayerActivity> mAudioPlayer;
+
+        public TimeHandler(final PlayerActivity activity) {
+            mAudioPlayer = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case REFRESH_TIME:
+                    final long next = mAudioPlayer.get().refreshCurrentTime();
+                    mAudioPlayer.get().queueNextRefresh(next);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

@@ -40,5 +40,10 @@ public class MainActivity extends AppCompatActivity {
         public void onBindViewHolder(BeeViewHolder viewHolder, int position) {
 
         }
+
+        @Override
+        public void notifyItemChanged(int position) {
+
+        }
     }
 }

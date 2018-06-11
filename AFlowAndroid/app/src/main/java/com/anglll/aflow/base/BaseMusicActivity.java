@@ -33,12 +33,12 @@ import org.lineageos.eleven.utils.SectionCreatorUtils;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-public class BaseMusicActivity extends BaseActivity implements ServiceConnection,
+public class  BaseMusicActivity extends BaseActivity implements ServiceConnection,
         MusicStateChangeListener,
         ICacheListener {
 
     private MusicUtils.ServiceToken mToken;
-    private IElevenService mService;
+    public IElevenService mService;
     /**
      * Playstate and meta change listener
      */
