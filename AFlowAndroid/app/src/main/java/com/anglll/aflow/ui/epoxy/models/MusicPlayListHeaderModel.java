@@ -13,10 +13,12 @@ import com.anglll.aflow.base.BaseEpoxyHolder;
 import org.lineageos.eleven.model.Playlist;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 @EpoxyModelClass(layout = R.layout.model_music_playlist_header)
 public abstract class MusicPlayListHeaderModel extends EpoxyModelWithHolder<MusicPlayListHeaderModel.ViewHolder> {
-    @EpoxyAttribute Playlist playlist;
+    @EpoxyAttribute
+    Playlist playlist;
 
     @Override
     public void bind(@NonNull ViewHolder holder) {
@@ -30,11 +32,20 @@ public abstract class MusicPlayListHeaderModel extends EpoxyModelWithHolder<Musi
         TextView mTitle;
         @BindView(R.id.sub_title)
         TextView mSubTitle;
-        @BindView(R.id.play_add)
+        @BindView(R.id.play_all)
         TextView mPlayAdd;
+
+        @OnClick(R.id.play_all)
+        void playAll() {
+        }
+
         @Override
         protected void bindData(Playlist data) {
-
+            if (data == null)
+                return;
+            mTitle.setText(data.mPlaylistName);
+            String temp = context.getString(R.string.playlist_song_count);
+            mSubTitle.setText(String.format(temp, data.mSongCount));
         }
     }
 }

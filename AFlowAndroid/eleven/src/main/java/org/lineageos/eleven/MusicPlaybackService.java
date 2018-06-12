@@ -632,7 +632,6 @@ public class MusicPlaybackService extends Service {
                     "wecubics", NotificationManager.IMPORTANCE_MIN);
             channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);//设置是否应在锁定屏幕上显示此频道的通知
             channel.setDescription("音乐");//设置渠道描述
-            // TODO: 2018/5/26 0026 设置通知渠道
             mNotificationManager.createNotificationChannel(channel);
         }
 

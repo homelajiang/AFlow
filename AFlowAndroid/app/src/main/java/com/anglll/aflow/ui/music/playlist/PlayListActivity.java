@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseMusicActivity;
 import com.anglll.aflow.ui.music.playlist.detail.DetailActivity;
+import com.anglll.aflow.utils.Router;
 
 import org.lineageos.eleven.loaders.PlaylistLoader;
 import org.lineageos.eleven.model.Playlist;
@@ -24,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PlayListActivity extends BaseMusicActivity implements
-        LoaderManager.LoaderCallbacks<List<Playlist>> ,PlayListController.MusicPlayListCallback{
+        LoaderManager.LoaderCallbacks<List<Playlist>>, PlayListController.MusicPlayListCallback {
     @BindView(R.id.toolBar)
     Toolbar mToolBar;
     @BindView(R.id.recyclerView)
@@ -53,7 +54,7 @@ public class PlayListActivity extends BaseMusicActivity implements
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(controller.getAdapter());
 
-        initLoader(2, null,this);
+        initLoader(2, null, this);
     }
 
     private void updateController() {
@@ -79,8 +80,7 @@ public class PlayListActivity extends BaseMusicActivity implements
 
     @Override
     public void onPlayListClick(Playlist playlist) {
-        startActivity(new Intent(this,DetailActivity.class));
-
+        Router.openPlayList(this, playlist);
     }
 
     @Override

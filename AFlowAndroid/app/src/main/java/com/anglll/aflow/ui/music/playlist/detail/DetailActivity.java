@@ -11,8 +11,14 @@ import android.support.v7.widget.RecyclerView;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseMusicActivity;
+import com.anglll.aflow.data.model.SongPlayList;
+import com.anglll.aflow.utils.Router;
 
+import org.lineageos.eleven.Config;
 import org.lineageos.eleven.loaders.LastAddedLoader;
+import org.lineageos.eleven.loaders.PlaylistSongLoader;
+import org.lineageos.eleven.loaders.TopTracksLoader;
+import org.lineageos.eleven.model.Playlist;
 import org.lineageos.eleven.model.Song;
 import org.lineageos.eleven.sectionadapter.SectionCreator;
 import org.lineageos.eleven.sectionadapter.SectionListContainer;
@@ -25,6 +31,7 @@ import butterknife.ButterKnife;
 public class DetailActivity extends BaseMusicActivity {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
+    SongPlayList songPlayList = new SongPlayList();
 
     private DetailController controller = new DetailController(null, null);
 
@@ -34,6 +41,30 @@ public class DetailActivity extends BaseMusicActivity {
         setContentView(R.layout.activity_music_playlist_detail);
         ButterKnife.bind(this);
         initView();
+        initData();
+    }
+
+    private void initData() {
+        if (getIntent() == null) {
+            finish();
+            return;
+        }
+        songPlayList.playlist = new Playlist(
+                getIntent().getLongExtra(Router.PLAYLIST_ID, 0),
+                getIntent().getStringExtra(Router.PLAYLIST_NAME),
+                getIntent().getIntExtra(Router.PLAYLIST_COUNT, 0)
+        );
+        if (songPlayList.playlist.mPlaylistId == 0) {
+            finish();
+            return;
+        }
+        updateController();
+        Config.SmartPlaylistType type = Config.SmartPlaylistType.getTypeById(songPlayList.playlist.mPlaylistId);
+        if (type != null) {
+            initLoader(0, null, new DefaultPlayListCallback(type));
+        } else {
+            initLoader(0, null, new UserPlayListCallback());
+        }
     }
 
     private void initView() {
@@ -43,8 +74,10 @@ public class DetailActivity extends BaseMusicActivity {
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(controller.getAdapter());
+    }
 
-        initLoader(3, null, new DefaultPlayListCallback());
+    private void updateController() {
+        controller.setData(songPlayList);
     }
 
     class UserPlayListCallback implements LoaderManager.LoaderCallbacks<List<Song>> {
@@ -52,13 +85,13 @@ public class DetailActivity extends BaseMusicActivity {
         @NonNull
         @Override
         public Loader<List<Song>> onCreateLoader(int id, @Nullable Bundle args) {
-//            return new PlaylistSongLoader(this, mPlaylistId);
-            return null;
+            return new PlaylistSongLoader(getContext(), songPlayList.playlist.mPlaylistId);
         }
 
         @Override
         public void onLoadFinished(@NonNull Loader<List<Song>> loader, List<Song> data) {
-
+            songPlayList.songList = data;
+            updateController();
         }
 
         @Override
@@ -69,24 +102,39 @@ public class DetailActivity extends BaseMusicActivity {
 
     class DefaultPlayListCallback implements LoaderManager.LoaderCallbacks<SectionListContainer<Song>> {
 
+        private final Config.SmartPlaylistType type;
+
+        public DefaultPlayListCallback(Config.SmartPlaylistType type) {
+            this.type = type;
+        }
+
         @NonNull
         @Override
         public Loader<SectionListContainer<Song>> onCreateLoader(int id, @Nullable Bundle args) {
-/*            TopTracksLoader loader = new TopTracksLoader(getActivity(),
-                    TopTracksLoader.QueryType.RecentSongs);
-            return new SectionCreator<Song>(getActivity(), loader, null);*/
-
-            LastAddedLoader loader = new LastAddedLoader(DetailActivity.this);
-            return new SectionCreator<Song>(DetailActivity.this, loader, null);
-
-/*            TopTracksLoader loader = new TopTracksLoader(getActivity(),
-                    TopTracksLoader.QueryType.TopTracks);
-            return new SectionCreator<Song>(getActivity(), loader, null);*/
+            switch (type) {
+                case LastAdded: {
+                    LastAddedLoader loader = new LastAddedLoader(DetailActivity.this);
+                    return new SectionCreator<Song>(getContext(), loader, null);
+                }
+                case RecentlyPlayed: {
+                    TopTracksLoader loader = new TopTracksLoader(getContext(),
+                            TopTracksLoader.QueryType.RecentSongs);
+                    return new SectionCreator<Song>(getContext(), loader, null);
+                }
+                case TopTracks: {
+                    TopTracksLoader loader = new TopTracksLoader(getContext(),
+                            TopTracksLoader.QueryType.TopTracks);
+                    return new SectionCreator<Song>(getContext(), loader, null);
+                }
+                default:
+                    return null;
+            }
         }
 
         @Override
         public void onLoadFinished(@NonNull Loader<SectionListContainer<Song>> loader, SectionListContainer<Song> data) {
-            controller.setData(data.mListResults);
+            songPlayList.songList = data.mListResults;
+            updateController();
         }
 
         @Override

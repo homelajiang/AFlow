@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:background="#666"
-        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintDimensionRatio="H,4:3"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -19,6 +19,8 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@id/sub_title"
         tools:text="TextView" />
 
@@ -26,15 +28,18 @@
         android:id="@+id/sub_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="TextView" />
 
     <TextView
-        android:id="@+id/play_add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/play_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="@string/menu_play_all" />
+        android:padding="5dp"
+        android:text="@string/menu_play_all"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
