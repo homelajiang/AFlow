@@ -126,11 +126,6 @@ public class PlayerActivity extends BaseMusicActivity implements
     }
 
     @Override
-    public void cacheUnpaused() {
-        super.cacheUnpaused();
-    }
-
-    @Override
     public void onMetaChanged() {
         super.onMetaChanged();
         updateMeta();

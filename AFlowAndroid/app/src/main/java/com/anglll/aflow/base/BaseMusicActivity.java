@@ -102,7 +102,7 @@ public class BaseMusicActivity extends BaseActivity implements ServiceConnection
 
     }
 
-    public void setMusicStateListener(MusicStateListener status) {
+    public void addMusicStateListener(MusicStateListener status) {
         if (status == this) {
             throw new UnsupportedOperationException("Override the method, don't add a listener");
         }
@@ -142,6 +142,15 @@ public class BaseMusicActivity extends BaseActivity implements ServiceConnection
         for (final MusicStateListener listener : mMusicStateListener) {
             if (listener != null) {
                 listener.onMetaChanged();
+            }
+        }
+    }
+
+    @Override
+    public void onUpdateController() {
+        for (final MusicStateListener listener : mMusicStateListener) {
+            if (listener != null) {
+                listener.onUpdateController();
             }
         }
     }
