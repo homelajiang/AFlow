@@ -14,14 +14,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-
-import com.anglll.aflow.ui.home.MusicStateChangeListener;
+import com.anglll.aflow.ui.main.MusicStateListener;
 
 import org.lineageos.eleven.Config;
 import org.lineageos.eleven.IElevenService;
 import org.lineageos.eleven.MusicPlaybackService;
-import org.lineageos.eleven.cache.ICacheListener;
-import org.lineageos.eleven.cache.ImageFetcher;
 import org.lineageos.eleven.loaders.SongLoader;
 import org.lineageos.eleven.model.Song;
 import org.lineageos.eleven.sectionadapter.SectionCreator;
@@ -33,16 +30,15 @@ import org.lineageos.eleven.utils.SectionCreatorUtils;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-public class  BaseMusicActivity extends BaseActivity implements ServiceConnection,
-        MusicStateChangeListener,
-        ICacheListener {
+public class BaseMusicActivity extends BaseActivity implements ServiceConnection,
+        MusicStateListener {
 
     private MusicUtils.ServiceToken mToken;
     public IElevenService mService;
     /**
      * Playstate and meta change listener
      */
-    private final ArrayList<MusicStateChangeListener> mMusicStateChangeListener = Lists.newArrayList();
+    private final ArrayList<MusicStateListener> mMusicStateListener = Lists.newArrayList();
     private PlaybackStatus mPlaybackStatus;
 
 
@@ -58,9 +54,6 @@ public class  BaseMusicActivity extends BaseActivity implements ServiceConnectio
 
         // Initialize the broadcast receiver
         mPlaybackStatus = new PlaybackStatus(this);
-
-        //listen to changes to the cache status
-        ImageFetcher.getInstance(this).addCacheListener(this);
     }
 
     @Override
@@ -109,28 +102,23 @@ public class  BaseMusicActivity extends BaseActivity implements ServiceConnectio
 
     }
 
-    @Override
-    public void onCacheUnpaused() {
-        cacheUnpaused();
-    }
-
-    public void setMusicStateListener(MusicStateChangeListener status) {
+    public void setMusicStateListener(MusicStateListener status) {
         if (status == this) {
             throw new UnsupportedOperationException("Override the method, don't add a listener");
         }
         if (status != null)
-            mMusicStateChangeListener.add(status);
+            mMusicStateListener.add(status);
     }
 
-    public void removeMusicStateListener(final MusicStateChangeListener state) {
+    public void removeMusicStateListener(final MusicStateListener state) {
         if (state != null)
-            mMusicStateChangeListener.remove(state);
+            mMusicStateListener.remove(state);
     }
 
     @Override
     public void restartLoader() {
         // Let the listener know to update a list
-        for (final MusicStateChangeListener listener : mMusicStateChangeListener) {
+        for (final MusicStateListener listener : mMusicStateListener) {
             if (listener != null) {
                 listener.restartLoader();
             }
@@ -140,7 +128,7 @@ public class  BaseMusicActivity extends BaseActivity implements ServiceConnectio
     @Override
     public void onPlaylistChanged() {
         // Let the listener know to update a list
-        for (final MusicStateChangeListener listener : mMusicStateChangeListener) {
+        for (final MusicStateListener listener : mMusicStateListener) {
             if (listener != null) {
                 listener.onPlaylistChanged();
             }
@@ -148,32 +136,10 @@ public class  BaseMusicActivity extends BaseActivity implements ServiceConnectio
     }
 
     @Override
-    public void onUpdateController() {
-        // Let the listener know to the meta chnaged
-        for (final MusicStateChangeListener listener : mMusicStateChangeListener) {
-            if (listener != null) {
-                listener.onUpdateController();
-            }
-        }
-    }
-
-    @Override
-    public void cacheUnpaused() {
-        // Let the listener know to the meta chnaged
-        for (final MusicStateChangeListener listener : mMusicStateChangeListener) {
-            if (listener != null) {
-                listener.cacheUnpaused();
-            }
-        }
-    }
-
-    @Override
     public void onMetaChanged() {
-        // update action bar info
-        onUpdateController();
 
         // Let the listener know to the meta chnaged
-        for (final MusicStateChangeListener listener : mMusicStateChangeListener) {
+        for (final MusicStateListener listener : mMusicStateListener) {
             if (listener != null) {
                 listener.onMetaChanged();
             }
@@ -198,17 +164,13 @@ public class  BaseMusicActivity extends BaseActivity implements ServiceConnectio
         }
 
         //Remove any music status listeners
-        mMusicStateChangeListener.clear();
-
-        //remove cache listeners
-        ImageFetcher.getInstance(this).removeCacheListener(this);
+        mMusicStateListener.clear();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         // Set the playback control drawables
-        onUpdateController();
         // Current info
         onMetaChanged();
     }

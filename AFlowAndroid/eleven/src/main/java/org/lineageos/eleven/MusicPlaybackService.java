@@ -21,7 +21,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -63,8 +62,6 @@ import android.util.LongSparseArray;
 import android.view.KeyEvent;
 
 import org.lineageos.eleven.Config.IdType;
-import org.lineageos.eleven.cache.ImageCache;
-import org.lineageos.eleven.cache.ImageFetcher;
 import org.lineageos.eleven.provider.MusicPlaybackState;
 import org.lineageos.eleven.provider.RecentStore;
 import org.lineageos.eleven.provider.SongPlayCount;
@@ -380,22 +377,6 @@ public class MusicPlaybackService extends Service {
      */
     private final IBinder mBinder = new ServiceStub(this);
 
-    /*    *//**
-     * 4x1 widget
-     *//*
-    private final AppWidgetSmall mAppWidgetSmall = AppWidgetSmall.getInstance();
-
-    *//**
-     * 4x2 widget
-     *//*
-    private final AppWidgetLarge mAppWidgetLarge = AppWidgetLarge.getInstance();
-
-    *//**
-     * 4x2 alternate widget
-     *//*
-    private final AppWidgetLargeAlternate mAppWidgetLargeAlternate = AppWidgetLargeAlternate
-            .getInstance();*/
-
     /**
      * The media player
      */
@@ -509,11 +490,6 @@ public class MusicPlaybackService extends Service {
     private BitmapWithColors[] mCachedBitmapWithColors = new BitmapWithColors[2];
 
     private QueueUpdateTask mQueueUpdateTask;
-
-    /**
-     * Image cache
-     */
-    private ImageFetcher mImageFetcher;
 
     /**
      * Recently listened database
@@ -643,11 +619,6 @@ public class MusicPlaybackService extends Service {
 
         // gets a pointer to the playback state store
         mPlaybackStateStore = MusicPlaybackState.getInstance(this);
-
-        // Initialize the image fetcher
-        mImageFetcher = ImageFetcher.getInstance(this);
-        // Initialize the image cache
-        mImageFetcher.setImageCache(ImageCache.getInstance(this));
 
         // Start up the thread running the service. Note that we create a
         // separate thread because the service normally runs in the process's
@@ -1598,8 +1569,9 @@ public class MusicPlaybackService extends Service {
                     .setActiveQueueItemId(getAudioId())
                     .setState(playState, position(), 1.0f).build());
         } else if (what.equals(META_CHANGED) || what.equals(QUEUE_CHANGED)) {
-            Bitmap albumArt = getAlbumArt(false).getBitmap();
-            if (albumArt != null) {
+            // TODO: 2018/6/14 0014
+//            Bitmap albumArt = getAlbumArt(false).getBitmap();
+/*            if (albumArt != null) {
                 // RemoteControlClient wants to recycle the bitmaps thrown at it, so we need
                 // to make sure not to hand out our cache copy
                 Bitmap.Config config = albumArt.getConfig();
@@ -1607,7 +1579,7 @@ public class MusicPlaybackService extends Service {
                     config = Bitmap.Config.ARGB_8888;
                 }
                 albumArt = albumArt.copy(config, false);
-            }
+            }*/
 
             mSession.setMetadata(new MediaMetadata.Builder()
                     .putString(MediaMetadata.METADATA_KEY_ARTIST, getArtistName())
@@ -1618,8 +1590,8 @@ public class MusicPlaybackService extends Service {
                     .putLong(MediaMetadata.METADATA_KEY_TRACK_NUMBER, getQueuePosition() + 1)
                     .putLong(MediaMetadata.METADATA_KEY_NUM_TRACKS, getQueue().length)
                     .putString(MediaMetadata.METADATA_KEY_GENRE, getGenreName())
-                    .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART,
-                            mShowAlbumArtOnLockscreen ? albumArt : null)
+/*                    .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART,
+                            mShowAlbumArtOnLockscreen ? albumArt : null)*/
                     .build());
 
             if (what.equals(QUEUE_CHANGED)) {
@@ -1660,7 +1632,8 @@ public class MusicPlaybackService extends Service {
         Intent nowPlayingIntent = new Intent("org.lineageos.eleven.AUDIO_PLAYER")
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent clickIntent = PendingIntent.getActivity(this, 0, nowPlayingIntent, 0);
-        BitmapWithColors artwork = getAlbumArt(false);
+        // TODO: 2018/6/14 0014
+//        BitmapWithColors artwork = getAlbumArt(false);
 
         if (mNotificationPostTime == 0) {
             mNotificationPostTime = System.currentTimeMillis();
@@ -1668,7 +1641,7 @@ public class MusicPlaybackService extends Service {
 
         Notification.Builder builder = new Notification.Builder(this, channel_id)
                 .setSmallIcon(R.drawable.ic_notification)
-                .setLargeIcon(artwork.getBitmap())
+//                .setLargeIcon(artwork.getBitmap())
                 .setContentIntent(clickIntent)
                 .setContentTitle(getTrackName())
                 .setContentText(text)
@@ -1686,7 +1659,7 @@ public class MusicPlaybackService extends Service {
                         getString(R.string.accessibility_next),
                         retrievePlaybackAction(NEXT_ACTION));
 
-        builder.setColor(artwork.getVibrantDarkColor());
+//        builder.setColor(artwork.getVibrantDarkColor());
 
         return builder.build();
     }
@@ -2842,8 +2815,8 @@ public class MusicPlaybackService extends Service {
      *                    Currently Has no impact on the artwork size if one exists
      * @return The album art for the current album.
      */
-
-    public BitmapWithColors getAlbumArt(boolean smallBitmap) {
+// TODO: 2018/6/14 0014 getAlbumArt
+/*    public BitmapWithColors getAlbumArt(boolean smallBitmap) {
         final String albumName = getAlbumName();
         final String artistName = getArtistName();
         final long albumId = getAlbumId();
@@ -2869,7 +2842,7 @@ public class MusicPlaybackService extends Service {
         mCachedKey = key;
         mCachedBitmapWithColors[targetIndex] = bitmap;
         return bitmap;
-    }
+    }*/
 
     /**
      * Called when one of the lists should refresh or requery.

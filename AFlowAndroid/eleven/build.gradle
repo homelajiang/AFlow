@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 27
-        renderscriptTargetApi 27
-        renderscriptSupportModeEnabled true
+//        renderscriptTargetApi 27
+//        renderscriptSupportModeEnabled true
         vectorDrawables.useSupportLibrary= true
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
