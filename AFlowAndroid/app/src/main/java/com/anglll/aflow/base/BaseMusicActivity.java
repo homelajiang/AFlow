@@ -157,16 +157,6 @@ public class BaseMusicActivity extends BaseActivity implements ServiceConnection
     }
 
     @Override
-    public void onUpdateController() {
-        for (final MusicStateListener listener : mMusicStateListener) {
-            if (listener != null) {
-                listener.onUpdateController();
-            }
-        }
-    }
-
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         // Unbind from the service

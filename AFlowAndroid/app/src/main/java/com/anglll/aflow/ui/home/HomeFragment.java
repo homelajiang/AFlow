@@ -30,10 +30,16 @@ public class HomeFragment extends BaseFragment implements MusicStateListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
-        getContainingActivity().setMusicStateListener(this);
-        initView();
         getContainingActivity().addMusicStateListener(this);
+        initView();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.updateMeta();
+        adapter.updateController();
     }
 
     @Override

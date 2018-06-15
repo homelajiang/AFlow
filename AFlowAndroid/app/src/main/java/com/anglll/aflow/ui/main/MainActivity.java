@@ -1,6 +1,8 @@
 package com.anglll.aflow.ui.main;
 
+import android.content.ComponentName;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatImageButton;
@@ -41,6 +43,7 @@ public class MainActivity extends BaseMusicActivity {
     List<ImageView> imageViews;
     @BindView(R.id.root)
     LinearLayout mLinearLayout;
+    private ArrayList<Fragment> fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,7 @@ public class MainActivity extends BaseMusicActivity {
     }
 
     private void initView() {
-        List<Fragment> fragments = new ArrayList<>();
+        fragments = new ArrayList<>();
         fragments.add(new HomeFragment());
         fragments.add(new DiscoveryFragment());
         fragments.add(new UserFragment());

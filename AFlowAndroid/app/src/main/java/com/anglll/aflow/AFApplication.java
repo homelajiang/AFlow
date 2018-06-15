@@ -2,12 +2,26 @@ package com.anglll.aflow;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.StrictMode;
+import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 
+import com.facebook.common.executors.UiThreadImmediateExecutorService;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.fresco.helper.Phoenix;
+import com.facebook.imagepipeline.core.ImagePipeline;
+import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.request.ImageRequest;
 import com.squareup.leakcanary.LeakCanary;
 
+
+import org.lineageos.eleven.AlbumCoverGetter;
+import org.lineageos.eleven.MusicPlaybackService;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -58,6 +72,27 @@ public class AFApplication extends Application {
 
     private void initFresco() {
         Phoenix.init(this, PhoenixConfig.get(this).getImagePipelineConfig());
+        //初始化图片加载器
+        MusicPlaybackService.setAlbumCoverGetter(new AlbumCoverGetter() {
+            @Override
+            public void getCover(Uri uri, final Callback callback) {
+                ImageRequest imageRequest = ImageRequest.fromUri(uri);
+                ImagePipeline imagePipeline = Fresco.getImagePipeline();
+                DataSource<CloseableReference<CloseableImage>> dataSource
+                        = imagePipeline.fetchDecodedImage(imageRequest, null);
+                dataSource.subscribe(new BaseBitmapDataSubscriber() {
+                    @Override
+                    protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                        callback.load(bitmap);
+                    }
+
+                    @Override
+                    protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+                        callback.loadFail();
+                    }
+                }, UiThreadImmediateExecutorService.getInstance());
+            }
+        });
     }
 
     private void enableStrictMode() {

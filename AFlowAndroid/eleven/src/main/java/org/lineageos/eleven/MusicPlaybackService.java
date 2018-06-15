@@ -24,6 +24,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -33,6 +34,7 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
@@ -91,6 +93,12 @@ import java.util.TreeSet;
 public class MusicPlaybackService extends Service {
     private static final String TAG = "MusicPlaybackService";
     private static final boolean D = false;
+    private static Bitmap DEFAULT_ALBUM;
+    private static Bitmap DEFAULT_ALBUM_LARGE;
+    /**
+     * album cover getter
+     */
+    private static AlbumCoverGetter albumCoverGetter;
 
     /**
      * Indicates that the music has paused or resumed
@@ -589,6 +597,8 @@ public class MusicPlaybackService extends Service {
      */
     @Override
     public void onCreate() {
+        DEFAULT_ALBUM = BitmapFactory.decodeResource(getResources(), R.drawable.ic_album);
+        DEFAULT_ALBUM_LARGE = BitmapFactory.decodeResource(getResources(), R.drawable.ic_album_lg);
         if (D) Log.d(TAG, "Creating service");
         super.onCreate();
 
@@ -928,12 +938,30 @@ public class MusicPlaybackService extends Service {
         }
 
         if (newNotifyMode == NOTIFY_MODE_FOREGROUND) {
-            startForeground(notificationId, buildNotification());
+            notifyNotification(notificationId, true);
         } else if (newNotifyMode == NOTIFY_MODE_BACKGROUND) {
-            mNotificationManager.notify(notificationId, buildNotification());
+            notifyNotification(notificationId, false);
         }
 
         mNotifyMode = newNotifyMode;
+    }
+
+    private void notifyNotification(final int id, final boolean foreground) {
+        final Notification.Builder builder = buildNotificationBuilder();
+
+        getAlbumArt(false, new AlbumCallback() {
+            @Override
+            public void onAlbumLoad(BitmapWithColors bitmap) {
+                builder.setLargeIcon(bitmap.getBitmap());
+                builder.setColor(bitmap.getVibrantDarkColor());
+                if (foreground) {
+                    startForeground(id, builder.build());
+                } else {
+                    mNotificationManager.notify(id, builder.build());
+                }
+            }
+        });
+
     }
 
     private void cancelNotification() {
@@ -1551,11 +1579,11 @@ public class MusicPlaybackService extends Service {
     }
 
     private void updateMediaSession(final String what) {
-        int playState = mIsSupposedToBePlaying
+        final int playState = mIsSupposedToBePlaying
                 ? PlaybackState.STATE_PLAYING
                 : PlaybackState.STATE_PAUSED;
 
-        long playBackStateActions = PlaybackState.ACTION_PLAY |
+        final long playBackStateActions = PlaybackState.ACTION_PLAY |
                 PlaybackState.ACTION_PLAY_PAUSE |
                 PlaybackState.ACTION_PLAY_FROM_MEDIA_ID |
                 PlaybackState.ACTION_PAUSE |
@@ -1569,39 +1597,43 @@ public class MusicPlaybackService extends Service {
                     .setActiveQueueItemId(getAudioId())
                     .setState(playState, position(), 1.0f).build());
         } else if (what.equals(META_CHANGED) || what.equals(QUEUE_CHANGED)) {
-            // TODO: 2018/6/14 0014
-//            Bitmap albumArt = getAlbumArt(false).getBitmap();
-/*            if (albumArt != null) {
-                // RemoteControlClient wants to recycle the bitmaps thrown at it, so we need
-                // to make sure not to hand out our cache copy
-                Bitmap.Config config = albumArt.getConfig();
-                if (config == null) {
-                    config = Bitmap.Config.ARGB_8888;
+            getAlbumArt(false, new AlbumCallback() {
+                @Override
+                public void onAlbumLoad(BitmapWithColors bitmap) {
+                    Bitmap albumArt = bitmap.getBitmap();
+                    if (albumArt != null) {
+                        // RemoteControlClient wants to recycle the bitmaps thrown at it, so we need
+                        // to make sure not to hand out our cache copy
+                        Bitmap.Config config = albumArt.getConfig();
+                        if (config == null) {
+                            config = Bitmap.Config.ARGB_8888;
+                        }
+                        albumArt = albumArt.copy(config, false);
+                    }
+
+                    mSession.setMetadata(new MediaMetadata.Builder()
+                            .putString(MediaMetadata.METADATA_KEY_ARTIST, getArtistName())
+                            .putString(MediaMetadata.METADATA_KEY_ALBUM_ARTIST, getAlbumArtistName())
+                            .putString(MediaMetadata.METADATA_KEY_ALBUM, getAlbumName())
+                            .putString(MediaMetadata.METADATA_KEY_TITLE, getTrackName())
+                            .putLong(MediaMetadata.METADATA_KEY_DURATION, duration())
+                            .putLong(MediaMetadata.METADATA_KEY_TRACK_NUMBER, getQueuePosition() + 1)
+                            .putLong(MediaMetadata.METADATA_KEY_NUM_TRACKS, getQueue().length)
+                            .putString(MediaMetadata.METADATA_KEY_GENRE, getGenreName())
+                            .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART,
+                                    mShowAlbumArtOnLockscreen ? albumArt : null)
+                            .build());
+
+                    if (what.equals(QUEUE_CHANGED)) {
+                        updateMediaSessionQueue();
+                    }
+
+                    mSession.setPlaybackState(new PlaybackState.Builder()
+                            .setActions(playBackStateActions)
+                            .setActiveQueueItemId(getAudioId())
+                            .setState(playState, position(), 1.0f).build());
                 }
-                albumArt = albumArt.copy(config, false);
-            }*/
-
-            mSession.setMetadata(new MediaMetadata.Builder()
-                    .putString(MediaMetadata.METADATA_KEY_ARTIST, getArtistName())
-                    .putString(MediaMetadata.METADATA_KEY_ALBUM_ARTIST, getAlbumArtistName())
-                    .putString(MediaMetadata.METADATA_KEY_ALBUM, getAlbumName())
-                    .putString(MediaMetadata.METADATA_KEY_TITLE, getTrackName())
-                    .putLong(MediaMetadata.METADATA_KEY_DURATION, duration())
-                    .putLong(MediaMetadata.METADATA_KEY_TRACK_NUMBER, getQueuePosition() + 1)
-                    .putLong(MediaMetadata.METADATA_KEY_NUM_TRACKS, getQueue().length)
-                    .putString(MediaMetadata.METADATA_KEY_GENRE, getGenreName())
-/*                    .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART,
-                            mShowAlbumArtOnLockscreen ? albumArt : null)*/
-                    .build());
-
-            if (what.equals(QUEUE_CHANGED)) {
-                updateMediaSessionQueue();
-            }
-
-            mSession.setPlaybackState(new PlaybackState.Builder()
-                    .setActions(playBackStateActions)
-                    .setActiveQueueItemId(getAudioId())
-                    .setState(playState, position(), 1.0f).build());
+            });
         }
     }
 
@@ -1613,7 +1645,7 @@ public class MusicPlaybackService extends Service {
         mQueueUpdateTask.execute();
     }
 
-    private Notification buildNotification() {
+    private Notification.Builder buildNotificationBuilder() {
         final String albumName = getAlbumName();
         final String artistName = getArtistName();
         final boolean isPlaying = isPlaying();
@@ -1632,14 +1664,12 @@ public class MusicPlaybackService extends Service {
         Intent nowPlayingIntent = new Intent("org.lineageos.eleven.AUDIO_PLAYER")
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent clickIntent = PendingIntent.getActivity(this, 0, nowPlayingIntent, 0);
-        // TODO: 2018/6/14 0014
-//        BitmapWithColors artwork = getAlbumArt(false);
 
         if (mNotificationPostTime == 0) {
             mNotificationPostTime = System.currentTimeMillis();
         }
 
-        Notification.Builder builder = new Notification.Builder(this, channel_id)
+        return new Notification.Builder(this, channel_id)
                 .setSmallIcon(R.drawable.ic_notification)
 //                .setLargeIcon(artwork.getBitmap())
                 .setContentIntent(clickIntent)
@@ -1658,10 +1688,6 @@ public class MusicPlaybackService extends Service {
                 .addAction(R.drawable.btn_playback_next,
                         getString(R.string.accessibility_next),
                         retrievePlaybackAction(NEXT_ACTION));
-
-//        builder.setColor(artwork.getVibrantDarkColor());
-
-        return builder.build();
     }
 
     private final PendingIntent retrievePlaybackAction(final String action) {
@@ -2808,6 +2834,70 @@ public class MusicPlaybackService extends Service {
         } else if (mShuffleMode == SHUFFLE_NORMAL || mShuffleMode == SHUFFLE_AUTO) {
             setShuffleMode(SHUFFLE_NONE);
         }
+    }
+
+    public static void setAlbumCoverGetter(AlbumCoverGetter getter){
+        albumCoverGetter = getter;
+    }
+
+
+    public void getAlbumArt(final boolean smallBitmap, final AlbumCallback callback) {
+
+        final String albumName = getAlbumName();
+        final String artistName = getArtistName();
+        final long albumId = getAlbumId();
+        final String key = albumName + "_" + artistName + "_" + albumId;
+        final int targetIndex = smallBitmap ? 0 : 1;
+
+        // if the cached key matches and we have the bitmap, return it
+        if (key.equals(mCachedKey) && mCachedBitmapWithColors[targetIndex] != null) {
+            callback.onAlbumLoad(mCachedBitmapWithColors[targetIndex]);
+            return;
+        }
+
+        if (albumCoverGetter == null) {
+            Bitmap bitmap = getDefaultAlbum(smallBitmap);
+            callbackBitmapWithColors(key, targetIndex, bitmap, callback);
+            return;
+        }
+
+        albumCoverGetter.getCover(ContentUris
+                        .withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId),
+                new AlbumCoverGetter.Callback() {
+                    @Override
+                    public void load(Bitmap bitmap) {
+                        callbackBitmapWithColors(key, targetIndex, bitmap, callback);
+                    }
+
+                    @Override
+                    public void loadFail() {
+                        Bitmap bitmap = getDefaultAlbum(smallBitmap);
+                        callbackBitmapWithColors(key, targetIndex, bitmap, callback);
+                    }
+                });
+    }
+
+    private void callbackBitmapWithColors(String key, int targetIndex, Bitmap bitmap, AlbumCallback callback) {
+        BitmapWithColors bitmapWithColors =
+                new BitmapWithColors(bitmap, key.hashCode());
+        // if the key is different, clear the bitmaps first
+        if (!key.equals(mCachedKey)) {
+            mCachedBitmapWithColors[0] = null;
+            mCachedBitmapWithColors[1] = null;
+        }
+
+        // store the new key and bitmap
+        mCachedKey = key;
+        mCachedBitmapWithColors[targetIndex] = bitmapWithColors;
+        callback.onAlbumLoad(bitmapWithColors);
+    }
+
+    public Bitmap getDefaultAlbum(boolean smallAlbum) {
+        return smallAlbum ? DEFAULT_ALBUM : DEFAULT_ALBUM_LARGE;
+    }
+
+    public interface AlbumCallback {
+        void onAlbumLoad(BitmapWithColors bitmap);
     }
 
     /**

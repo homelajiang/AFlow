@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:padding="18dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_layout"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:paddingStart="18dp"
+    android:paddingEnd="18dp"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:text="Title"
+        android:singleLine="true"
+        android:textColor="#666666"
+        android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title" />
-
-        <TextView
-            android:id="@+id/sub_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SubTitle" />
-    </LinearLayout>
-</FrameLayout>
+    <TextView
+        android:id="@+id/sub_title"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layout_marginTop="2dp"
+        android:text="SubTitle"
+        android:textSize="10sp" />
+</LinearLayout>

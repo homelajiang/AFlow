@@ -118,8 +118,13 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
         }
 
         public void updateInfo() {
-            mTitle.setText(MusicUtils.getTrackName());
-            mSubTitle.setText(MusicUtils.getArtistName());
+            itemView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mTitle.setText(MusicUtils.getTrackName());
+                    mSubTitle.setText(MusicUtils.getArtistName());
+                }
+            });
         }
     }
 
