@@ -32,6 +32,7 @@ public class HomeFragment extends BaseFragment implements MusicStateListener {
         ButterKnife.bind(this, view);
         getContainingActivity().setMusicStateListener(this);
         initView();
+        getContainingActivity().addMusicStateListener(this);
         return view;
     }
 
