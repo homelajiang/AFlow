@@ -1,12 +1,13 @@
 package com.anglll.aflow;
 
+import android.app.Application;
 import android.content.Context;
+import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.facebook.fresco.helper.Phoenix;
 import com.squareup.leakcanary.LeakCanary;
 
-import org.lineageos.eleven.ElevenApplication;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -14,7 +15,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  * Created by yuan on 2017/11/25 0025.
  */
 
-public class AFApplication extends ElevenApplication {
+public class AFApplication extends Application {
     private static AFApplication application;
 
     public static AFApplication getApplication() {
@@ -28,6 +29,7 @@ public class AFApplication extends ElevenApplication {
         initLeakCanary();
         initFresco();
         initCalligraphy();
+        enableStrictMode();
     }
 
     @Override
@@ -39,9 +41,9 @@ public class AFApplication extends ElevenApplication {
     private void initCalligraphy() {
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
 //                .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
-                .setDefaultFontPath("fonts/helvetica_neue.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
+                        .setDefaultFontPath("fonts/helvetica_neue.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
         );
     }
 
@@ -56,5 +58,18 @@ public class AFApplication extends ElevenApplication {
 
     private void initFresco() {
         Phoenix.init(this, PhoenixConfig.get(this).getImagePipelineConfig());
+    }
+
+    private void enableStrictMode() {
+        if (BuildConfig.DEBUG) {
+            final StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder()
+                    .detectAll().penaltyLog();
+            final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder()
+                    .detectAll().penaltyLog();
+
+            threadPolicyBuilder.penaltyFlashScreen();
+            StrictMode.setThreadPolicy(threadPolicyBuilder.build());
+            StrictMode.setVmPolicy(vmPolicyBuilder.build());
+        }
     }
 }

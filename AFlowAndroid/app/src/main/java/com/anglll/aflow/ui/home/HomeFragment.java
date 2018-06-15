@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseFragment;
 import com.anglll.aflow.ui.main.MainActivity;
+import com.anglll.aflow.ui.main.MusicStateListener;
 import com.anglll.beelayout.BeeLayout;
 
 import butterknife.BindView;
@@ -18,7 +19,7 @@ import butterknife.ButterKnife;
  * Created by yuan on 2017/11/30.
  */
 
-public class HomeFragment extends BaseFragment implements MusicStateChangeListener {
+public class HomeFragment extends BaseFragment implements MusicStateListener {
 
     @BindView(R.id.bee_layout)
     BeeLayout mBeeLayout;
@@ -29,14 +30,9 @@ public class HomeFragment extends BaseFragment implements MusicStateChangeListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
+        getContainingActivity().setMusicStateListener(this);
         initView();
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getContainingActivity().setMusicStateListener(this);
     }
 
     @Override
@@ -72,10 +68,5 @@ public class HomeFragment extends BaseFragment implements MusicStateChangeListen
     @Override
     public void onUpdateController() {
         adapter.updateController();
-    }
-
-    @Override
-    public void cacheUnpaused() {
-
     }
 }

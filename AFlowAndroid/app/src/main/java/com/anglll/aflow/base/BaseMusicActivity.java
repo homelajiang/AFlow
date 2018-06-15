@@ -116,6 +116,16 @@ public class BaseMusicActivity extends BaseActivity implements ServiceConnection
     }
 
     @Override
+    public void onUpdateController() {
+        // update play controller
+        for (final MusicStateListener listener : mMusicStateListener) {
+            if (listener != null) {
+                listener.onUpdateController();
+            }
+        }
+    }
+
+    @Override
     public void restartLoader() {
         // Let the listener know to update a list
         for (final MusicStateListener listener : mMusicStateListener) {
