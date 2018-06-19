@@ -13,10 +13,6 @@ import com.airbnb.epoxy.TypedEpoxyController;
 import com.anglll.aflow.R;
 import com.anglll.aflow.data.model.NowPlayingQueue;
 
-import org.lineageos.eleven.model.Song;
-
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
