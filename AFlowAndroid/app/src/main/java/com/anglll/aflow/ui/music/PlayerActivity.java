@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseActivity;
+import com.anglll.aflow.ui.dialog.NowPlayingDialog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.fresco.helper.Phoenix;
@@ -230,6 +231,7 @@ public class PlayerActivity extends BaseActivity implements
                 MusicUtils.next();
                 break;
             case R.id.track_list:
+                new NowPlayingDialog().show(getSupportFragmentManager(), "NOW_PLAYING_DIALOG");
                 break;
             case R.id.add_to_playlist:
                 break;

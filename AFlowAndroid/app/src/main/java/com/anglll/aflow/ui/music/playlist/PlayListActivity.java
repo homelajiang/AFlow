@@ -85,18 +85,8 @@ public class PlayListActivity extends BaseMusicActivity implements
 
     @Override
     public void onPlayPlayList(Playlist playlist) {
-        MusicUtils.playAll(getContext(), getIdList(playlist), 0,
-                playlist.mPlaylistId, Config.IdType.Playlist, false);
+        playPlaylist(playlist,0);
     }
 
-    public long[] getIdList(Playlist playlist) {
-        if (playlist.isSmartPlaylist()) {
-            return MusicUtils.getSongListForSmartPlaylist(getContext(),
-                    Config.SmartPlaylistType.getTypeById(playlist.mPlaylistId));
-        } else {
-            return MusicUtils.getSongListForPlaylist(getContext(),
-                    playlist.mPlaylistId);
-        }
-    }
 
 }

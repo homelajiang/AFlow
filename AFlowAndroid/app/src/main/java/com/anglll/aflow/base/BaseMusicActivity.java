@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import com.anglll.aflow.ui.dialog.NowPlayingDialog;
 import com.anglll.aflow.ui.main.MusicStateListener;
 
 import org.lineageos.eleven.Config;
@@ -21,6 +22,7 @@ import org.lineageos.eleven.IElevenService;
 import org.lineageos.eleven.MusicPlaybackService;
 import org.lineageos.eleven.loaders.QueueLoader;
 import org.lineageos.eleven.loaders.SongLoader;
+import org.lineageos.eleven.model.Playlist;
 import org.lineageos.eleven.model.Song;
 import org.lineageos.eleven.sectionadapter.SectionCreator;
 import org.lineageos.eleven.sectionadapter.SectionListContainer;
@@ -237,6 +239,20 @@ public class BaseMusicActivity extends BaseActivity implements ServiceConnection
         return getSupportLoaderManager();
     }
 
+    public void playPlaylist(Playlist playlist,int index){
+        MusicUtils.playAll(getContext(), getIdList(playlist), index,
+                playlist.mPlaylistId, Config.IdType.Playlist, false);
+    }
+
+    public long[] getIdList(Playlist playlist) {
+        if (playlist.isSmartPlaylist()) {
+            return MusicUtils.getSongListForSmartPlaylist(getContext(),
+                    Config.SmartPlaylistType.getTypeById(playlist.mPlaylistId));
+        } else {
+            return MusicUtils.getSongListForPlaylist(getContext(),
+                    playlist.mPlaylistId);
+        }
+    }
     /**
      * Used to monitor the state of playback
      */

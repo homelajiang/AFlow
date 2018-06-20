@@ -1,7 +1,6 @@
 package com.anglll.aflow.ui.epoxy.models;
 
 import android.support.annotation.NonNull;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airbnb.epoxy.EpoxyAttribute;
@@ -9,8 +8,12 @@ import com.airbnb.epoxy.EpoxyModelClass;
 import com.airbnb.epoxy.EpoxyModelWithHolder;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseEpoxyHolder;
+import com.anglll.aflow.ui.music.playlist.detail.DetailController;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.model.Playlist;
+import org.lineageos.eleven.model.Song;
+import org.lineageos.eleven.utils.MusicUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -19,15 +22,20 @@ import butterknife.OnClick;
 public abstract class MusicPlayListHeaderModel extends EpoxyModelWithHolder<MusicPlayListHeaderModel.ViewHolder> {
     @EpoxyAttribute
     Playlist playlist;
+    @EpoxyAttribute
+    Song song;
+    @EpoxyAttribute
+    DetailController.PlayListDetailCallback callback;
 
     @Override
     public void bind(@NonNull ViewHolder holder) {
         holder.bindData(playlist);
+        holder.setCoverSong(song);
     }
 
-    static class ViewHolder extends BaseEpoxyHolder<Playlist> {
+    class ViewHolder extends BaseEpoxyHolder<Playlist> {
         @BindView(R.id.cover)
-        ImageView mCover;
+        SimpleDraweeView mCover;
         @BindView(R.id.title)
         TextView mTitle;
         @BindView(R.id.sub_title)
@@ -37,6 +45,8 @@ public abstract class MusicPlayListHeaderModel extends EpoxyModelWithHolder<Musi
 
         @OnClick(R.id.play_all)
         void playAll() {
+            if (callback != null)
+                callback.onPlayAll();
         }
 
         @Override
@@ -46,6 +56,11 @@ public abstract class MusicPlayListHeaderModel extends EpoxyModelWithHolder<Musi
             mTitle.setText(data.mPlaylistName);
             String temp = context.getString(R.string.playlist_song_count);
             mSubTitle.setText(String.format(temp, data.mSongCount));
+        }
+
+        public void setCoverSong(Song coverSong) {
+            if (coverSong != null)
+                mCover.setImageURI(MusicUtils.getAlbumUri(coverSong.mAlbumId));
         }
     }
 }

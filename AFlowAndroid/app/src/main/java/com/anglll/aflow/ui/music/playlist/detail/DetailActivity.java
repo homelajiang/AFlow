@@ -28,12 +28,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends BaseMusicActivity {
+public class DetailActivity extends BaseMusicActivity implements DetailController.PlayListDetailCallback {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     SongPlayList songPlayList = new SongPlayList();
 
-    private DetailController controller = new DetailController(null, null);
+    private DetailController controller = new DetailController(this, null);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +78,16 @@ public class DetailActivity extends BaseMusicActivity {
 
     private void updateController() {
         controller.setData(songPlayList);
+    }
+
+    @Override
+    public void onPlayPlayList(int index) {
+        playPlaylist(songPlayList.playlist, index);
+    }
+
+    @Override
+    public void onPlayAll() {
+        playPlaylist(songPlayList.playlist,0);
     }
 
     class UserPlayListCallback implements LoaderManager.LoaderCallbacks<List<Song>> {
