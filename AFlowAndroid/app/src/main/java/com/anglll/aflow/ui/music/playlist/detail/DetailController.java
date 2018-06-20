@@ -30,10 +30,11 @@ public class DetailController extends TypedEpoxyController<SongPlayList> {
                     .playlist(data.playlist));
 
         if (data.songList != null)
-            for (Song song : data.songList) {
+            for (int i = 0; i < data.songList.size(); i++) {
                 add(new MusicPlayListItemModel_()
-                        .id(song.hashCode())
-                        .song(song));
+                        .index(i)
+                        .id(data.songList.get(i).hashCode())
+                        .song(data.songList.get(i)));
             }
     }
 

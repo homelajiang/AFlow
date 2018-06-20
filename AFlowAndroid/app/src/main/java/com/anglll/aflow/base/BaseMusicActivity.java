@@ -19,6 +19,7 @@ import com.anglll.aflow.ui.main.MusicStateListener;
 import org.lineageos.eleven.Config;
 import org.lineageos.eleven.IElevenService;
 import org.lineageos.eleven.MusicPlaybackService;
+import org.lineageos.eleven.loaders.QueueLoader;
 import org.lineageos.eleven.loaders.SongLoader;
 import org.lineageos.eleven.model.Song;
 import org.lineageos.eleven.sectionadapter.SectionCreator;
@@ -29,6 +30,7 @@ import org.lineageos.eleven.utils.SectionCreatorUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BaseMusicActivity extends BaseActivity implements ServiceConnection,
         MusicStateListener {
@@ -61,6 +63,27 @@ public class BaseMusicActivity extends BaseActivity implements ServiceConnection
         mService = IElevenService.Stub.asInterface(service);
         onUpdateController();
         onMetaChanged();
+    }
+
+    private void getMusicQueue() {
+        getSupportLoaderManager().initLoader(2, null, new LoaderManager.LoaderCallbacks<List<Song>>() {
+
+            @NonNull
+            @Override
+            public Loader<List<Song>> onCreateLoader(int id, @Nullable Bundle args) {
+                return new QueueLoader(getContext());
+            }
+
+            @Override
+            public void onLoadFinished(@NonNull Loader<List<Song>> loader, List<Song> data) {
+
+            }
+
+            @Override
+            public void onLoaderReset(@NonNull Loader<List<Song>> loader) {
+
+            }
+        });
     }
 
     private void startPlay() {

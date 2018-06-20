@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -23,6 +24,9 @@ import android.widget.TextView;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseActivity;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.fresco.helper.Phoenix;
 
 import org.lineageos.eleven.MusicPlaybackService;
 import org.lineageos.eleven.utils.MusicUtils;
@@ -46,7 +50,7 @@ public class PlayerActivity extends BaseActivity implements
     @BindView(R.id.title_right)
     AppCompatImageButton mTitleRight;
     @BindView(R.id.cover)
-    AppCompatImageView mCover;
+    SimpleDraweeView mCover;
     @BindView(R.id.play_pre)
     AppCompatImageButton mPlayPre;
     @BindView(R.id.play_or_pause)
@@ -187,9 +191,11 @@ public class PlayerActivity extends BaseActivity implements
 
         mTitle.setText(MusicUtils.getTrackName());
         mSubTitle.setText(MusicUtils.getArtistName());
+        mCover.setImageURI(MusicUtils.getAlbumUri(MusicUtils.getCurrentAlbumId()));
         updateRepeatAndShuffleStatus();
     }
 
+//        MusicUtils.setQueuePosition(position);
 
     private void createAndSetAdapter() {
 // TODO: 2018/6/15 0015

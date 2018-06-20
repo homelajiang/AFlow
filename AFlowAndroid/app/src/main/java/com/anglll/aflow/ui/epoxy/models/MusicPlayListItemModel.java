@@ -19,10 +19,13 @@ import butterknife.BindView;
 public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicPlayListItemModel.ViewHolder> {
     @EpoxyAttribute
     Song song;
+    @EpoxyAttribute
+    int index;
 
     @Override
     public void bind(@NonNull ViewHolder holder) {
         holder.bindData(song);
+        holder.setIndex(index);
     }
 
     static class ViewHolder extends BaseEpoxyHolder<Song> {
@@ -41,6 +44,10 @@ public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicP
         protected void bindData(Song data) {
             mTitle.setText(data.mSongName);
             mSubTitle.setText(String.valueOf(data.mAlbumName + "-" + data.mArtistName));
+        }
+
+        public void setIndex(int index) {
+            mIndex.setText(String.valueOf(index));
         }
     }
 }

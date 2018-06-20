@@ -16,8 +16,7 @@
     <ImageView
         android:id="@+id/play_index"
         android:layout_width="40dp"
-        android:layout_height="match_parent"
-        android:background="#666" />
+        android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/title"

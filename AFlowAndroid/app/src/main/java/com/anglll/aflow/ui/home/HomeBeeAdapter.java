@@ -1,7 +1,8 @@
 package com.anglll.aflow.ui.home;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anglll.aflow.R;
+import com.anglll.aflow.ui.dialog.NowPlayingDialog;
 import com.anglll.aflow.ui.music.PlayerActivity;
 import com.anglll.aflow.ui.music.playlist.PlayListActivity;
 import com.anglll.beelayout.BeeAdapter;
@@ -25,9 +27,9 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
 
     private static final int TYPE_ICON = 0;
     private static final int TYPE_INFO = 1;
-    private final Context context;
+    private final FragmentActivity context;
 
-    public HomeBeeAdapter(Context context) {
+    public HomeBeeAdapter(FragmentActivity context) {
         this.context = context;
     }
 
@@ -142,7 +144,7 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
                     MusicUtils.next();
                     break;
                 case 1:
-
+                new NowPlayingDialog().show(context.getSupportFragmentManager(),"NOW_PLAYING_DIALOG");
                     break;
                 case 2:
                     MusicUtils.cycleRepeatAndShuffle();

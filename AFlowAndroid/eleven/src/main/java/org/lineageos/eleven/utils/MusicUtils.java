@@ -1757,4 +1757,10 @@ public final class MusicUtils {
 
         return str.toString();
     }
+
+    public static Uri getAlbumUri(long albumId){
+        return ContentUris
+                .withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId);
+    }
+
 }

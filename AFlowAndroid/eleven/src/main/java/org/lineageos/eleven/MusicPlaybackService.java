@@ -70,6 +70,7 @@ import org.lineageos.eleven.provider.SongPlayCount;
 import org.lineageos.eleven.service.MusicPlaybackTrack;
 import org.lineageos.eleven.utils.BitmapWithColors;
 import org.lineageos.eleven.utils.Lists;
+import org.lineageos.eleven.utils.MusicUtils;
 import org.lineageos.eleven.utils.PreferenceUtils;
 import org.lineageos.eleven.utils.ShakeDetector;
 import org.lineageos.eleven.utils.SrtManager;
@@ -2861,8 +2862,7 @@ public class MusicPlaybackService extends Service {
             return;
         }
 
-        albumCoverGetter.getCover(ContentUris
-                        .withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId),
+        albumCoverGetter.getCover(MusicUtils.getAlbumUri(albumId),
                 new AlbumCoverGetter.Callback() {
                     @Override
                     public void load(Bitmap bitmap) {

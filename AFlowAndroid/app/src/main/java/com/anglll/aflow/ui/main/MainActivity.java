@@ -1,12 +1,9 @@
 package com.anglll.aflow.ui.main;
 
-import android.content.ComponentName;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatImageButton;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,7 +47,6 @@ public class MainActivity extends BaseMusicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-//        StatusBarUtil.setColor(this, ContextCompat.getColor(getContext(), R.color.white));
         selectNavBar(0);
         initView();
     }

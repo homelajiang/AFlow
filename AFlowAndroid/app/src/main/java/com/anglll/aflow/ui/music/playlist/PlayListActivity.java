@@ -14,8 +14,10 @@ import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseMusicActivity;
 import com.anglll.aflow.utils.Router;
 
+import org.lineageos.eleven.Config;
 import org.lineageos.eleven.loaders.PlaylistLoader;
 import org.lineageos.eleven.model.Playlist;
+import org.lineageos.eleven.utils.MusicUtils;
 
 import java.util.List;
 
@@ -83,6 +85,18 @@ public class PlayListActivity extends BaseMusicActivity implements
 
     @Override
     public void onPlayPlayList(Playlist playlist) {
-
+        MusicUtils.playAll(getContext(), getIdList(playlist), 0,
+                playlist.mPlaylistId, Config.IdType.Playlist, false);
     }
+
+    public long[] getIdList(Playlist playlist) {
+        if (playlist.isSmartPlaylist()) {
+            return MusicUtils.getSongListForSmartPlaylist(getContext(),
+                    Config.SmartPlaylistType.getTypeById(playlist.mPlaylistId));
+        } else {
+            return MusicUtils.getSongListForPlaylist(getContext(),
+                    playlist.mPlaylistId);
+        }
+    }
+
 }

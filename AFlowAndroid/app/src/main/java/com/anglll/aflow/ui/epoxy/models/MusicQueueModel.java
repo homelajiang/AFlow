@@ -1,6 +1,9 @@
 package com.anglll.aflow.ui.epoxy.models;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.airbnb.epoxy.EpoxyAttribute;
 import com.airbnb.epoxy.EpoxyModelClass;
@@ -10,14 +13,17 @@ import com.anglll.aflow.base.BaseEpoxyHolder;
 
 import org.lineageos.eleven.model.Song;
 
-@EpoxyModelClass(layout = R.layout.model_music_playlist_track)
-public abstract class MusicPlaylistTrackModel  extends EpoxyModelWithHolder<MusicPlaylistTrackModel.ViewHolder>{
+import butterknife.BindView;
 
-//    @EpoxyAttribute
+@EpoxyModelClass(layout = R.layout.model_music_playlist_track)
+public abstract class MusicQueueModel extends EpoxyModelWithHolder<MusicQueueModel.ViewHolder> {
+
+    @EpoxyAttribute
+    Song playingSong;
 
     @Override
     public void bind(@NonNull ViewHolder holder) {
-//        holder.bindData();
+        holder.bindData(playingSong);
     }
 
     @Override
@@ -25,11 +31,18 @@ public abstract class MusicPlaylistTrackModel  extends EpoxyModelWithHolder<Musi
         return totalSpanCount;
     }
 
-    class ViewHolder extends BaseEpoxyHolder<Song>{
+    class ViewHolder extends BaseEpoxyHolder<Song> {
+        @BindView(R.id.title)
+        TextView mTitle;
+        @BindView(R.id.delete_form_queue)
+        AppCompatImageButton mDeleteFormQueue;
+        @BindView(R.id.item_layout)
+        LinearLayout mItemLayout;
 
         @Override
         protected void bindData(Song data) {
-
+            if (data != null)
+                mTitle.setText(data.mSongName);
         }
     }
 }
