@@ -10,8 +10,7 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/TextAppearance.Content"
         android:gravity="center"
         android:text="Title"
         android:singleLine="true"
@@ -20,11 +19,12 @@
 
     <TextView
         android:id="@+id/sub_title"
+        style="@style/TextAppearance.TextDes"
         android:layout_width="match_parent"
         android:gravity="center"
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:layout_marginTop="2dp"
         android:text="SubTitle"
-        android:textSize="10sp" />
+        android:textSize="12sp" />
 </LinearLayout>

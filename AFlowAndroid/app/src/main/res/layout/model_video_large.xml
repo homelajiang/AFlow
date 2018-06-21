@@ -39,12 +39,12 @@
             <TextView
                 android:layout_marginTop="3dp"
                 android:id="@+id/release_time"
-                style="@style/TextAppearance.ContentDes"
+                style="@style/TextAppearance.TextDes"
                 tools:text="5分钟前" />
         </LinearLayout>
 
         <TextView
-            style="@style/TextAppearance.ContentSubTitle"
+            style="@style/TextAppearance.ContentSub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
@@ -52,26 +52,13 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/card_padding_start"
-        android:layout_marginStart="@dimen/card_padding_start">
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/cover"
-            style="@style/AFlow.Cover"
-            app:viewAspectRatio="@dimen/video_ratio_normal" />
-    </FrameLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="@dimen/padding_normal"
         android:paddingEnd="@dimen/card_padding_start"
-        android:paddingStart="@dimen/card_padding_start"
-        android:paddingTop="@dimen/padding_normal">
+        android:paddingStart="@dimen/card_padding_start">
 
         <TextView
             android:id="@+id/title"
@@ -89,9 +76,23 @@
 
     </LinearLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/card_padding_start"
+        android:layout_marginStart="@dimen/card_padding_start">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/cover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:viewAspectRatio="@dimen/video_ratio_normal" />
+    </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_marginTop="@dimen/padding_normal"
         android:layout_marginEnd="@dimen/card_padding_start"
         android:layout_marginStart="@dimen/card_padding_start"
         android:background="@color/flow_card_divider" />
@@ -111,7 +112,7 @@
 
             <TextView
                 android:id="@+id/play_content"
-                style="@style/TextAppearance.ContentDes"
+                style="@style/TextAppearance.TextDes"
                 android:drawablePadding="2dp"
                 android:drawableStart="@drawable/ic_more_repost"
                 android:gravity="center"
@@ -129,7 +130,7 @@
 
             <TextView
                 android:id="@+id/banana_count"
-                style="@style/TextAppearance.ContentDes"
+                style="@style/TextAppearance.TextDes"
                 android:drawablePadding="2dp"
                 android:drawableStart="@drawable/ic_home_like"
                 android:gravity="center"
@@ -147,7 +148,7 @@
 
             <TextView
                 android:id="@+id/comment_count"
-                style="@style/TextAppearance.ContentDes"
+                style="@style/TextAppearance.TextDes"
                 android:drawablePadding="2dp"
                 android:drawableStart="@drawable/ic_home_reply"
                 android:gravity="center"
@@ -165,7 +166,7 @@
 
             <TextView
                 android:id="@+id/action_share"
-                style="@style/TextAppearance.ContentSubTitle"
+                style="@style/TextAppearance.ContentSub"
                 android:drawableStart="@drawable/ic_more_share"
                 android:gravity="center"
                 android:singleLine="true" />

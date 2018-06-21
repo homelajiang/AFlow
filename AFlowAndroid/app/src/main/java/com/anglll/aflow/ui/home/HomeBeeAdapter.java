@@ -1,6 +1,5 @@
 package com.anglll.aflow.ui.home;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;

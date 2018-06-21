@@ -9,34 +9,36 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/TextAppearance.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="这个是Title" />
+            style="@style/TextAppearance.BarTitle"
+            android:text="这个是BarTitle，字号为22sp" />
+
+        <TextView
+            style="@style/TextAppearance.BarSubTitle"
+            android:text="这个是BarSubTitle，字号为12" />
 
         <TextView
             style="@style/TextAppearance.ContentTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="这个是ContentTitle" />
-
-        <TextView
-            style="@style/TextAppearance.ContentSubTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="这个是ContentSubTitle" />
+            android:text="这个是ContentTitle，字号为16" />
 
         <TextView
             style="@style/TextAppearance.Content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="这个是Content" />
+            android:text="这个是Content，字号为16" />
+
+        <TextView
+            style="@style/TextAppearance.Setting"
+            android:text="这个是TextDes，字号为15" />
+
+        <TextView
+            style="@style/TextAppearance.ContentSub"
+            android:text="这个是ContentSubTitle，字号为14" />
 
         <TextView
             style="@style/TextAppearance.ContentDes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="这个是ContentDes" />
+            android:text="这个是TextDes，字号为14" />
+
+        <TextView
+            style="@style/TextAppearance.TextDes"
+            android:text="这个是TextDes，字号为12" />
 
     </LinearLayout>
 </ScrollView>

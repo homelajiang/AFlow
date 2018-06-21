@@ -26,8 +26,6 @@
         <TextView
             android:id="@+id/title"
             style="@style/TextAppearance.ContentTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_above="@+id/des"
             android:lines="1"
             android:textColor="@color/font_white"
@@ -36,9 +34,7 @@
         <TextView
             android:id="@+id/des"
             android:layout_marginTop="5dp"
-            style="@style/TextAppearance.Content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/TextAppearance.ContentSub"
             android:layout_alignParentBottom="true"
             android:ellipsize="end"
             android:maxLines="2"

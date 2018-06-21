@@ -53,7 +53,7 @@
 
                 <TextView
                     android:id="@+id/des1"
-                    style="@style/TextAppearance.ContentSubTitle"
+                    style="@style/TextAppearance.ContentSub"
                     android:singleLine="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
 
                 <TextView
                     android:id="@+id/des2"
-                    style="@style/TextAppearance.ContentSubTitle"
+                    style="@style/TextAppearance.ContentSub"
                     android:singleLine="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                 <TextView
 
                     android:id="@+id/des3"
-                    style="@style/TextAppearance.ContentSubTitle"
+                    style="@style/TextAppearance.ContentSub"
                     android:singleLine="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -232,7 +232,7 @@
 
                 <TextView
                     android:id="@+id/des4"
-                    style="@style/TextAppearance.ContentSubTitle"
+                    style="@style/TextAppearance.ContentSub"
                     android:layout_width="wrap_content"
                     android:singleLine="true"
                     android:layout_height="wrap_content"
