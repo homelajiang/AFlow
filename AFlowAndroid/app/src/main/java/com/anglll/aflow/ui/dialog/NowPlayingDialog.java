@@ -10,8 +10,7 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
-import android.support.v4.app.LoaderManager;
-
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 import com.airbnb.epoxy.TypedEpoxyController;
 import com.anglll.aflow.R;
 import com.anglll.aflow.data.model.NowPlayingQueue;
+import com.anglll.aflow.data.model.SongInfo;
 import com.anglll.aflow.ui.epoxy.models.MusicQueueModel_;
 
 import org.lineageos.eleven.MusicPlaybackService;
@@ -40,7 +40,8 @@ import butterknife.ButterKnife;
 import static org.lineageos.eleven.utils.MusicUtils.mService;
 
 public class NowPlayingDialog extends BottomSheetDialogFragment implements
-        LoaderManager.LoaderCallbacks<List<Song>>, ServiceConnection {
+        LoaderCallbacks<List<Song>>, ServiceConnection,PlayQueueCallback
+         {
     private NowPlayingController controller;
     private NowPlayingQueue nowPlayingQueue = new NowPlayingQueue();
     @BindView(R.id.title)
@@ -61,7 +62,7 @@ public class NowPlayingDialog extends BottomSheetDialogFragment implements
         View view = inflater.inflate(R.layout.dialog_now_playing, container, false);
         ButterKnife.bind(this, view);
         controller =
-                new NowPlayingController();
+                new NowPlayingController(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(controller.getAdapter());
@@ -120,9 +121,9 @@ public class NowPlayingDialog extends BottomSheetDialogFragment implements
             e.printStackTrace();
         }
 
-        if(mService!=null){
+        if (mService != null) {
             MusicUtils.unbindFromService(mToken);
-            mToken=null;
+            mToken = null;
         }
     }
 
@@ -136,18 +137,33 @@ public class NowPlayingDialog extends BottomSheetDialogFragment implements
         updateController();
     }
 
+    @Override
+    public void removeFromQueue(SongInfo songInfo) {
+/*        MusicUtils.removeTrackAtPosition(songInfo.mSongId, songInfo.index);
+        refreshQueue();*/
+// TODO: 2018/6/21 0021  
+    }
 
-    public class NowPlayingController extends TypedEpoxyController<NowPlayingQueue> {
+
+    public static class NowPlayingController extends TypedEpoxyController<NowPlayingQueue> {
+
+        private final PlayQueueCallback callback;
+
+        public NowPlayingController(PlayQueueCallback callback) {
+            this.callback = callback;
+        }
 
         @Override
         protected void buildModels(NowPlayingQueue queue) {
-            for (Song song : queue.songs) {
+            for (int i = 0; i < queue.songs.size(); i++) {
                 add(new MusicQueueModel_()
-                        .id(song.hashCode())
-                        .playingSong(song));
+                        .callback(callback)
+                        .id(queue.songs.get(i).hashCode())
+                        .playingSong(new SongInfo(queue.songs.get(i), i)));
             }
         }
     }
+
 
 
     public static final class QueueUpdateListener extends BroadcastReceiver {

@@ -10,9 +10,8 @@ import com.airbnb.epoxy.EpoxyModelClass;
 import com.airbnb.epoxy.EpoxyModelWithHolder;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseEpoxyHolder;
+import com.anglll.aflow.data.model.SongInfo;
 import com.anglll.aflow.ui.music.playlist.detail.DetailController;
-
-import org.lineageos.eleven.model.Song;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -20,9 +19,7 @@ import butterknife.OnClick;
 @EpoxyModelClass(layout = R.layout.model_music_playlist_item)
 public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicPlayListItemModel.ViewHolder> {
     @EpoxyAttribute
-    Song song;
-    @EpoxyAttribute
-    int index;
+    SongInfo song;
     @EpoxyAttribute
     DetailController.PlayListDetailCallback callback;
 
@@ -31,7 +28,7 @@ public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicP
         holder.bindData(song);
     }
 
-    class ViewHolder extends BaseEpoxyHolder<Song> {
+    class ViewHolder extends BaseEpoxyHolder<SongInfo> {
         @BindView(R.id.index)
         TextView mIndex;
         @BindView(R.id.play_index)
@@ -44,16 +41,16 @@ public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicP
         ImageButton mMore;
 
         @OnClick(R.id.item_layout)
-        void itemClick(){
-            if(callback!=null)
-                callback.onPlayPlayList(index);
+        void itemClick() {
+            if (callback != null)
+                callback.onPlayPlayList(song.index);
         }
 
         @Override
-        protected void bindData(Song data) {
+        protected void bindData(SongInfo data) {
             mTitle.setText(data.mSongName);
             mSubTitle.setText(String.valueOf(data.mAlbumName + "-" + data.mArtistName));
-            mIndex.setText(String.valueOf(index+1));
+            mIndex.setText(String.valueOf(data.index + 1));
         }
     }
 }

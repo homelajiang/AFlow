@@ -5,14 +5,14 @@ import org.lineageos.eleven.model.Song;
 
 import java.util.List;
 
-public class SongPlayList {
+public class PlaylistInfo {
     public Playlist playlist;
     public List<Song> songList;
 
-    public SongPlayList() {
+    public PlaylistInfo() {
     }
 
-    public SongPlayList(Playlist playlist, List<Song> songList) {
+    public PlaylistInfo(Playlist playlist, List<Song> songList) {
         this.playlist = playlist;
         this.songList = songList;
     }

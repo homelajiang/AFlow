@@ -3,16 +3,12 @@ package com.anglll.aflow.ui.music.playlist.detail;
 import android.support.v7.widget.RecyclerView;
 
 import com.airbnb.epoxy.TypedEpoxyController;
-import com.anglll.aflow.data.model.SongPlayList;
+import com.anglll.aflow.data.model.SongInfo;
+import com.anglll.aflow.data.model.PlaylistInfo;
 import com.anglll.aflow.ui.epoxy.models.MusicPlayListHeaderModel_;
 import com.anglll.aflow.ui.epoxy.models.MusicPlayListItemModel_;
 
-import org.lineageos.eleven.model.Playlist;
-import org.lineageos.eleven.model.Song;
-
-import java.util.List;
-
-public class DetailController extends TypedEpoxyController<SongPlayList> {
+public class DetailController extends TypedEpoxyController<PlaylistInfo> {
     private PlayListDetailCallback callback;
     private RecyclerView.RecycledViewPool recycledViewPool;
 
@@ -22,7 +18,7 @@ public class DetailController extends TypedEpoxyController<SongPlayList> {
     }
 
     @Override
-    protected void buildModels(SongPlayList data) {
+    protected void buildModels(PlaylistInfo data) {
         if (data == null)
             return;
         if (data.playlist != null) {
@@ -44,10 +40,9 @@ public class DetailController extends TypedEpoxyController<SongPlayList> {
         if (data.songList != null)
             for (int i = 0; i < data.songList.size(); i++) {
                 add(new MusicPlayListItemModel_()
-                        .index(i)
                         .callback(callback)
                         .id(data.songList.get(i).hashCode())
-                        .song(data.songList.get(i)));
+                        .song(new SongInfo(data.songList.get(i),i)));
             }
     }
 

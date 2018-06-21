@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseMusicActivity;
-import com.anglll.aflow.data.model.SongPlayList;
+import com.anglll.aflow.data.model.PlaylistInfo;
 import com.anglll.aflow.utils.Router;
 
 import org.lineageos.eleven.Config;
@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 public class DetailActivity extends BaseMusicActivity implements DetailController.PlayListDetailCallback {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    SongPlayList songPlayList = new SongPlayList();
+    PlaylistInfo playlistInfo = new PlaylistInfo();
 
     private DetailController controller = new DetailController(this, null);
 
@@ -49,17 +49,17 @@ public class DetailActivity extends BaseMusicActivity implements DetailControlle
             finish();
             return;
         }
-        songPlayList.playlist = new Playlist(
+        playlistInfo.playlist = new Playlist(
                 getIntent().getLongExtra(Router.PLAYLIST_ID, 0),
                 getIntent().getStringExtra(Router.PLAYLIST_NAME),
                 getIntent().getIntExtra(Router.PLAYLIST_COUNT, 0)
         );
-        if (songPlayList.playlist.mPlaylistId == 0) {
+        if (playlistInfo.playlist.mPlaylistId == 0) {
             finish();
             return;
         }
         updateController();
-        Config.SmartPlaylistType type = Config.SmartPlaylistType.getTypeById(songPlayList.playlist.mPlaylistId);
+        Config.SmartPlaylistType type = Config.SmartPlaylistType.getTypeById(playlistInfo.playlist.mPlaylistId);
         if (type != null) {
             initLoader(0, null, new DefaultPlayListCallback(type));
         } else {
@@ -77,17 +77,17 @@ public class DetailActivity extends BaseMusicActivity implements DetailControlle
     }
 
     private void updateController() {
-        controller.setData(songPlayList);
+        controller.setData(playlistInfo);
     }
 
     @Override
     public void onPlayPlayList(int index) {
-        playPlaylist(songPlayList.playlist, index);
+        playPlaylist(playlistInfo.playlist, index);
     }
 
     @Override
     public void onPlayAll() {
-        playPlaylist(songPlayList.playlist,0);
+        playPlaylist(playlistInfo.playlist,0);
     }
 
     class UserPlayListCallback implements LoaderManager.LoaderCallbacks<List<Song>> {
@@ -95,12 +95,12 @@ public class DetailActivity extends BaseMusicActivity implements DetailControlle
         @NonNull
         @Override
         public Loader<List<Song>> onCreateLoader(int id, @Nullable Bundle args) {
-            return new PlaylistSongLoader(getContext(), songPlayList.playlist.mPlaylistId);
+            return new PlaylistSongLoader(getContext(), playlistInfo.playlist.mPlaylistId);
         }
 
         @Override
         public void onLoadFinished(@NonNull Loader<List<Song>> loader, List<Song> data) {
-            songPlayList.songList = data;
+            playlistInfo.songList = data;
             updateController();
         }
 
@@ -143,7 +143,7 @@ public class DetailActivity extends BaseMusicActivity implements DetailControlle
 
         @Override
         public void onLoadFinished(@NonNull Loader<SectionListContainer<Song>> loader, SectionListContainer<Song> data) {
-            songPlayList.songList = data.mListResults;
+            playlistInfo.songList = data.mListResults;
             updateController();
         }
 
