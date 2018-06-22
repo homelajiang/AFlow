@@ -40,10 +40,8 @@ public abstract class MusicPlayListHeaderModel extends EpoxyModelWithHolder<Musi
         TextView mTitle;
         @BindView(R.id.sub_title)
         TextView mSubTitle;
-        @BindView(R.id.play_all)
-        TextView mPlayAdd;
 
-        @OnClick(R.id.play_all)
+        @OnClick(R.id.floatingActionButton)
         void playAll() {
             if (callback != null)
                 callback.onPlayAll();

@@ -1,57 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_layout"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/index"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:text="111" />
+    <RelativeLayout
+        style="@style/AFlow.ClickableLayoutSelectable"
+        android:layout_width="match_parent"
+        android:layout_height="53dp">
 
-    <ImageView
-        android:id="@+id/play_index"
-        android:layout_width="40dp"
-        android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/index"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="#aaaaaa"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:text="111" />
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:singleLine="true"
-        android:textSize="15sp"
-        app:layout_constraintLeft_toRightOf="@id/index"
-        app:layout_constraintRight_toLeftOf="@id/more"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="title" />
+        <ImageButton
+            android:id="@+id/more"
+            style="@style/AFlow.ClickableLayoutSelectable"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:layout_alignParentEnd="true"
+            android:tint="#aaaaaa"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
-    <TextView
-        android:id="@+id/sub_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:singleLine="true"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/index"
-        app:layout_constraintRight_toLeftOf="@id/more"
-        tools:text="sub_title" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="8dp"
+            android:singleLine="true"
+            android:layout_toEndOf="@id/index"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@id/more"
+            android:textColor="@color/font_black"
+            android:textSize="15sp"
+            tools:text="title" />
 
-    <ImageButton
-        android:id="@+id/more"
-        style="@style/AFlow.ClickableLayoutBorderless"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_more_vert_black_24dp" />
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@id/index"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@id/more"
+            android:singleLine="true"
+            android:textSize="10sp"
+            tools:text="sub_title" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#eeeeee"
+        android:layout_marginStart="53dp" />
+
+</LinearLayout>

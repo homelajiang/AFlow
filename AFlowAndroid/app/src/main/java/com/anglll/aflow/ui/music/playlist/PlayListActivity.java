@@ -1,25 +1,24 @@
 package com.anglll.aflow.ui.music.playlist;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseMusicActivity;
 import com.anglll.aflow.utils.DefaultDecoration;
 import com.anglll.aflow.utils.Router;
 
-import org.lineageos.eleven.Config;
 import org.lineageos.eleven.loaders.PlaylistLoader;
 import org.lineageos.eleven.model.Playlist;
-import org.lineageos.eleven.utils.MusicUtils;
 
 import java.util.List;
 
@@ -28,10 +27,16 @@ import butterknife.ButterKnife;
 
 public class PlayListActivity extends BaseMusicActivity implements
         LoaderManager.LoaderCallbacks<List<Playlist>>, PlayListController.MusicPlayListCallback {
-    @BindView(R.id.toolBar)
-    Toolbar mToolBar;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.title_left)
+    AppCompatImageButton mTitleLeft;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.sub_title)
+    TextView mSubTitle;
+    @BindView(R.id.title_right)
+    AppCompatImageButton mTitleRight;
 
     private PlayListController controller = new PlayListController(this, null);
     private List<Playlist> playLists;
@@ -45,18 +50,15 @@ public class PlayListActivity extends BaseMusicActivity implements
     }
 
     private void initView() {
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("播放列表");
-        getSupportActionBar().setSubtitle("cacagaf");
+        mTitle.setText(R.string.playlist);
         controller.setSpanCount(1);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 1);
         manager.setSpanSizeLookup(controller.getSpanSizeLookup());
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DefaultDecoration(
-                getContext().getResources().getDimensionPixelOffset(R.dimen.flow_card_divider),
-                getContext().getResources().getDimensionPixelOffset(R.dimen.flow_card_divider),
+                getContext().getResources().getDimensionPixelOffset(R.dimen.divider_playlist_card),
+                getContext().getResources().getDimensionPixelOffset(R.dimen.divider_playlist_card),
                 DefaultDecoration.COLOR_NO
         ));
         mRecyclerView.setAdapter(controller.getAdapter());
@@ -89,11 +91,5 @@ public class PlayListActivity extends BaseMusicActivity implements
     public void onPlayListClick(Playlist playlist) {
         Router.openPlayList(this, playlist);
     }
-
-    @Override
-    public void onPlayPlayList(Playlist playlist) {
-        playPlaylist(playlist,0);
-    }
-
 
 }

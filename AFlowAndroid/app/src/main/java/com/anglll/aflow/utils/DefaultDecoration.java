@@ -31,7 +31,12 @@ public class DefaultDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        outRect.set(decorationLeft, 0, decorationRight, decorationHeight);
+        if (parent.getChildViewHolder(view).getLayoutPosition() == 0) {
+            outRect.set(decorationLeft, decorationHeight, decorationRight, decorationHeight);
+        } else {
+            outRect.set(decorationLeft, 0, decorationRight, decorationHeight);
+        }
+
     }
 
     @Override
@@ -45,6 +50,8 @@ public class DefaultDecoration extends RecyclerView.ItemDecoration {
             View view = parent.getChildAt(i);
             float top = view.getBottom();
             float bottom = view.getBottom() + decorationHeight;
+            if (i == 0)
+                c.drawRect(left, 0, right, decorationHeight, decorationPaint);
             c.drawRect(left, top, right, bottom, decorationPaint);
         }
     }

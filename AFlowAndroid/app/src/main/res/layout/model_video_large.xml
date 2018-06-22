@@ -37,9 +37,9 @@
                 tools:text="Leonardo DiCaprio" />
 
             <TextView
-                android:layout_marginTop="3dp"
                 android:id="@+id/release_time"
                 style="@style/TextAppearance.TextDes"
+                android:layout_marginTop="3dp"
                 tools:text="5分钟前" />
         </LinearLayout>
 
@@ -58,11 +58,13 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/padding_normal"
         android:paddingEnd="@dimen/card_padding_start"
-        android:paddingStart="@dimen/card_padding_start">
+        android:paddingStart="@dimen/card_padding_start"
+        android:paddingTop="@dimen/padding_small">
 
         <TextView
             android:id="@+id/title"
             style="@style/TextAppearance.ContentTitle"
+            android:layout_marginBottom="@dimen/padding_small"
             android:maxLines="2"
             tools:text="What a beautiful day!" />
 
@@ -70,7 +72,6 @@
             android:id="@+id/content"
             style="@style/TextAppearance.Content"
             android:layout_marginBottom="@dimen/padding_normal"
-            android:layout_marginTop="@dimen/padding_normal"
             android:maxLines="4"
             tools:text="The Sun is shining bright and early in the morning." />
 
@@ -92,9 +93,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_marginTop="@dimen/padding_normal"
         android:layout_marginEnd="@dimen/card_padding_start"
         android:layout_marginStart="@dimen/card_padding_start"
+        android:layout_marginTop="@dimen/padding_normal"
         android:background="@color/flow_card_divider" />
 
     <LinearLayout

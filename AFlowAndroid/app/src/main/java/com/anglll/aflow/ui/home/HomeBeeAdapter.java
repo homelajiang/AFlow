@@ -2,6 +2,7 @@ package com.anglll.aflow.ui.home;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.anglll.aflow.ui.music.PlayerActivity;
 import com.anglll.aflow.ui.music.playlist.PlayListActivity;
 import com.anglll.beelayout.BeeAdapter;
 import com.anglll.beelayout.BeeViewHolder;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.MusicPlaybackService;
 import org.lineageos.eleven.utils.MusicUtils;
@@ -100,6 +102,9 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
         TextView mTitle;
         @BindView(R.id.sub_title)
         TextView mSubTitle;
+        @BindView(R.id.simpleDraweeView)
+        SimpleDraweeView simpleDraweeView;
+
         private int position = -1;
 
         @OnClick(R.id.item_layout)
@@ -122,8 +127,10 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
             itemView.post(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d("update_info","update");
                     mTitle.setText(MusicUtils.getTrackName());
                     mSubTitle.setText(MusicUtils.getArtistName());
+                    simpleDraweeView.setImageURI(MusicUtils.getAlbumUri(MusicUtils.getCurrentAlbumId()));
                 }
             });
         }
@@ -143,7 +150,7 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
                     MusicUtils.next();
                     break;
                 case 1:
-                new NowPlayingDialog().show(context.getSupportFragmentManager(),"NOW_PLAYING_DIALOG");
+                    new NowPlayingDialog().show(context.getSupportFragmentManager(), "NOW_PLAYING_DIALOG");
                     break;
                 case 2:
                     MusicUtils.cycleRepeatAndShuffle();

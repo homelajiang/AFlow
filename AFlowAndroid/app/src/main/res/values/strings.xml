@@ -49,4 +49,5 @@
     <string name="mark_des">My Precious!!!</string>
     <string name="home">首页</string>
     <string name="playlist_song_count">共%d首</string>
+    <string name="playlist">播放列表</string>
 </resources>

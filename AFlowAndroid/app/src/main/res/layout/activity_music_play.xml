@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="30dp">
+    android:paddingBottom="25dp">
 
     <include
         android:id="@+id/title_layout"
@@ -13,22 +13,25 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintBottom_toTopOf="@+id/control_layout"
         app:layout_constraintTop_toBottomOf="@+id/title_layout">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/cover"
-            android:layout_width="320dp"
-            android:layout_height="320dp"
-            android:layout_gravity="center" />
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            app:roundedCornerRadius="10dp" />
     </FrameLayout>
 
     <LinearLayout
         android:id="@+id/control_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/seekBar_layout">
@@ -36,16 +39,22 @@
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/play_pre"
             style="@style/AFlow.MusicController"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             app:srcCompat="@drawable/ic_skip_previous_black_42dp" />
 
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/play_or_pause"
             style="@style/AFlow.MusicController"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             app:srcCompat="@drawable/ic_play_arrow_black_56dp" />
 
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/play_next"
             style="@style/AFlow.MusicController"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             app:srcCompat="@drawable/ic_skip_next_black_42dp" />
     </LinearLayout>
 
@@ -53,9 +62,12 @@
         android:id="@+id/seekBar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
         android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         app:layout_constraintBottom_toTopOf="@id/track_list">
 
         <TextView
@@ -84,7 +96,7 @@
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/track_list"
         style="@style/AFlow.MusicController"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -118,7 +130,7 @@
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/more"
         style="@style/AFlow.MusicController"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/share"
         app:layout_constraintRight_toRightOf="parent"

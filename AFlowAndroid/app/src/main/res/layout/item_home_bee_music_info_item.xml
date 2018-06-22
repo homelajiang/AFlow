@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:paddingStart="18dp"
-    android:paddingEnd="18dp"
     android:orientation="vertical">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/simpleDraweeView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
     <TextView
         android:id="@+id/title"
         style="@style/TextAppearance.Content"
-        android:gravity="center"
-        android:text="Title"
         android:singleLine="true"
-        android:textColor="#666666"
-        android:textSize="16sp" />
+        android:textColor="@color/font_black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        tools:text="Title" />
 
     <TextView
         android:id="@+id/sub_title"
-        style="@style/TextAppearance.TextDes"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="wrap_content"
+        style="@style/TextAppearance.ContentDes"
         android:singleLine="true"
-        android:layout_marginTop="2dp"
-        android:text="SubTitle"
-        android:textSize="12sp" />
-</LinearLayout>
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
+        tools:text="SubTitle" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginStart="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

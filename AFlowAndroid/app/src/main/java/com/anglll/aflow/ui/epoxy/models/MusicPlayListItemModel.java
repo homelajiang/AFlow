@@ -31,8 +31,6 @@ public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicP
     class ViewHolder extends BaseEpoxyHolder<SongInfo> {
         @BindView(R.id.index)
         TextView mIndex;
-        @BindView(R.id.play_index)
-        ImageView mPlayIndex;
         @BindView(R.id.title)
         TextView mTitle;
         @BindView(R.id.sub_title)

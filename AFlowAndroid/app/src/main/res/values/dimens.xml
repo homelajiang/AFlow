@@ -13,5 +13,7 @@
     <dimen name="card_padding_start">12dp</dimen>
     <dimen name="padding_normal">10dp</dimen>
     <dimen name="flow_card_divider">10dp</dimen>
-    <item name="video_ratio_normal" type="dimen" format="float">1.78</item>
+    <dimen name="padding_small">5dp</dimen>
+    <dimen name="divider_playlist_card">16dp</dimen>
+    <item name="video_ratio_normal" format="float" type="dimen">1.78</item>
 </resources>

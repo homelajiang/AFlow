@@ -2,6 +2,7 @@ package com.anglll.aflow.ui.epoxy.models;
 
 import android.text.Html;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.TextView;
 
 import com.airbnb.epoxy.EpoxyAttribute;
@@ -60,12 +61,20 @@ public abstract class VideoLargeModel extends EpoxyModelWithHolder<VideoLargeMod
             Phoenix.with(mAvatar).load(data.getOwner().getAvatar());
             Phoenix.with(mCover).load(data.getCover());
             mOwnerName.setText(data.getOwner().getName());
-            mTitle.setText(data.getTitle());
+            String content;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                mContent.setText(Html.fromHtml(data.getDescription(), Html.FROM_HTML_MODE_LEGACY));
+                content = Html.fromHtml(data.getDescription(), Html.FROM_HTML_MODE_LEGACY).toString();
             } else {
-                mContent.setText(Html.fromHtml(data.getDescription()));
+                content = Html.fromHtml(data.getDescription()).toString();
             }
+            if (data.getTitle().equals(content)) {
+                mTitle.setVisibility(View.GONE);
+            } else {
+                mTitle.setVisibility(View.VISIBLE);
+                mTitle.setText(data.getTitle());
+            }
+            mContent.setText(content);
+
             mReleaseTime.setText(FuzzyDateFormatter.getTimeAgo(context, data.getReleaseDate()));
             mPlayContent.setText(String.valueOf(data.getVisit().getViews()));
             mCommentCount.setText(String.valueOf(data.getVisit().getComments()));

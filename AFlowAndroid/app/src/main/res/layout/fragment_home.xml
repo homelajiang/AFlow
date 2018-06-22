@@ -5,30 +5,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/style_board"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <include
+            layout="@layout/style_board"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background" />
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp">
 
         <com.anglll.beelayout.BeeImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             app:beeBorderWidth="2dp"
             app:beeHasBorder="true"
-            app:beeSpaceWidth="6dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            app:beeSpaceWidth="6dp" />
 
         <com.anglll.beelayout.BeeLayout
             android:id="@+id/bee_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             app:beeBorderWidth="2dp"
             app:beeHasBorder="true"
             app:beeSpaceWidth="6dp" />
     </FrameLayout>
-
 </LinearLayout>
