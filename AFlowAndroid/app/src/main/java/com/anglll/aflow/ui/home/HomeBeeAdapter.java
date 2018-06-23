@@ -127,7 +127,6 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
             itemView.post(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d("update_info","update");
                     mTitle.setText(MusicUtils.getTrackName());
                     mSubTitle.setText(MusicUtils.getArtistName());
                     simpleDraweeView.setImageURI(MusicUtils.getAlbumUri(MusicUtils.getCurrentAlbumId()));

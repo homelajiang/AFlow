@@ -20,5 +20,6 @@
     <color name="color_prompt_toast">#e6ffaa30</color>
     <color name="flow_card_divider">#EEEEEE</color>
     <color name="content_des">#BDBDBD</color>
+    <color name="tint_icon_gray">#AAAAAA</color>
 
 </resources>

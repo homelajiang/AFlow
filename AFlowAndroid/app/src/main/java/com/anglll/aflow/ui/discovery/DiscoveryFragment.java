@@ -42,7 +42,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
 
     private void initView() {
         controller.setSpanCount(2);
-        GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
+        final GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
         manager.setSpanSizeLookup(controller.getSpanSizeLookup());
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.addItemDecoration(new DiscoveryDecoration(getContext()));
@@ -52,6 +52,14 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
         new DiscoveryPresenter(this);
         presenter.getActivity();
         presenter.getFeedList();
+        controller.getAdapter().registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                if(positionStart == 0) {
+                    manager.scrollToPosition(0);
+                }
+            }
+        });
     }
 
     private void updateController() {

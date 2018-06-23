@@ -6,6 +6,8 @@ public class SongInfo extends Song {
     //the index of the song in playlist
     public int index = -1;
 
+    public boolean playing;
+
     /**
      * Constructor of <code>Song</code>
      *
@@ -25,4 +27,5 @@ public class SongInfo extends Song {
         super(song.mSongId, song.mSongName, song.mArtistName, song.mAlbumName, song.mAlbumId, song.mDuration, song.mYear);
         this.index = index;
     }
+
 }
