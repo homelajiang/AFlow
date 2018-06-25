@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.airbnb.epoxy.TypedEpoxyController;
 import com.anglll.aflow.R;
-import com.anglll.aflow.data.model.SongInfo;
 import com.anglll.aflow.ui.epoxy.models.MusicQueueModel_;
 
 import org.lineageos.eleven.MusicPlaybackService;
@@ -43,7 +42,7 @@ import static org.lineageos.eleven.utils.MusicUtils.mService;
 public class NowPlayingDialog extends BottomSheetDialogFragment implements
         LoaderCallbacks<List<Song>>, ServiceConnection, PlayQueueCallback {
     private NowPlayingController controller;
-    private List<SongInfo> nowPlayingQueue = new ArrayList<>();
+    private List<Song> nowPlayingQueue = new ArrayList<>();
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.recyclerView)
@@ -93,9 +92,7 @@ public class NowPlayingDialog extends BottomSheetDialogFragment implements
 
     @Override
     public void onLoadFinished(@NonNull Loader<List<Song>> loader, List<Song> data) {
-        for (int i = 0; i < data.size(); i++) {
-            this.nowPlayingQueue.add(new SongInfo(data.get(i), i));
-        }
+        this.nowPlayingQueue = data;
         updateController();
         mTitle.setText(String.format(getString(R.string.play_queue_count), nowPlayingQueue.size()));
         mRecyclerView.scrollToPosition(getScrollPosition(MusicUtils.getQueuePosition(), nowPlayingQueue.size()));
@@ -160,7 +157,7 @@ public class NowPlayingDialog extends BottomSheetDialogFragment implements
     }
 
     @Override
-    public void removeFromQueue(SongInfo songInfo) {
+    public void removeFromQueue(Song songInfo,int position) {
 /*        MusicUtils.removeTrackAtPosition(songInfo.mSongId, songInfo.index);
         refreshQueue();*/
 // TODO: 2018/6/21 0021  
@@ -172,7 +169,7 @@ public class NowPlayingDialog extends BottomSheetDialogFragment implements
     }
 
 
-    public static class NowPlayingController extends TypedEpoxyController<List<SongInfo>> {
+    public static class NowPlayingController extends TypedEpoxyController<List<Song>> {
 
         private final PlayQueueCallback callback;
 
@@ -181,15 +178,16 @@ public class NowPlayingDialog extends BottomSheetDialogFragment implements
         }
 
         @Override
-        protected void buildModels(List<SongInfo> songs) {
+        protected void buildModels(List<Song> songs) {
             int playingIndex = MusicUtils.getQueuePosition();
             for (int i = 0; i < songs.size(); i++) {
-                SongInfo temp = songs.get(i);
-                temp.playing = playingIndex == i;
                 add(new MusicQueueModel_()
                         .callback(callback)
+                        // TODO: 2018/6/25 id
                         .id(i)
-                        .playingSong(temp));
+                        .playingSong(songs.get(i))
+                        .index(i)
+                        .playing(playingIndex == i));
             }
         }
     }

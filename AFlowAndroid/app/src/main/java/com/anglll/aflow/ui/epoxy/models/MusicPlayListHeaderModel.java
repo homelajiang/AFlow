@@ -29,8 +29,7 @@ public abstract class MusicPlayListHeaderModel extends EpoxyModelWithHolder<Musi
 
     @Override
     public void bind(@NonNull ViewHolder holder) {
-        holder.bindData(playlist);
-        holder.setCoverSong(song);
+        holder.setData(song,playlist);
     }
 
     class ViewHolder extends BaseEpoxyHolder<Playlist> {
@@ -49,16 +48,19 @@ public abstract class MusicPlayListHeaderModel extends EpoxyModelWithHolder<Musi
 
         @Override
         protected void bindData(Playlist data) {
-            if (data == null)
-                return;
-            mTitle.setText(data.mPlaylistName);
-            String temp = context.getString(R.string.playlist_song_count);
-            mSubTitle.setText(String.format(temp, data.mSongCount));
+
         }
 
-        public void setCoverSong(Song coverSong) {
-            if (coverSong != null)
-                mCover.setImageURI(MusicUtils.getAlbumUri(coverSong.mAlbumId));
+        public void setData(Song song, Playlist playlist) {
+            // TODO: 2018/6/25  
+            if(song!=null)
+                mCover.setImageURI(MusicUtils.getAlbumUri(song.mAlbumId));
+
+            if(playlist!=null){
+                mTitle.setText(playlist.mPlaylistName);
+                String temp = context.getString(R.string.playlist_song_count);
+                mSubTitle.setText(String.format(temp, playlist.mSongCount));
+            }
         }
     }
 }

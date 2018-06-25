@@ -1,9 +1,9 @@
 package com.anglll.aflow.ui.dialog;
 
-import com.anglll.aflow.data.model.SongInfo;
+import org.lineageos.eleven.model.Song;
 
 public interface PlayQueueCallback {
-    void removeFromQueue(SongInfo song);
+    void removeFromQueue(Song songInfo, int position);
 
     void playIndex(int position);
 }
