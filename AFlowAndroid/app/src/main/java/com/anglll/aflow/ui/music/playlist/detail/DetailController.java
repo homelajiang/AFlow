@@ -41,6 +41,10 @@ public class DetailController extends EpoxyController {
         requestModelBuild();
     }
 
+    public void updateCurrentSongPosition(){
+        requestModelBuild();
+    }
+
     @Override
     protected void buildModels() {
 

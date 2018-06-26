@@ -77,13 +77,19 @@ public class DetailActivity extends BaseMusicActivity implements
     }
 
     @Override
+    public void onMetaChanged() {
+        super.onMetaChanged();
+        controller.updateCurrentSongPosition();
+    }
+
+    @Override
     public void onPlayPlayList(int index) {
         playPlaylist(playlist, index);
     }
 
     @Override
     public void onPlayAll() {
-        playPlaylist(playlist,0);
+        playPlaylist(playlist, 0);
     }
 
     class UserPlayListCallback implements LoaderManager.LoaderCallbacks<List<Song>> {
