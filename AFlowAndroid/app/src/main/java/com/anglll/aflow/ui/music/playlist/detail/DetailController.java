@@ -49,7 +49,6 @@ public class DetailController extends EpoxyController {
     protected void buildModels() {
 
         mHeader
-                .id(playlist.mPlaylistId)
                 .song(firstSong)
                 .callback(callback)
                 .playlist(playlist)
