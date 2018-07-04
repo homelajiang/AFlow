@@ -20,7 +20,7 @@ public class LinearHDecoration extends RecyclerView.ItemDecoration {
 
     public LinearHDecoration(Context context) {
         dividerPaint = new Paint();
-        dividerPaint.setColor(context.getResources().getColor(R.color.flow_card_divider));
+        dividerPaint.setColor(context.getResources().getColor(R.color.grey_light));
         dividerWidth = context.getResources().getDimensionPixelSize(R.dimen.flow_card_divider);
     }
 

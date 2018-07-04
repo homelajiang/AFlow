@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/name"
-            style="@style/TextAppearance.Setting"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="TextView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +113,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/flow_card_divider" />
+                android:background="@color/grey_light" />
 
             <TextView
                 android:layout_width="0dp"
@@ -138,21 +138,23 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/flow_card_divider"
-                android:background="@color/flow_card_divider" />
+                android:background="@color/grey_light" />
 
             <LinearLayout
-                style="@style/AFlow.Setting_layout"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/TextAppearance.Setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:drawableStart="@drawable/ic_sidebar_setting"
                     android:text="@string/setting" />
             </LinearLayout>
 
             <include layout="@layout/default_divider" />
 
-            <LinearLayout
+           <!-- <LinearLayout
                 style="@style/AFlow.Setting_layout"
                 android:orientation="vertical">
 
@@ -187,7 +189,7 @@
                     style="@style/TextAppearance.Setting"
                     android:drawableStart="@drawable/ic_sidebar_about"
                     android:text="@string/about" />
-            </LinearLayout>
+            </LinearLayout>-->
         </LinearLayout>
 
 

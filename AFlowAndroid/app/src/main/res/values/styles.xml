@@ -3,106 +3,51 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/background</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/warm_pink</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
-
-    <style name="TextAppearance.BarTitle" parent="android:TextAppearance">
-        <!-- Custom Attr-->
-        <item name="android:layout_width">wrap_content</item>
+    <style name="BarTitle">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">22sp</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/font_black</item>
-        <item name="fontPath">fonts/helvetica_neue_bold.ttf</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/bark_blue</item>
     </style>
 
-    <style name="TextAppearance.BarSubTitle" parent="TextAppearance.BarTitle">
-        <item name="android:textSize">12sp</item>
-        <item name="android:visibility">gone</item>
+    <style name="SongTitle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineSpacingExtra">3sp</item>
+        <item name="android:textColor">@color/text_black</item>
     </style>
 
-
-    <style name="TextAppearance.ContentTitle" parent="android:TextAppearance">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">16sp</item>
-        <item name="fontPath">fonts/helvetica_neue_bold.ttf</item>
-    </style>
-
-    <style name="TextAppearance.Content" parent="TextAppearance.ContentTitle">
-        <item name="android:textSize">16sp</item>
-        <item name="android:lineSpacingMultiplier">1.2</item>
-        <item name="fontPath">fonts/helvetica_neue.ttf</item>
-    </style>
-
-    <style name="TextAppearance.ContentSub" parent="TextAppearance.Content">
+    <style name="TextTitle">
         <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:textColor">@color/text_black</item>
     </style>
 
-    <style name="TextAppearance.ContentDes" parent="TextAppearance.ContentTitle">
+    <style name="TextContent">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/content_des</item>
-        <item name="fontPath">fonts/helvetica_neue.ttf</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textColor">@color/text_black</item>
     </style>
 
-    <style name="TextAppearance.TextDes" parent="TextAppearance.ContentDes">
+    <style name="BarSubTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/grey_bule</item>
     </style>
 
-    <style name="TextAppearance.Setting" parent="TextAppearance.ContentTitle">
-        <item name="android:textColor">@color/font_black</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:drawablePadding">15dp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:padding">10dp</item>
+    <style name="SongDescription">
+        <item name="android:textSize">10sp</item>
+        <item name="android:lineSpacingExtra">8sp</item>
+        <item name="android:textColor">@color/grey</item>
     </style>
 
-    <style name="AFlow"></style>
-
-    <style name="AFlow.ImageButton_Bar">
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-        <item name="android:layout_width">@dimen/bar_icon_size</item>
-        <item name="android:layout_height">@dimen/bar_icon_size</item>
-    </style>
-
-    <style name="AFlow.Avatar">
-        <item name="android:layout_width">@dimen/avatar_width</item>
-        <item name="android:layout_height">@dimen/avatar_width</item>
-    </style>
-
-    <style name="AFlow.Avatar.Normal" parent="AFlow.Avatar">
-
-    </style>
-
-    <style name="AFlow.ClickableLayoutBorderless">
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
-    </style>
-
-    <style name="AFlow.ClickableLayoutSelectable">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
-    </style>
-
-    <style name="AFlow.Setting_layout" parent="AFlow.ClickableLayoutSelectable">
-        <item name="android:paddingStart">10dp</item>
-        <item name="android:paddingEnd">10dp</item>
-    </style>
-
-    <style name="AFlow.MusicController" parent="AFlow.ClickableLayoutBorderless">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">5dp</item>
-    </style>
 
 </resources>

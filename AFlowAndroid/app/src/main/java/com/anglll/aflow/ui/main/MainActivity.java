@@ -1,12 +1,12 @@
 package com.anglll.aflow.ui.main;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatImageButton;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.anglll.aflow.R;
@@ -16,89 +16,72 @@ import com.anglll.aflow.ui.home.HomeFragment;
 import com.anglll.aflow.ui.user.UserFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseMusicActivity {
+public class MainActivity extends BaseMusicActivity implements
+        BottomNavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.title_left)
-    AppCompatImageButton titleLeft;
     @BindView(R.id.title)
-    TextView title;
-    @BindView(R.id.title_right)
-    AppCompatImageButton titleRight;
-    @BindView(R.id.view_pager)
-    ViewPager viewPager;
-    private int[] titleRes = {R.string.title_home, R.string.title_discovery, R.string.profile};
-    private int[] unSelectedRes = {R.drawable.ic_home, R.drawable.ic_discover, R.drawable.ic_discover};
-    private int[] selectedRes = {R.drawable.ic_home_selected, R.drawable.ic_discover_selected, R.drawable.ic_discover_selected};
-    @BindViews({R.id.home, R.id.discovery, R.id.user})
-    List<ImageView> imageViews;
-    @BindView(R.id.root)
-    LinearLayout mLinearLayout;
-    private ArrayList<Fragment> fragments;
+    TextView mTitle;
+    @BindView(R.id.navigation)
+    BottomNavigationView mNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        selectNavBar(0);
         initView();
     }
-
+//https://github.com/gpfduoduo/android-article/blob/master/Activity%20%2B%20%E5%A4%9AFrament%20%E4%BD%BF%E7%94%A8%E6%97%B6%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9D%91.md
     private void initView() {
-        fragments = new ArrayList<>();
-        fragments.add(new HomeFragment());
-        fragments.add(new DiscoveryFragment());
-        fragments.add(new UserFragment());
-        MainPagerAdapter pagerAdapter
-                = new MainPagerAdapter(getSupportFragmentManager(), fragments);
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(1);
-        selectNavBar(1);
-        viewPager.setOffscreenPageLimit(fragments.size() - 1);
-        viewPager.addOnPageChangeListener(simpleOnPageChangeListener);
+//        navigation.setSelectedItemId(navigation.getMenu().getItem(position).getItemId());
+        mNavigation.setOnNavigationItemSelectedListener(this);
+        HomeFragment homeFragment = new HomeFragment();
+        DiscoveryFragment discoveryFragment = new DiscoveryFragment();
+        UserFragment userFragment = new UserFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container,homeFragment,"home")
+        .commit();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container,discoveryFragment,"discovery")
+                .commit();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container,userFragment,"user")
+                .commit();
     }
 
-    @OnClick({R.id.home_layout, R.id.discovery_layout,R.id.user_layout})
-    void onNavBarClick(View view) {
-        int position = 0;
-        switch (view.getId()) {
-            case R.id.home_layout:
-                position = 0;
-                break;
-            case R.id.discovery_layout:
-                position = 1;
-                break;
-            case R.id.user_layout:
-                position = 2;
-                break;
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        resetDefaultIcon();
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                item.setIcon(R.drawable.ic_home_selected);
+                return true;
+            case R.id.navigation_discovery:
+                item.setIcon(R.drawable.ic_discovery_selected);
+                return true;
+            case R.id.navigation_mine:
+                item.setIcon(R.drawable.ic_mine_selected);
+                return true;
         }
-        selectNavBar(position);
+        return false;
     }
 
-    private void selectNavBar(int position) {
-        for (int i = 0; i < imageViews.size(); i++) {
-            title.setText(getString(titleRes[position]));
-            if (position == i) {
-                imageViews.get(i).setImageResource(selectedRes[i]);
-            } else {
-                imageViews.get(i).setImageResource(unSelectedRes[i]);
-            }
-        }
-        viewPager.setCurrentItem(position);
-    }
+    private void resetDefaultIcon() {
+        mNavigation.getMenu()
+                .findItem(R.id.navigation_home)
+                .setIcon(R.drawable.ic_home);
+        mNavigation.getMenu()
+                .findItem(R.id.navigation_discovery)
+                .setIcon(R.drawable.ic_discovery);
+        mNavigation.getMenu()
+                .findItem(R.id.navigation_mine)
+                .setIcon(R.drawable.ic_mine);
 
-    private ViewPager.SimpleOnPageChangeListener simpleOnPageChangeListener
-            = new ViewPager.SimpleOnPageChangeListener() {
-        @Override
-        public void onPageSelected(int position) {
-            selectNavBar(position);
-        }
-    };
+    }
 }

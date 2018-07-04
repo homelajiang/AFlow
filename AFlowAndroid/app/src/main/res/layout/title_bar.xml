@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/bar_height"
+    android:layout_height="?attr/actionBarSize"
     android:background="@color/white"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingLeft="@dimen/page_left_right_divider"
-    android:paddingRight="@dimen/page_left_right_divider">
+    android:orientation="horizontal">
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/title_left"
-        style="@style/AFlow.ImageButton_Bar"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/selectableItemBackgroundBorderless"
         tools:srcCompat="@drawable/ic_recommend" />
 
     <LinearLayout
@@ -24,19 +24,20 @@
 
         <TextView
             android:id="@+id/title"
-            style="@style/TextAppearance.BarTitle"
+            style="@style/BarTitle"
             tools:text="Title" />
 
         <TextView
             android:id="@+id/sub_title"
-            style="@style/TextAppearance.BarSubTitle"
+            style="@style/BarSubTitle"
             tools:text="SubTitle wrap_content"
             tools:visibility="visible" />
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/title_right"
-        style="@style/AFlow.ImageButton_Bar"
-        android:layout_width="@dimen/bar_icon_size"
-        android:layout_height="@dimen/bar_icon_size" />
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        tools:srcCompat="@drawable/ic_recommend" />
 </LinearLayout>

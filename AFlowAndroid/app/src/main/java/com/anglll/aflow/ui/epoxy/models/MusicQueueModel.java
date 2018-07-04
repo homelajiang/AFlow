@@ -71,9 +71,9 @@ public abstract class MusicQueueModel extends EpoxyModelWithHolder<MusicQueueMod
             this.index = index;
             if (playing) {
                 TextHelper.SpannableText[] spannableTexts = {
-                        new TextHelper.SpannableText(song.mSongName, ContextCompat.getColor(context, R.color.colorAccent), 14),
-                        new TextHelper.SpannableText(" - ", ContextCompat.getColor(context, R.color.colorAccent), 10),
-                        new TextHelper.SpannableText(song.mArtistName, ContextCompat.getColor(context, R.color.colorAccent), 10),
+                        new TextHelper.SpannableText(song.mSongName, ContextCompat.getColor(context, R.color.warm_pink), 14),
+                        new TextHelper.SpannableText(" - ", ContextCompat.getColor(context, R.color.warm_pink), 10),
+                        new TextHelper.SpannableText(song.mArtistName, ContextCompat.getColor(context, R.color.warm_pink), 10),
                 };
                 mTitle.setText(TextHelper.getStringBuilder(spannableTexts));
 /*                    Drawable drawable= getResources().getDrawable(R.drawable.drawable);
@@ -82,9 +82,9 @@ public abstract class MusicQueueModel extends EpoxyModelWithHolder<MusicQueueMod
                     myTextview.setCompoundDrawables(drawable,null,null,null);*/
             } else {
                 TextHelper.SpannableText[] spannableTexts = {
-                        new TextHelper.SpannableText(song.mSongName, ContextCompat.getColor(context, R.color.font_black), 14),
-                        new TextHelper.SpannableText(" - ", ContextCompat.getColor(context, R.color.font_normal), 10),
-                        new TextHelper.SpannableText(song.mArtistName, ContextCompat.getColor(context, R.color.font_normal), 10),
+                        new TextHelper.SpannableText(song.mSongName, ContextCompat.getColor(context, R.color.text_black), 14),
+                        new TextHelper.SpannableText(" - ", ContextCompat.getColor(context, R.color.text_black), 10),
+                        new TextHelper.SpannableText(song.mArtistName, ContextCompat.getColor(context, R.color.text_black), 10),
                 };
                 mTitle.setText(TextHelper.getStringBuilder(spannableTexts));
 /*                    public void setCompoundDrawablesWithIntrinsicBounds (Drawable left,

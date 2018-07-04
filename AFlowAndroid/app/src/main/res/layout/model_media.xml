@@ -5,7 +5,6 @@
     android:id="@+id/my_image_view"
     android:layout_width="240dp"
     android:layout_height="135dp"
-    android:src="@drawable/ic_discover"
     app:cardCornerRadius="@dimen/card_radius">
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -14,10 +13,11 @@
         android:layout_height="match_parent" />
 
     <ImageView
-        android:background="@drawable/gradient_dark"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/gradient_dark" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,20 +25,20 @@
 
         <TextView
             android:id="@+id/title"
-            style="@style/TextAppearance.ContentTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_above="@+id/des"
             android:lines="1"
-            android:textColor="@color/font_white"
             tools:text="Cooking time" />
 
         <TextView
             android:id="@+id/des"
-            android:layout_marginTop="5dp"
-            style="@style/TextAppearance.ContentSub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textColor="@color/font_white"
             tools:text="Wake you every morning beautiful music" />
     </RelativeLayout>
 

@@ -21,7 +21,7 @@ public class DiscoveryDecoration extends RecyclerView.ItemDecoration {
 
     public DiscoveryDecoration(Context context) {
         dividerPaint = new Paint();
-        dividerPaint.setColor(context.getResources().getColor(R.color.flow_card_divider));
+        dividerPaint.setColor(context.getResources().getColor(R.color.grey_light));
         dividerHeight = context.getResources().getDimensionPixelSize(R.dimen.flow_card_divider);
     }
 
