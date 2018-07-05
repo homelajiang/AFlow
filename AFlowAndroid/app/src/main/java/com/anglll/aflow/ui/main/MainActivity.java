@@ -3,19 +3,14 @@ package com.anglll.aflow.ui.main;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseFragment;
 import com.anglll.aflow.base.BaseMusicActivity;
-import com.anglll.aflow.data.model.Discovery;
 import com.anglll.aflow.ui.discovery.DiscoveryFragment;
 import com.anglll.aflow.ui.home.HomeFragment;
 import com.anglll.aflow.ui.user.UserFragment;
@@ -24,7 +19,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivity extends BaseMusicActivity implements
         BottomNavigationView.OnNavigationItemSelectedListener {

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anglll.aflow.R;
@@ -62,7 +63,6 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
             case 1:
                 break;
             case 2:
-                ((HomeBeeViewHolder) viewHolder).updateRepeatAndShuffleStatus();
                 break;
             case 3:
                 break;
@@ -124,7 +124,7 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
 
     class HomeBeeViewHolder extends BeeViewHolder {
         @BindView(R.id.icon)
-        SimpleDraweeView mIcon;
+        ImageView mIcon;
         @BindView(R.id.text)
         TextView textView;
         private int position = -1;
@@ -139,14 +139,12 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
                     new NowPlayingDialog().show(context.getSupportFragmentManager(), "NOW_PLAYING_DIALOG");
                     break;
                 case 2:
-                    MusicUtils.cycleRepeatAndShuffle();
-                    updateRepeatAndShuffleStatus();
+                    context.startActivity(new Intent(context, PlayListActivity.class));
                     break;
                 case 3:
                     MusicUtils.previous(context, false);
                     break;
                 case 4:
-                    context.startActivity(new Intent(context, PlayListActivity.class));
                     break;
                 case 6:
                     MusicUtils.playOrPause();
@@ -170,7 +168,6 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
                     break;
                 case 2:
                     mIcon.setImageResource(R.drawable.ic_play_list);
-                    updateRepeatAndShuffleStatus();
                     break;
                 case 3:
                     mIcon.setImageResource(R.drawable.ic_previous_track);
@@ -188,10 +185,10 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
         public void updateController() {
             if (MusicUtils.isPlaying()) {
                 mIcon.setContentDescription(context.getString(R.string.accessibility_pause));
-                mIcon.setImageResource(R.drawable.ic_pause_black_56dp);
+                mIcon.setImageResource(R.drawable.ic_pause);
             } else {
                 mIcon.setContentDescription(context.getString(R.string.accessibility_play));
-                mIcon.setImageResource(R.drawable.ic_play_arrow_black_56dp);
+                mIcon.setImageResource(R.drawable.ic_play);
             }
         }
 
