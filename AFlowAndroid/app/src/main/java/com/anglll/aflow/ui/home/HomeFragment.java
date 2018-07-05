@@ -2,6 +2,7 @@ package com.anglll.aflow.ui.home;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import butterknife.ButterKnife;
 
 public class HomeFragment extends BaseFragment implements MusicStateListener {
 
+    private static final String TAG = HomeFragment.class.getSimpleName();
     @BindView(R.id.bee_layout)
     BeeLayout mBeeLayout;
     private HomeBeeAdapter adapter;
@@ -33,6 +35,11 @@ public class HomeFragment extends BaseFragment implements MusicStateListener {
         getContainingActivity().addMusicStateListener(this);
         initView();
         return view;
+    }
+
+    @Override
+    protected void lazyInit() {
+        Log.d(TAG,"lazyInit");
     }
 
     @Override
@@ -75,5 +82,9 @@ public class HomeFragment extends BaseFragment implements MusicStateListener {
     @Override
     public void onUpdateController() {
         adapter.updateController();
+    }
+
+    public static HomeFragment newInstance() {
+        return new HomeFragment();
     }
 }

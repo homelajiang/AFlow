@@ -2,11 +2,9 @@ package com.anglll.aflow.ui.home;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anglll.aflow.R;
@@ -98,16 +96,12 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
     }
 
     class HomeMusicInfoHolder extends BeeViewHolder {
-        @BindView(R.id.title)
-        TextView mTitle;
-        @BindView(R.id.sub_title)
-        TextView mSubTitle;
         @BindView(R.id.simpleDraweeView)
         SimpleDraweeView simpleDraweeView;
 
         private int position = -1;
 
-        @OnClick(R.id.item_layout)
+        @OnClick(R.id.simpleDraweeView)
         void onItemLayoutClick() {
             if (position == 5) {
                 context.startActivity(new Intent(context, PlayerActivity.class));
@@ -124,20 +118,13 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
         }
 
         public void updateInfo() {
-            itemView.post(new Runnable() {
-                @Override
-                public void run() {
-                    mTitle.setText(MusicUtils.getTrackName());
-                    mSubTitle.setText(MusicUtils.getArtistName());
-                    simpleDraweeView.setImageURI(MusicUtils.getAlbumUri(MusicUtils.getCurrentAlbumId()));
-                }
-            });
+            simpleDraweeView.setImageURI(MusicUtils.getAlbumUri(MusicUtils.getCurrentAlbumId()));
         }
     }
 
     class HomeBeeViewHolder extends BeeViewHolder {
         @BindView(R.id.icon)
-        ImageView mIcon;
+        SimpleDraweeView mIcon;
         @BindView(R.id.text)
         TextView textView;
         private int position = -1;
@@ -176,22 +163,22 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
             this.position = position;
             switch (position) {
                 case 0:
-                    mIcon.setImageResource(R.drawable.ic_skip_next_black_42dp);
+                    mIcon.setImageResource(R.drawable.ic_next_track);
                     break;
                 case 1:
-                    mIcon.setImageResource(R.drawable.ic_playlist_play_black_36dp);
+                    mIcon.setImageResource(R.drawable.ic_playing_list);
                     break;
                 case 2:
+                    mIcon.setImageResource(R.drawable.ic_play_list);
                     updateRepeatAndShuffleStatus();
                     break;
                 case 3:
-                    mIcon.setImageResource(R.drawable.ic_skip_previous_black_42dp);
+                    mIcon.setImageResource(R.drawable.ic_previous_track);
                     break;
                 case 4:
-                    mIcon.setImageResource(R.drawable.ic_queue_music_black_36dp);
                     break;
                 case 6:
-                    mIcon.setImageResource(R.drawable.ic_play_arrow_black_56dp);
+                    mIcon.setImageResource(R.drawable.ic_play);
                     break;
                 default:
             }

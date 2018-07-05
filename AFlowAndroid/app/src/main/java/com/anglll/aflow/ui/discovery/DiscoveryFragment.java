@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import butterknife.ButterKnife;
  */
 
 public class DiscoveryFragment extends BaseFragment implements DiscoveryContract.View {
+    private static final String TAG = DiscoveryFragment.class.getSimpleName();
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private DiscoveryController controller = new DiscoveryController(null, null);
@@ -40,6 +42,12 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
         return view;
     }
 
+    @Override
+    protected void lazyInit() {
+        presenter.getActivity();
+        presenter.getFeedList();
+    }
+
     private void initView() {
         controller.setSpanCount(2);
         final GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
@@ -50,8 +58,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
         mRecyclerView.setAdapter(controller.getAdapter());
         updateController();
         new DiscoveryPresenter(this);
-        presenter.getActivity();
-        presenter.getFeedList();
         controller.getAdapter().registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -92,5 +98,9 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
 
     @Override
     public void getActivityFail(Throwable throwable) {
+    }
+
+    public static DiscoveryFragment newInstance() {
+        return new DiscoveryFragment();
     }
 }
