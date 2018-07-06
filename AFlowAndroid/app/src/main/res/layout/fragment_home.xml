@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#666666"
+    android:background="@drawable/test_bg"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,6 +15,7 @@
         android:paddingStart="24dp">
 
         <LinearLayout
+            android:paddingTop="12dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -22,13 +23,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:text="今天天气有点热，注意防暑降温。"
                 android:textColor="@color/grey_light"
                 android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -38,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="37°"
+                android:textColor="@color/grey_light"
                 android:textSize="70sp" />
 
             <LinearLayout
@@ -58,18 +60,18 @@
                     android:id="@+id/icon_umbrella"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:tint="@color/grey"
                     android:layout_marginStart="10dp"
+                    android:tint="@color/grey"
                     app:srcCompat="@drawable/ic_umbrella" />
 
                 <TextView
                     android:id="@+id/rainfall_probability"
                     android:layout_width="wrap_content"
-                    android:layout_marginStart="4dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="50%"
                     android:textColor="@color/grey"
-                    android:textSize="14sp"
-                    tools:text="50%" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -85,6 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:visibility="gone"
             app:beeBorderWidth="2dp"
             app:beeHasBorder="true"
             app:beeSpaceWidth="6dp" />
@@ -94,6 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            app:beeBorderColor="#88eeeeee"
             app:beeBorderWidth="2dp"
             app:beeHasBorder="true"
             app:beeSpaceWidth="6dp" />

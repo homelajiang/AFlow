@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -62,6 +63,7 @@ public class MainActivity extends BaseMusicActivity implements
             showFragment(savedInstanceState.getInt(SHOW_FRAGMENT_INDEX));
         } else {
             showFragmentIndex = 0;
+            setBarTile();
             fragments.add(HomeFragment.newInstance());
             fragments.add(DiscoveryFragment.newInstance());
             fragments.add(UserFragment.newInstance());
@@ -117,6 +119,24 @@ public class MainActivity extends BaseMusicActivity implements
         }
         transaction.commit();
         showFragmentIndex = index;
+        setBarTile();
+    }
+
+    private void setBarTile(){
+        switch (showFragmentIndex){
+            case 0:
+                mTitle.setText(R.string.title_home);
+                mTitle.setTextColor(ContextCompat.getColor(getContext(),R.color.grey_light));
+                break;
+            case 1:
+                mTitle.setText(R.string.title_discovery);
+                mTitle.setTextColor(ContextCompat.getColor(getContext(),R.color.bark_blue));
+                break;
+            case 2:
+                mTitle.setText(R.string.title_mine);
+                mTitle.setTextColor(ContextCompat.getColor(getContext(),R.color.bark_blue));
+                break;
+        }
     }
 
 

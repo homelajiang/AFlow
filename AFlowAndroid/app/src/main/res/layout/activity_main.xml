@@ -18,9 +18,10 @@
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
         app:itemIconTint="@drawable/state_menu_nav"
         app:itemTextColor="@drawable/state_menu_nav"
         app:menu="@menu/navigation" />
+    <!--android:background="?android:attr/windowBackground"-->
+
 
 </LinearLayout>

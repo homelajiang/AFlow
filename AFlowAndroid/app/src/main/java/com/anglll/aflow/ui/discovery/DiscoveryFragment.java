@@ -5,18 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseFragment;
-import com.anglll.aflow.data.model.Discovery;
 import com.anglll.aflow.data.model.Feed;
 import com.anglll.aflow.data.model.PageModel;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +27,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
     RecyclerView mRecyclerView;
     private DiscoveryController controller = new DiscoveryController(null, null);
     private DiscoveryContract.Presenter presenter;
-    private Discovery discovery = new Discovery();
 
     @Nullable
     @Override
@@ -56,7 +51,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
         mRecyclerView.addItemDecoration(new DiscoveryDecoration(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(controller.getAdapter());
-        updateController();
         new DiscoveryPresenter(this);
         controller.getAdapter().registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -68,10 +62,6 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
         });
     }
 
-    private void updateController() {
-        controller.setData(discovery);
-    }
-
     @Override
     public void setPresenter(DiscoveryContract.Presenter presenter) {
         this.presenter = presenter;
@@ -80,8 +70,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
     @Override
     public void getDiscovery(PageModel<Feed> feedPage) {
         // TODO: 2018/4/26 0026
-        discovery.addFeedList(feedPage.getList());
-        updateController();
+        controller.addFeed(feedPage.getList());
     }
 
     @Override
@@ -91,9 +80,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
 
     @Override
     public void getActivity(PageModel<Feed> activityPage) {
-        discovery.setActivityList(activityPage.getList());
-        updateController();
-
+        controller.addActivity(activityPage.getList());
     }
 
     @Override
