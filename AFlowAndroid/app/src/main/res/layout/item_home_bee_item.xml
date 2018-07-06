@@ -18,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:tint="#"
         tools:srcCompat="@drawable/ic_skip_next_black_42dp" />
 
     <TextView
