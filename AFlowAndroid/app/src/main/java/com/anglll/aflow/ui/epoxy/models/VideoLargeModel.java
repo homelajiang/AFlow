@@ -49,12 +49,6 @@ public abstract class VideoLargeModel extends EpoxyModelWithHolder<VideoLargeMod
         TextView mTitle;
         @BindView(R.id.content)
         TextView mContent;
-        @BindView(R.id.play_content)
-        TextView mPlayContent;
-        @BindView(R.id.comment_count)
-        TextView mCommentCount;
-        @BindView(R.id.banana_count)
-        TextView mBananaCount;
 
         @Override
         protected void bindData(Feed data) {
@@ -76,9 +70,6 @@ public abstract class VideoLargeModel extends EpoxyModelWithHolder<VideoLargeMod
             mContent.setText(content);
 
             mReleaseTime.setText(FuzzyDateFormatter.getTimeAgo(context, data.getReleaseDate()));
-            mPlayContent.setText(String.valueOf(data.getVisit().getViews()));
-            mCommentCount.setText(String.valueOf(data.getVisit().getComments()));
-            mBananaCount.setText(String.valueOf(data.getVisit().getScore()));
         }
 
         public int dp2px(float dpVal) {
