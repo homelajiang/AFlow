@@ -31,7 +31,7 @@
 
     <style name="TextContent">
         <item name="android:textSize">14sp</item>
-        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:lineSpacingExtra">4sp</item>
         <item name="android:textColor">@color/text_black</item>
     </style>
 

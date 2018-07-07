@@ -174,10 +174,10 @@ public class PlayerActivity extends BaseActivity implements
     private void updateController() {
         if (MusicUtils.isPlaying()) {
             mPlayOrPause.setContentDescription(getString(R.string.accessibility_pause));
-            mPlayOrPause.setImageResource(R.drawable.ic_pause_black_56dp);
+            mPlayOrPause.setImageResource(R.drawable.ic_player_pause);
         } else {
             mPlayOrPause.setContentDescription(getString(R.string.accessibility_play));
-            mPlayOrPause.setImageResource(R.drawable.ic_play_arrow_black_56dp);
+            mPlayOrPause.setImageResource(R.drawable.ic_player_play);
         }
     }
 

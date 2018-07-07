@@ -53,11 +53,12 @@
                 tools:text="5分钟前" />
         </RelativeLayout>
 
-        <TextView
+        <android.support.v7.widget.AppCompatImageView
+            android:padding="8dp"
+            app:tint="@color/grey"
+            app:srcCompat="@drawable/ic_arrow_down"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:text="5分钟前" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -123,8 +124,8 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/action_like"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:layout_alignParentEnd="true"
             android:scaleType="center"
             android:tint="@color/grey"
@@ -132,8 +133,8 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/action_comment"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:layout_toStartOf="@id/action_like"
             android:scaleType="center"
             android:tint="@color/grey"
@@ -141,8 +142,8 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/action_link"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:layout_toStartOf="@id/action_comment"
             android:scaleType="center"
             android:tint="@color/grey"
@@ -150,8 +151,8 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/action_share"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:layout_toStartOf="@id/action_link"
             android:scaleType="center"
             android:tint="@color/grey"

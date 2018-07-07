@@ -161,21 +161,21 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
             this.position = position;
             switch (position) {
                 case 0:
-                    mIcon.setImageResource(R.drawable.ic_next_track);
+                    mIcon.setImageResource(R.drawable.ic_home_next_track);
                     break;
                 case 1:
-                    mIcon.setImageResource(R.drawable.ic_playing_list);
+                    mIcon.setImageResource(R.drawable.ic_home_playing_list);
                     break;
                 case 2:
-                    mIcon.setImageResource(R.drawable.ic_play_list);
+                    mIcon.setImageResource(R.drawable.ic_home_play_list);
                     break;
                 case 3:
-                    mIcon.setImageResource(R.drawable.ic_previous_track);
+                    mIcon.setImageResource(R.drawable.ic_home_previous_track);
                     break;
                 case 4:
                     break;
                 case 6:
-                    mIcon.setImageResource(R.drawable.ic_play);
+                    mIcon.setImageResource(R.drawable.ic_home_play);
                     break;
                 default:
             }
@@ -185,10 +185,10 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
         public void updateController() {
             if (MusicUtils.isPlaying()) {
                 mIcon.setContentDescription(context.getString(R.string.accessibility_pause));
-                mIcon.setImageResource(R.drawable.ic_pause);
+                mIcon.setImageResource(R.drawable.ic_home_pause);
             } else {
                 mIcon.setContentDescription(context.getString(R.string.accessibility_play));
-                mIcon.setImageResource(R.drawable.ic_play);
+                mIcon.setImageResource(R.drawable.ic_home_play);
             }
         }
 
