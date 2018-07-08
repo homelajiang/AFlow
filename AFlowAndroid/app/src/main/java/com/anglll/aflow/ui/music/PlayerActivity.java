@@ -201,13 +201,13 @@ public class PlayerActivity extends BaseActivity implements
     private void updateRepeatAndShuffleStatus() {
         switch (MusicUtils.getRepeatAndShuffleModel()) {
             case MusicPlaybackService.REPEAT_NONE:
-                mPlayMode.setImageResource(R.drawable.ic_shuffle_black_36dp);
+                mPlayMode.setImageResource(R.drawable.ic_player_shuffle);
                 break;
             case MusicPlaybackService.REPEAT_CURRENT:
-                mPlayMode.setImageResource(R.drawable.ic_repeat_one_black_36dp);
+                mPlayMode.setImageResource(R.drawable.ic_player_repeat);
                 break;
             case MusicPlaybackService.REPEAT_ALL:
-                mPlayMode.setImageResource(R.drawable.ic_repeat_black_36dp);
+                mPlayMode.setImageResource(R.drawable.ic_player_cycle);
                 break;
             default:
                 break;
