@@ -12,6 +12,8 @@
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:tint="@color/bark_blue"
+        app:srcCompat="@drawable/ic_arrow_left"
         tools:srcCompat="@drawable/ic_recommend" />
 
     <LinearLayout
@@ -29,6 +31,7 @@
         <TextView
             android:id="@+id/sub_title"
             style="@style/BarSubTitle"
+            android:visibility="gone"
             tools:text="SubTitle wrap_content"
             tools:visibility="visible" />
     </LinearLayout>
@@ -38,5 +41,6 @@
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:tint="@color/bark_blue"
         tools:srcCompat="@drawable/ic_recommend" />
 </LinearLayout>
