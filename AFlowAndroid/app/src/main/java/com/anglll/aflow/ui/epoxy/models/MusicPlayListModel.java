@@ -12,6 +12,7 @@ import com.airbnb.epoxy.EpoxyModelWithHolder;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseEpoxyHolder;
 import com.anglll.aflow.ui.music.playlist.PlayListController;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.fresco.helper.Phoenix;
 
 import org.lineageos.eleven.model.Playlist;
@@ -37,8 +38,8 @@ public abstract class MusicPlayListModel extends EpoxyModelWithHolder<MusicPlayL
     }
 
     class ViewHolder extends BaseEpoxyHolder<Playlist> {
-        @BindView(R.id.icon)
-        ImageView mIcon;
+        @BindView(R.id.bg)
+        SimpleDraweeView mBg;
         @BindView(R.id.title)
         TextView mTitle;
         @BindView(R.id.summary)
@@ -52,7 +53,6 @@ public abstract class MusicPlayListModel extends EpoxyModelWithHolder<MusicPlayL
 
         @Override
         protected void bindData(Playlist playlist) {
-            mIcon.setImageResource(R.drawable.ic_home_selected);
             mTitle.setText(playlist.mPlaylistName);
             String temp = context.getString(R.string.playlist_song_count);
             mSummary.setText(String.format(temp, playlist.mSongCount));

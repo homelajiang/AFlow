@@ -1,61 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
+
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/cover"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="#666"
+        android:background="#aaaaaa"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:viewAspectRatio="1.34" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:padding="5dp"
-        android:textColor="@color/text_black"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@id/sub_title"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:text="TextView" />
-
-    <TextView
-        android:id="@+id/sub_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:padding="5dp"
-        android:textColor="@color/text_black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:text="TextView" />
-
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:src="@drawable/above_shadow"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:viewAspectRatio="1" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:clickable="true"
         android:tint="@color/white"
         app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_anchor="@id/cover"
+        app:layout_anchorGravity="bottom|right"
         app:srcCompat="@drawable/ic_play_arrow_black_56dp" />
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:src="@drawable/above_shadow" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:textColor="@color/text_black"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toTopOf="@id/sub_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:textColor="@color/text_black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:text="TextView" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>
