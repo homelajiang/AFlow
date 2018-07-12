@@ -26,8 +26,6 @@ public class MainActivity extends BaseMusicActivity implements
 
     private static final String SHOW_FRAGMENT_INDEX = "SHOW_FRAGMENT_INDEX";
     private static final String TAG = MainActivity.class.getSimpleName();
-    @BindView(R.id.title)
-    TextView mTitle;
     @BindView(R.id.navigation)
     BottomNavigationView mNavigation;
     private int showFragmentIndex;
@@ -63,7 +61,6 @@ public class MainActivity extends BaseMusicActivity implements
             showFragment(savedInstanceState.getInt(SHOW_FRAGMENT_INDEX));
         } else {
             showFragmentIndex = 0;
-            setBarTile();
             fragments.add(HomeFragment.newInstance());
             fragments.add(DiscoveryFragment.newInstance());
             fragments.add(UserFragment.newInstance());
@@ -119,26 +116,7 @@ public class MainActivity extends BaseMusicActivity implements
         }
         transaction.commit();
         showFragmentIndex = index;
-        setBarTile();
     }
-
-    private void setBarTile(){
-        switch (showFragmentIndex){
-            case 0:
-                mTitle.setText(R.string.title_home);
-                mTitle.setTextColor(ContextCompat.getColor(getContext(),R.color.grey_light));
-                break;
-            case 1:
-                mTitle.setText(R.string.title_discovery);
-                mTitle.setTextColor(ContextCompat.getColor(getContext(),R.color.bark_blue));
-                break;
-            case 2:
-                mTitle.setText(R.string.title_mine);
-                mTitle.setTextColor(ContextCompat.getColor(getContext(),R.color.bark_blue));
-                break;
-        }
-    }
-
 
     private void resetDefaultIcon() {
         mNavigation.getMenu()

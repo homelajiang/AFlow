@@ -3,15 +3,19 @@ package com.anglll.aflow.ui.music.playlist.detail;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseMusicActivity;
 import com.anglll.aflow.utils.Router;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.Config;
 import org.lineageos.eleven.loaders.LastAddedLoader;
@@ -21,16 +25,23 @@ import org.lineageos.eleven.model.Playlist;
 import org.lineageos.eleven.model.Song;
 import org.lineageos.eleven.sectionadapter.SectionCreator;
 import org.lineageos.eleven.sectionadapter.SectionListContainer;
+import org.lineageos.eleven.utils.MusicUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DetailActivity extends BaseMusicActivity implements
         DetailController.PlayListDetailCallback {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.cover)
+    SimpleDraweeView mCover;
+    @BindView(R.id.toolBar)
+    Toolbar mToolBar;
 
     private DetailController controller = new DetailController(this, null);
     private Playlist playlist;
@@ -40,8 +51,8 @@ public class DetailActivity extends BaseMusicActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playlist_detail);
         ButterKnife.bind(this);
-        initView();
         initData();
+        initView();
     }
 
     private void initData() {
@@ -68,12 +79,29 @@ public class DetailActivity extends BaseMusicActivity implements
     }
 
     private void initView() {
+        setSupportActionBar(mToolBar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(playlist.mPlaylistName);
+        }
         controller.setSpanCount(1);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 1);
         manager.setSpanSizeLookup(controller.getSpanSizeLookup());
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(controller.getAdapter());
+    }
+
+    @OnClick(R.id.floatingActionButton)
+    void playAll() {
+        playPlaylist(playlist, 0);
+    }
+
+    private void updateController(List<Song> songs) {
+        controller.setSongList(songs);
+        if (songs.size() > 0)
+            mCover.setImageURI(MusicUtils.getAlbumUri(songs.get(0).mAlbumId));
+
     }
 
     @Override
@@ -87,11 +115,6 @@ public class DetailActivity extends BaseMusicActivity implements
         playPlaylist(playlist, index);
     }
 
-    @Override
-    public void onPlayAll() {
-        playPlaylist(playlist, 0);
-    }
-
     class UserPlayListCallback implements LoaderManager.LoaderCallbacks<List<Song>> {
 
         @NonNull
@@ -102,7 +125,7 @@ public class DetailActivity extends BaseMusicActivity implements
 
         @Override
         public void onLoadFinished(@NonNull Loader<List<Song>> loader, List<Song> data) {
-            controller.setSongList(data);
+            updateController(data);
         }
 
         @Override
@@ -144,7 +167,7 @@ public class DetailActivity extends BaseMusicActivity implements
 
         @Override
         public void onLoadFinished(@NonNull Loader<SectionListContainer<Song>> loader, SectionListContainer<Song> data) {
-            controller.setSongList(data.mListResults);
+            updateController(data.mListResults);
         }
 
         @Override

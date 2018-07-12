@@ -25,4 +25,17 @@
         <!--圆角程度比例 (0-1) -->
         <attr name="beeIvRoundCorner" format="float" />
     </declare-styleable>
+
+    <declare-styleable name="BeeFrameLayout">
+        <!--是否有边框，默认无-->
+        <attr name="beeFlHasBorder" format="boolean" />
+        <!--边框颜色-->
+        <attr name="beeFlBorderColor" format="color|reference" />
+        <!--边框宽度-->
+        <attr name="beeFlBorderWidth" format="dimension|reference" />
+        <!--间距宽度-->
+        <attr name="beeFlSpaceWidth" format="dimension|reference" />
+        <!--圆角程度比例 (0-1) -->
+        <attr name="beeFlRoundCorner" format="float" />
+    </declare-styleable>
 </resources>

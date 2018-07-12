@@ -1,15 +1,16 @@
 package com.anglll.aflow.ui.music.playlist;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.anglll.aflow.R;
@@ -29,14 +30,10 @@ public class PlayListActivity extends BaseMusicActivity implements
         LoaderManager.LoaderCallbacks<List<Playlist>>, PlayListController.MusicPlayListCallback {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    @BindView(R.id.title_left)
-    AppCompatImageButton mTitleLeft;
-    @BindView(R.id.title)
-    TextView mTitle;
-    @BindView(R.id.sub_title)
-    TextView mSubTitle;
-    @BindView(R.id.title_right)
-    AppCompatImageButton mTitleRight;
+    @BindView(R.id.toolBar)
+    Toolbar mToolBar;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBar;
 
     private PlayListController controller = new PlayListController(this, null);
     private List<Playlist> playLists;
@@ -50,7 +47,11 @@ public class PlayListActivity extends BaseMusicActivity implements
     }
 
     private void initView() {
-        mTitle.setText(R.string.playlist);
+        setSupportActionBar(mToolBar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(R.string.playlist);
+        }
         controller.setSpanCount(1);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 1);
         manager.setSpanSizeLookup(controller.getSpanSizeLookup());

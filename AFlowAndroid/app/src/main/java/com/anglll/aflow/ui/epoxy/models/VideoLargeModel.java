@@ -1,5 +1,6 @@
 package com.anglll.aflow.ui.epoxy.models;
 
+import android.net.Uri;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
@@ -13,7 +14,6 @@ import com.anglll.aflow.base.BaseEpoxyHolder;
 import com.anglll.aflow.data.model.Feed;
 import com.anglll.aflow.utils.FuzzyDateFormatter;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.fresco.helper.Phoenix;
 
 import butterknife.BindView;
 
@@ -52,8 +52,8 @@ public abstract class VideoLargeModel extends EpoxyModelWithHolder<VideoLargeMod
 
         @Override
         protected void bindData(Feed data) {
-            Phoenix.with(mAvatar).load(data.getOwner().getAvatar());
-            Phoenix.with(mCover).load(data.getCover());
+            mAvatar.setImageURI(Uri.parse(data.getOwner().getAvatar()));
+            mCover.setImageURI(Uri.parse(data.getCover()));
             mOwnerName.setText(data.getOwner().getName());
             String content;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {

@@ -84,6 +84,7 @@
         android:layout_marginBottom="30dp">
 
         <com.anglll.beelayout.BeeImageView
+            android:id="@+id/bee_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -91,6 +92,11 @@
             app:beeBorderWidth="2dp"
             app:beeHasBorder="true"
             app:beeSpaceWidth="6dp" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/simpleDraweeView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <com.anglll.beelayout.BeeLayout
             android:id="@+id/bee_layout"

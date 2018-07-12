@@ -1,9 +1,6 @@
 package com.anglll.aflow.ui.epoxy.models;
 
 import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.airbnb.epoxy.EpoxyAttribute;
@@ -13,7 +10,6 @@ import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseEpoxyHolder;
 import com.anglll.aflow.ui.music.playlist.PlayListController;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.fresco.helper.Phoenix;
 
 import org.lineageos.eleven.model.Playlist;
 

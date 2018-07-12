@@ -12,17 +12,18 @@ import com.facebook.common.executors.UiThreadImmediateExecutorService;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.fresco.helper.Phoenix;
+import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
 import com.facebook.imagepipeline.core.ImagePipeline;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
 import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.squareup.leakcanary.LeakCanary;
 
-
 import org.lineageos.eleven.AlbumCoverGetter;
 import org.lineageos.eleven.MusicPlaybackService;
 
+import okhttp3.OkHttpClient;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -71,7 +72,11 @@ public class AFApplication extends Application {
     }
 
     private void initFresco() {
-        Phoenix.init(this, PhoenixConfig.get(this).getImagePipelineConfig());
+        OkHttpClient client = new OkHttpClient();
+        ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
+                .newBuilder(this,client)
+                .build();
+        Fresco.initialize(this, config);
         //初始化图片加载器
         MusicPlaybackService.setAlbumCoverGetter(new AlbumCoverGetter() {
             @Override

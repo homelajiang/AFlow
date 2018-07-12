@@ -2,9 +2,7 @@ package com.anglll.aflow.ui.music.playlist.detail;
 
 import android.support.v7.widget.RecyclerView;
 
-import com.airbnb.epoxy.AutoModel;
 import com.airbnb.epoxy.EpoxyController;
-import com.anglll.aflow.ui.epoxy.models.MusicPlayListHeaderModel_;
 import com.anglll.aflow.ui.epoxy.models.MusicPlayListItemModel_;
 
 import org.lineageos.eleven.model.Playlist;
@@ -21,8 +19,6 @@ public class DetailController extends EpoxyController {
     public Playlist playlist;
     public List<Song> songList = Collections.emptyList();
     public Song firstSong = null;
-    @AutoModel
-    MusicPlayListHeaderModel_ mHeader;
 
     DetailController(PlayListDetailCallback callback, RecyclerView.RecycledViewPool recycledViewPool) {
         this.callback = callback;
@@ -48,12 +44,6 @@ public class DetailController extends EpoxyController {
     @Override
     protected void buildModels() {
 
-        mHeader
-                .song(firstSong)
-                .callback(callback)
-                .playlist(playlist)
-                .addTo(this);
-
         int playingIndex = MusicUtils.getQueuePosition();
         for (int i = 0; i < songList.size(); i++) {
             add(new MusicPlayListItemModel_()
@@ -63,14 +53,10 @@ public class DetailController extends EpoxyController {
                     .playing(playingIndex == i)
                     .song(songList.get(i)));
         }
-
-
     }
 
 
     public interface PlayListDetailCallback {
         void onPlayPlayList(int index);
-
-        void onPlayAll();
     }
 }

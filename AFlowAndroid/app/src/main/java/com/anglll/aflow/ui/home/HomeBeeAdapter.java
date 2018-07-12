@@ -87,8 +87,6 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
 
     public void updateMeta() {
         notifyItemChanged(5);
-        notifyItemChanged(2);
-
     }
 
     public void updateController() {

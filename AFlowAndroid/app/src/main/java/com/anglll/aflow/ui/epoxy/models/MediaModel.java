@@ -1,5 +1,6 @@
 package com.anglll.aflow.ui.epoxy.models;
 
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.widget.TextView;
 
@@ -10,7 +11,6 @@ import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseEpoxyHolder;
 import com.anglll.aflow.data.model.Feed;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.fresco.helper.Phoenix;
 
 import butterknife.BindView;
 
@@ -44,7 +44,7 @@ public abstract class MediaModel extends EpoxyModelWithHolder<MediaModel.ViewMod
 
         @Override
         protected void bindData(Feed feed) {
-            Phoenix.with(mCardBg).load(feed.getCover());
+            mCardBg.setImageURI(Uri.parse(feed.getCover()));
             mTitle.setText(feed.getTitle());
             mDes.setText(feed.getDescription());
         }
