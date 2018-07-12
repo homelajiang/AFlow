@@ -93,6 +93,7 @@ public class BeeFrameLayout extends FrameLayout {
         int childMaxSize = (int) (parentSize / (2 * Math.sin(60 * Math.PI / 180) + 1));//子view的大小
 
         float blockR = childMaxSize / 2 - strokeR - spaceWidth / 2;
+        float left = 0, top = 0, right = 0, bottom = 0;
         for (int i = 0; i < 7; i++) {
             int x;
             int y;
@@ -105,12 +106,24 @@ public class BeeFrameLayout extends FrameLayout {
             }
             Path path = new Path();
             for (int j = 0; j < 7; j++) {
+                float x1 = (float) (blockR * Math.cos((30 + j * 60) * Math.PI / 180) + x);
+                float y1 = (float) (blockR * Math.sin((30 + j * 60) * Math.PI / 180) + y);
                 if (j == 0) {
-                    path.moveTo((float) (blockR * Math.cos((30 + j * 60) * Math.PI / 180) + x),
-                            (float) (blockR * Math.sin((30 + j * 60) * Math.PI / 180) + y));
+                    path.moveTo(x1, y1);
                 } else {
-                    path.lineTo((float) (blockR * Math.cos((30 + j * 60) * Math.PI / 180) + x),
-                            (float) (blockR * Math.sin((30 + j * 60) * Math.PI / 180) + y));
+                    path.lineTo(x1, y1);
+                }
+                if (i == 0 && j == 0) {
+                    right = x1;
+                }
+                if (i == 1 && j == 4) {
+                    top = y1;
+                }
+                if (i == 3 && j == 2) {
+                    left = x1;
+                }
+                if (i == 4 && j == 1) {
+                    bottom = y1;
                 }
             }
             path.close();
@@ -118,10 +131,7 @@ public class BeeFrameLayout extends FrameLayout {
         }
 
         //裁剪背景
-        int save = canvas.saveLayer((float) (getWidth() / 2 - parentSize * Math.sin(60 * Math.PI / 180)),
-                getHeight() / 2 - parentSize,
-                (float) (getWidth() / 2 + parentSize * Math.sin(60 * Math.PI / 180)),
-                getHeight() / 2 + parentSize, null, Canvas.ALL_SAVE_FLAG);
+        int save = canvas.saveLayer(left, top, right, bottom, null, Canvas.ALL_SAVE_FLAG);
 
         super.dispatchDraw(canvas);
 

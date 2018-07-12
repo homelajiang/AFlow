@@ -46,8 +46,6 @@ public class HomeFragment extends BaseFragment implements MusicStateListener {
     AppCompatImageView mIconUmbrella;
     @BindView(R.id.rainfall_probability)
     TextView mRainfallProbability;
-    @BindView(R.id.bee_image)
-    BeeImageView mBeeImage;
     @BindView(R.id.simpleDraweeView)
     SimpleDraweeView mSimpleDraweeView;
     private HomeBeeAdapter adapter;
@@ -109,7 +107,7 @@ public class HomeFragment extends BaseFragment implements MusicStateListener {
         try {
             Uri uri = MusicUtils.getAlbumUri(MusicUtils.getCurrentAlbumId());
             ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
-                    .setPostprocessor(new IterativeBoxBlurPostProcessor(8, 10))
+                    .setPostprocessor(new IterativeBoxBlurPostProcessor(3, 10))
                     .build();
             AbstractDraweeController controller = Fresco.newDraweeControllerBuilder()
                     .setOldController(mSimpleDraweeView.getController())

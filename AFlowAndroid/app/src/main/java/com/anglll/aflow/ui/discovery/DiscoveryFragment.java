@@ -32,7 +32,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.common_recyclerview, container, false);
+        View view = inflater.inflate(R.layout.fregment_discovery, container, false);
         ButterKnife.bind(this, view);
         initView();
         return view;

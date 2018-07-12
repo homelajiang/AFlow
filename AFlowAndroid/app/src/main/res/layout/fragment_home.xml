@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/test_bg"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,10 +14,10 @@
         android:paddingStart="24dp">
 
         <LinearLayout
-            android:paddingTop="12dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingTop="12dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -29,9 +28,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
             android:orientation="vertical">
 
             <TextView
@@ -83,20 +82,21 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp">
 
-        <com.anglll.beelayout.BeeImageView
-            android:id="@+id/bee_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:visibility="gone"
+        <com.anglll.beelayout.BeeFrameLayout
+            app:beeBorderColor="#88eeeeee"
             app:beeBorderWidth="2dp"
-            app:beeHasBorder="true"
-            app:beeSpaceWidth="6dp" />
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/simpleDraweeView"
+            app:beeHasBorder="false"
+            app:beeSpaceWidth="6dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/simpleDraweeView"
+                android:layout_width="match_parent"
+                app:viewAspectRatio="1"
+                android:alpha=".7"
+                android:layout_height="wrap_content" />
+        </com.anglll.beelayout.BeeFrameLayout>
 
         <com.anglll.beelayout.BeeLayout
             android:id="@+id/bee_layout"
