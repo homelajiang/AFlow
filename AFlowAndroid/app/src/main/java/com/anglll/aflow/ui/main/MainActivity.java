@@ -15,6 +15,8 @@ import com.anglll.aflow.base.BaseMusicActivity;
 import com.anglll.aflow.ui.discovery.DiscoveryFragment;
 import com.anglll.aflow.ui.home.HomeFragment;
 import com.anglll.aflow.ui.user.UserFragment;
+import com.anglll.aflow.utils.statusbar.StatusBarUtils;
+import com.jaeger.library.StatusBarUtil;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,7 @@ public class MainActivity extends BaseMusicActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        StatusBarUtils.setImmersiveStatusBar(this,true);
         initView(savedInstanceState);
     }
 

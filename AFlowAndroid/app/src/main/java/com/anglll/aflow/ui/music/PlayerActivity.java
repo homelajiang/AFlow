@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseActivity;
 import com.anglll.aflow.ui.dialog.NowPlayingDialog;
+import com.anglll.aflow.utils.statusbar.StatusBarUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.MusicPlaybackService;

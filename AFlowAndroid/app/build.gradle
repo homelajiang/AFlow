@@ -52,7 +52,6 @@ dependencies {
     implementation 'com.airbnb.android:epoxy:2.12.0'
     // Add the annotation processor if you are using Epoxy's annotations (recommended)
     annotationProcessor 'com.airbnb.android:epoxy-processor:2.12.0'
-    implementation 'com.jaeger.statusbarutil:library:1.4.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     implementation 'com.android.support:cardview-v7:27.1.1'
@@ -60,6 +59,7 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:1.5.0'
     implementation 'com.facebook.fresco:imagepipeline-okhttp3:1.5.0'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.jaeger.statusbarutil:library:1.5.1'
     implementation project(':beeLayout')
     implementation project(':eleven')
 }

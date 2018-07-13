@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseMusicActivity;
 import com.anglll.aflow.utils.Router;
+import com.anglll.aflow.utils.statusbar.StatusBarUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.Config;

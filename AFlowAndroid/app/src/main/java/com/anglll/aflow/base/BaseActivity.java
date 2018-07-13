@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -38,6 +39,15 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         if (mCompositeDisposable != null)
             mCompositeDisposable.clear();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     protected Disposable subscribeEvents() {

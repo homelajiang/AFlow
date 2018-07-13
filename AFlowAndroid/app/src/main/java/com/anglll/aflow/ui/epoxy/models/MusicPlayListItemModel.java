@@ -2,7 +2,9 @@ package com.anglll.aflow.ui.epoxy.models;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airbnb.epoxy.EpoxyAttribute;
@@ -43,6 +45,8 @@ public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicP
         TextView mSubTitle;
         @BindView(R.id.more)
         ImageButton mMore;
+        @BindView(R.id.speaker)
+        ImageView mSpeaker;
         private int index;
 
         @OnClick(R.id.item_layout)
@@ -63,9 +67,11 @@ public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicP
             mIndex.setText(String.valueOf(index + 1));
 
             if (playing) {
-                mIndex.setBackgroundColor(Color.YELLOW);
+                mSpeaker.setVisibility(View.VISIBLE);
+                mIndex.setVisibility(View.INVISIBLE);
             } else {
-                mIndex.setBackgroundColor(Color.WHITE);
+                mSpeaker.setVisibility(View.GONE);
+                mIndex.setVisibility(View.VISIBLE);
             }
         }
     }
