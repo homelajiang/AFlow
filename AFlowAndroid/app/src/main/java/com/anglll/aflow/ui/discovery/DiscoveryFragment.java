@@ -40,7 +40,7 @@ public class DiscoveryFragment extends BaseFragment implements DiscoveryContract
 
     @Override
     protected void lazyInit() {
-        presenter.getActivity();
+//        presenter.getActivity();
         presenter.getFeedList();
     }
 

@@ -38,6 +38,8 @@ public class MainActivity extends BaseMusicActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+//        StatusBarUtil.setTranslucentForImageViewInFragment(this, 0, null);
+//        StatusBarUtil.setColor(this,ContextCompat.getColor(this,R.color.colorPrimary),255);
         StatusBarUtils.setImmersiveStatusBar(this,true);
         initView(savedInstanceState);
     }
