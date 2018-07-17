@@ -37,20 +37,21 @@ public class DetailController extends EpoxyController {
         requestModelBuild();
     }
 
-    public void updateCurrentSongPosition(){
+    public void updateCurrentSongPosition() {
         requestModelBuild();
     }
 
     @Override
     protected void buildModels() {
 
-        int playingIndex = MusicUtils.getQueuePosition();
+        // TODO: 2018/7/17 0017 播放位置计算不正确，不能使用当前列表的position
+//        int playingIndex = MusicUtils.getQueuePosition();
         for (int i = 0; i < songList.size(); i++) {
             add(new MusicPlayListItemModel_()
                     .callback(callback)
                     .id(i)
                     .index(i)
-                    .playing(playingIndex == i)
+//                    .playing(playingIndex == i)
                     .song(songList.get(i)));
         }
     }

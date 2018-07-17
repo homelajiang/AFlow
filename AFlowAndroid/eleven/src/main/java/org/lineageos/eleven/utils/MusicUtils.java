@@ -44,6 +44,7 @@ import org.lineageos.eleven.IElevenService;
 import org.lineageos.eleven.MusicPlaybackService;
 import org.lineageos.eleven.R;
 import org.lineageos.eleven.loaders.LastAddedLoader;
+import org.lineageos.eleven.loaders.LocalSongLoader;
 import org.lineageos.eleven.loaders.PlaylistSongLoader;
 import org.lineageos.eleven.loaders.SongLoader;
 import org.lineageos.eleven.loaders.TopTracksLoader;
@@ -1429,6 +1430,8 @@ public final class MusicUtils {
         Cursor cursor = null;
         try {
             switch (type) {
+                case LocalSong:
+                    cursor = LocalSongLoader.makeLocalSongCursor(context);
                 case LastAdded:
                     cursor = LastAddedLoader.makeLastAddedCursor(context);
                     break;
@@ -1758,7 +1761,7 @@ public final class MusicUtils {
         return str.toString();
     }
 
-    public static Uri getAlbumUri(long albumId){
+    public static Uri getAlbumUri(long albumId) {
         return ContentUris
                 .withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId);
     }

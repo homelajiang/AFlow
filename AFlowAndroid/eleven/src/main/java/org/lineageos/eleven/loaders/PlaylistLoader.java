@@ -90,6 +90,11 @@ public class PlaylistLoader extends WrappedAsyncTaskLoader<List<Playlist>> {
     private void makeDefaultPlaylists() {
         final Resources resources = getContext().getResources();
 
+        /* Local Music list*/
+        final Playlist localMusic = new Playlist(SmartPlaylistType.LocalSong.mId,
+                resources.getString(SmartPlaylistType.LocalSong.mTitleId), -1);
+        mPlaylistList.add(localMusic);
+
         /* Last added list */
         final Playlist lastAdded = new Playlist(SmartPlaylistType.LastAdded.mId,
                 resources.getString(SmartPlaylistType.LastAdded.mTitleId), -1);
@@ -114,7 +119,7 @@ public class PlaylistLoader extends WrappedAsyncTaskLoader<List<Playlist>> {
      */
     public static final Cursor makePlaylistCursor(final Context context) {
         return context.getContentResolver().query(MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI,
-                new String[] {
+                new String[]{
                         /* 0 */
                         BaseColumns._ID,
                         /* 1 */

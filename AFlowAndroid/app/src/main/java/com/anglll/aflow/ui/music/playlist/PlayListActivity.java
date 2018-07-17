@@ -52,15 +52,13 @@ public class PlayListActivity extends BaseMusicActivity implements
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(R.string.playlist);
         }
-        controller.setSpanCount(1);
-        GridLayoutManager manager = new GridLayoutManager(getContext(), 1);
+        controller.setSpanCount(2);
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
         manager.setSpanSizeLookup(controller.getSpanSizeLookup());
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addItemDecoration(new DefaultDecoration(
-                getContext().getResources().getDimensionPixelOffset(R.dimen.divider_playlist_card),
-                getContext().getResources().getDimensionPixelOffset(R.dimen.divider_playlist_card),
-                DefaultDecoration.COLOR_NO
+        mRecyclerView.addItemDecoration(new PlayListDecoration(
+                getContext().getResources().getDimensionPixelOffset(R.dimen.divider_playlist_card)
         ));
         mRecyclerView.setAdapter(controller.getAdapter());
 

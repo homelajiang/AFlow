@@ -56,7 +56,9 @@ public final class Config {
      */
     public static final String ALBUM_YEAR = "album_year";
 
-    /** number of songs in a album or track list */
+    /**
+     * number of songs in a album or track list
+     */
     public static final String SONG_COUNT = "song_count";
 
     /**
@@ -80,9 +82,10 @@ public final class Config {
     public static final int SEARCH_NUM_RESULTS_TO_GET = 3;
 
     public static enum SmartPlaylistType {
-        LastAdded(-1, R.string.playlist_last_added),
-        RecentlyPlayed(-2, R.string.playlist_recently_played),
-        TopTracks(-3, R.string.playlist_top_tracks);
+        LocalSong(-1, R.string.playlist_local_music),
+        LastAdded(-2, R.string.playlist_last_added),
+        RecentlyPlayed(-3, R.string.playlist_recently_played),
+        TopTracks(-4, R.string.playlist_top_tracks);
 
         public long mId;
         public int mTitleId;

@@ -67,6 +67,7 @@
   <string name="sort_order_entry_number_of_albums">专辑数量</string>
   <string name="sort_order_entry_filename">文件名</string>
   <!-- Default playlist names -->
+  <string name="playlist_local_music">本地音乐</string>
   <string name="playlist_last_added">最后添加</string>
   <string name="playlist_recently_played">最近播放</string>
   <string name="playlist_top_tracks">我的热门曲目</string>

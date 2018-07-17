@@ -3,8 +3,6 @@ package com.anglll.aflow.ui.music.playlist.detail;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,11 +13,11 @@ import android.support.v7.widget.Toolbar;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseMusicActivity;
 import com.anglll.aflow.utils.Router;
-import com.anglll.aflow.utils.statusbar.StatusBarUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.Config;
 import org.lineageos.eleven.loaders.LastAddedLoader;
+import org.lineageos.eleven.loaders.LocalSongLoader;
 import org.lineageos.eleven.loaders.PlaylistSongLoader;
 import org.lineageos.eleven.loaders.TopTracksLoader;
 import org.lineageos.eleven.model.Playlist;
@@ -28,7 +26,6 @@ import org.lineageos.eleven.sectionadapter.SectionCreator;
 import org.lineageos.eleven.sectionadapter.SectionListContainer;
 import org.lineageos.eleven.utils.MusicUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -147,8 +144,12 @@ public class DetailActivity extends BaseMusicActivity implements
         @Override
         public Loader<SectionListContainer<Song>> onCreateLoader(int id, @Nullable Bundle args) {
             switch (type) {
+                case LocalSong: {
+                    LocalSongLoader loader = new LocalSongLoader(getContext());
+                    return new SectionCreator<Song>(getContext(), loader, null);
+                }
                 case LastAdded: {
-                    LastAddedLoader loader = new LastAddedLoader(DetailActivity.this);
+                    LastAddedLoader loader = new LastAddedLoader(getContext());
                     return new SectionCreator<Song>(getContext(), loader, null);
                 }
                 case RecentlyPlayed: {

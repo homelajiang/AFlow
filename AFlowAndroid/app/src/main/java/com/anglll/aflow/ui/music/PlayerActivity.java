@@ -97,6 +97,7 @@ public class PlayerActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtils.setImmersiveStatusBar(this,true);
         setContentView(R.layout.activity_music_play);
         ButterKnife.bind(this);
         initView();
