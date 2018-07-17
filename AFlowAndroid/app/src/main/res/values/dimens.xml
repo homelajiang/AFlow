@@ -16,4 +16,5 @@
     <dimen name="divider_playlist_card">16dp</dimen>
     <item name="video_ratio_normal" format="float" type="dimen">1.78</item>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="statusbar_view_height">0dp</dimen>
 </resources>
