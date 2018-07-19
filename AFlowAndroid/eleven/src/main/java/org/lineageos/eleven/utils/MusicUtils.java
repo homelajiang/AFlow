@@ -50,6 +50,7 @@ import org.lineageos.eleven.loaders.SongLoader;
 import org.lineageos.eleven.loaders.TopTracksLoader;
 import org.lineageos.eleven.locale.LocaleUtils;
 import org.lineageos.eleven.model.AlbumArtistDetails;
+import org.lineageos.eleven.model.Song;
 import org.lineageos.eleven.provider.RecentStore;
 import org.lineageos.eleven.provider.SongPlayCount;
 import org.lineageos.eleven.service.MusicPlaybackTrack;
@@ -1305,6 +1306,60 @@ public final class MusicUtils {
         }
 
         return 0;
+    }
+
+    /**
+     * get the playlist cover song
+     *
+     * @param context
+     * @param playlistId
+     * @return
+     */
+    public static final Song getCoverSong(final Context context, final long playlistId) {
+        Cursor cursor = PlaylistSongLoader.makePlaylistSongCursor(context, playlistId);
+        Song song = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            // Copy the song Id
+            final long id = cursor.getLong(cursor
+                    .getColumnIndexOrThrow(MediaStore.Audio.Playlists.Members.AUDIO_ID));
+
+            // Copy the song name
+            final String songName = cursor.getString(cursor
+                    .getColumnIndexOrThrow(AudioColumns.TITLE));
+
+            // Copy the artist name
+            final String artist = cursor.getString(cursor
+                    .getColumnIndexOrThrow(AudioColumns.ARTIST));
+
+            // Copy the album id
+            final long albumId = cursor.getLong(cursor
+                    .getColumnIndexOrThrow(AudioColumns.ALBUM_ID));
+
+            // Copy the album name
+            final String album = cursor.getString(cursor
+                    .getColumnIndexOrThrow(AudioColumns.ALBUM));
+
+            // Copy the duration
+            final long duration = cursor.getLong(cursor
+                    .getColumnIndexOrThrow(AudioColumns.DURATION));
+
+            // Convert the duration into seconds
+            final int durationInSecs = (int) duration / 1000;
+
+            // Grab the Song Year
+            final int year = cursor.getInt(cursor
+                    .getColumnIndexOrThrow(AudioColumns.YEAR));
+
+            // Create a new song
+            song = new Song(id, songName, artist, album, albumId, durationInSecs, year);
+        }
+        // Close the cursor
+        if (cursor != null) {
+            cursor.close();
+            cursor = null;
+        }
+        return song;
+
     }
 
     public static final AlbumArtistDetails getAlbumArtDetails(final Context context, final long trackId) {

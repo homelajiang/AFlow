@@ -74,7 +74,7 @@ public class AFApplication extends Application {
     private void initFresco() {
         OkHttpClient client = new OkHttpClient();
         ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
-                .newBuilder(this,client)
+                .newBuilder(this, client)
                 .build();
         Fresco.initialize(this, config);
         //初始化图片加载器

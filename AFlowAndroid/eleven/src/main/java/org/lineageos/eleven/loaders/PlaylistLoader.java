@@ -22,6 +22,7 @@ import android.provider.MediaStore.Audio.PlaylistsColumns;
 
 import org.lineageos.eleven.Config.SmartPlaylistType;
 import org.lineageos.eleven.model.Playlist;
+import org.lineageos.eleven.model.Song;
 import org.lineageos.eleven.utils.Lists;
 import org.lineageos.eleven.utils.MusicUtils;
 
@@ -71,8 +72,11 @@ public class PlaylistLoader extends WrappedAsyncTaskLoader<List<Playlist>> {
 
                 final int songCount = MusicUtils.getSongCountForPlaylist(getContext(), id);
 
+                final Song song = MusicUtils.getCoverSong(getContext(), id);
+
                 // Create a new playlist
                 final Playlist playlist = new Playlist(id, name, songCount);
+                playlist.coverSong = song;
 
                 // Add everything up
                 mPlaylistList.add(playlist);

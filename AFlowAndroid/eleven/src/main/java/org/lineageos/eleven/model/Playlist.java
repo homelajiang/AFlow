@@ -38,9 +38,14 @@ public class Playlist {
     public int mSongCount;
 
     /**
+     * The song of the playlist cover
+     */
+    public Song coverSong;
+
+    /**
      * Constructor of <code>Genre</code>
      *
-     * @param playlistId The Id of the playlist
+     * @param playlistId   The Id of the playlist
      * @param playlistName The playlist name
      */
     public Playlist(final long playlistId, final String playlistName, final int songCount) {
@@ -77,7 +82,7 @@ public class Playlist {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Playlist other = (Playlist)obj;
+        final Playlist other = (Playlist) obj;
         if (mPlaylistId != other.mPlaylistId) {
             return false;
         }

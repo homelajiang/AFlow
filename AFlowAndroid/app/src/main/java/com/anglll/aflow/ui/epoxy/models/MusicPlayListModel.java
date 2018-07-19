@@ -12,6 +12,7 @@ import com.anglll.aflow.ui.music.playlist.PlayListController;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.model.Playlist;
+import org.lineageos.eleven.utils.BitmapWithColors;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -52,6 +53,8 @@ public abstract class MusicPlayListModel extends EpoxyModelWithHolder<MusicPlayL
             mTitle.setText(playlist.mPlaylistName);
             String temp = context.getString(R.string.playlist_song_count);
             mSummary.setText(String.format(temp, playlist.mSongCount));
+/*            BitmapWithColors bitmapWithColors =
+                    new BitmapWithColors(bitmap, key.hashCode());*/
         }
     }
 }
