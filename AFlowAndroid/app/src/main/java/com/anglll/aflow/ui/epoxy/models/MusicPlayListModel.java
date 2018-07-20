@@ -13,6 +13,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.model.Playlist;
 import org.lineageos.eleven.utils.BitmapWithColors;
+import org.lineageos.eleven.utils.MusicUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,6 +54,8 @@ public abstract class MusicPlayListModel extends EpoxyModelWithHolder<MusicPlayL
             mTitle.setText(playlist.mPlaylistName);
             String temp = context.getString(R.string.playlist_song_count);
             mSummary.setText(String.format(temp, playlist.mSongCount));
+            if (playlist.coverSong != null)
+                mBg.setImageURI(MusicUtils.getAlbumUri(playlist.coverSong.mAlbumId));
 /*            BitmapWithColors bitmapWithColors =
                     new BitmapWithColors(bitmap, key.hashCode());*/
         }

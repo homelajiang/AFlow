@@ -1,7 +1,6 @@
 package com.anglll.aflow.ui.epoxy.models;
 
 import android.support.annotation.NonNull;
-import android.support.constraint.Guideline;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,7 +25,7 @@ public abstract class MusicPlayListLiteModel extends EpoxyModelWithHolder<MusicP
 
     @Override
     public void bind(@NonNull ViewHolder holder) {
-        super.bind(holder);
+        holder.bindData(playlist);
     }
 
     @Override

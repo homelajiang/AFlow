@@ -1487,6 +1487,7 @@ public final class MusicUtils {
             switch (type) {
                 case LocalSong:
                     cursor = LocalSongLoader.makeLocalSongCursor(context);
+                    break;
                 case LastAdded:
                     cursor = LastAddedLoader.makeLastAddedCursor(context);
                     break;
