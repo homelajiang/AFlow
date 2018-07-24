@@ -23,22 +23,14 @@ public class PlayListController extends TypedEpoxyController<List<Playlist>> {
 
     @Override
     protected void buildModels(List<Playlist> data) {
-        if (data == null || data.size() < 4)
+        if (data == null)
             return;
-        for (int i = 0; i < data.size(); i++) {
-            Playlist playlist = data.get(i);
-            if (i < 4) {
-                //添加固定的4个播放列表
-                add(new MusicPlayListLiteModel_()
-                        .id(playlist.mPlaylistId)
-                        .callback(callback)
-                        .playlist(playlist));
-            } else {
-                add(new MusicPlayListModel_()
-                        .id(data.get(i).mPlaylistId)
-                        .callback(callback)
-                        .playlist(data.get(i)));
-            }
+
+        for (Playlist playlist : data) {
+            add(new MusicPlayListModel_()
+                    .id(playlist.mPlaylistId)
+                    .callback(callback)
+                    .playlist(playlist));
         }
     }
 

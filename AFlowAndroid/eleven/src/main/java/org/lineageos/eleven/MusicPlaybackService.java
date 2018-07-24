@@ -616,7 +616,7 @@ public class MusicPlaybackService extends Service {
         //for Android O
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channel_id,
-                    "wecubics", NotificationManager.IMPORTANCE_MIN);
+                    "anglll", NotificationManager.IMPORTANCE_MIN);
             channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);//设置是否应在锁定屏幕上显示此频道的通知
             channel.setDescription("音乐");//设置渠道描述
             mNotificationManager.createNotificationChannel(channel);
@@ -1662,7 +1662,7 @@ public class MusicPlaybackService extends Service {
                 .setMediaSession(mSession.getSessionToken())
                 .setShowActionsInCompactView(0, 1, 2);
 
-        Intent nowPlayingIntent = new Intent("org.lineageos.eleven.AUDIO_PLAYER")
+        Intent nowPlayingIntent = new Intent("com.anglll.AUDIO_PLAYER")
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent clickIntent = PendingIntent.getActivity(this, 0, nowPlayingIntent, 0);
 

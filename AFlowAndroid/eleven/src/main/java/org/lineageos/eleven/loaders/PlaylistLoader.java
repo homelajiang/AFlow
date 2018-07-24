@@ -95,24 +95,23 @@ public class PlaylistLoader extends WrappedAsyncTaskLoader<List<Playlist>> {
         final Resources resources = getContext().getResources();
 
         /* Local Music list*/
-        final Playlist localMusic = new Playlist(SmartPlaylistType.LocalSong.mId,
-                resources.getString(SmartPlaylistType.LocalSong.mTitleId), -1);
-        mPlaylistList.add(localMusic);
+        mPlaylistList.add(MusicUtils.getCountAndCoverForSmartPlaylist(getContext(),SmartPlaylistType.LocalSong));
 
-        /* Last added list */
+        //不显示最后添加
+
+        /*        *//* Last added list *//*
         final Playlist lastAdded = new Playlist(SmartPlaylistType.LastAdded.mId,
                 resources.getString(SmartPlaylistType.LastAdded.mTitleId), -1);
-        mPlaylistList.add(lastAdded);
+        mPlaylistList.add(lastAdded);*/
 
         /* Recently Played */
-        final Playlist recentlyPlayed = new Playlist(SmartPlaylistType.RecentlyPlayed.mId,
-                resources.getString(SmartPlaylistType.RecentlyPlayed.mTitleId), -1);
-        mPlaylistList.add(recentlyPlayed);
+        mPlaylistList.add(MusicUtils.getCountAndCoverForSmartPlaylist(getContext(),SmartPlaylistType.RecentlyPlayed));
 
-        /* Top Tracks */
+        //不显示热门歌曲
+        /*        *//* Top Tracks *//*
         final Playlist topTracks = new Playlist(SmartPlaylistType.TopTracks.mId,
                 resources.getString(SmartPlaylistType.TopTracks.mTitleId), -1);
-        mPlaylistList.add(topTracks);
+        mPlaylistList.add(topTracks);*/
     }
 
     /**

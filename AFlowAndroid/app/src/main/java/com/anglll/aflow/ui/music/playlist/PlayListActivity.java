@@ -11,6 +11,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.TextView;
 
 import com.anglll.aflow.R;
@@ -67,6 +69,12 @@ public class PlayListActivity extends BaseMusicActivity implements
 
     private void updateController() {
         controller.setData(playLists);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        new MenuInflater(this).inflate(R.menu.playlist, menu);
+        return true;
     }
 
     @NonNull

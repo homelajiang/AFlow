@@ -50,6 +50,7 @@ import org.lineageos.eleven.loaders.SongLoader;
 import org.lineageos.eleven.loaders.TopTracksLoader;
 import org.lineageos.eleven.locale.LocaleUtils;
 import org.lineageos.eleven.model.AlbumArtistDetails;
+import org.lineageos.eleven.model.Playlist;
 import org.lineageos.eleven.model.Song;
 import org.lineageos.eleven.provider.RecentStore;
 import org.lineageos.eleven.provider.SongPlayCount;
@@ -131,6 +132,53 @@ public final class MusicUtils {
         if (mConnectionMap.isEmpty()) {
             mService = null;
         }
+    }
+
+    /**
+     * 返回带歌曲数量和歌曲封面的播放列表
+     *
+     * @param context
+     * @param type
+     * @return
+     */
+    public static Playlist getCountAndCoverForSmartPlaylist(Context context, SmartPlaylistType type) {
+        Cursor cursor = null;
+        int count = 0;
+        Song song = null;
+        Playlist playlist = new Playlist(type.mId, context.getString(type.mTitleId), -1);
+        switch (type) {
+            case LocalSong:
+                cursor = LocalSongLoader.makeLocalSongCursor(context);
+                break;
+            case LastAdded:
+                break;
+            case RecentlyPlayed:
+                cursor = TopTracksLoader.makeRecentTracksCursor(context);
+                break;
+            case TopTracks:
+                break;
+        }
+
+        if (cursor != null && cursor.moveToFirst()) {
+            final long duration = cursor.getLong(5);
+            // Create a new song
+            song = new Song(cursor.getLong(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(4),
+                    cursor.getLong(3),
+                    (int) duration / 1000,
+                    cursor.getInt(6));
+            count = cursor.getCount();
+            playlist.coverSong = song;
+            playlist.mSongCount = count;
+        }
+
+        if (cursor != null) {
+            cursor.close();
+            cursor = null;
+        }
+        return playlist;
     }
 
     public static final class ServiceBinder implements ServiceConnection {
