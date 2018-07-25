@@ -7,10 +7,11 @@
     <!--<color name="colorPrimaryDark">@color/white</color>-->
     <!--<color name="colorAccent">#fd4c5b</color>-->
     <color name="black">#000000</color>
-    <color name="grey">#aaaaaa</color>
+    <color name="grey_">#aaaaaa</color>
+    <color name="grey_dark">#666666</color>
     <color name="grey_light">#eeeeee</color>
     <color name="bark_blue">#333355</color>
-    <color name="grey_bule">#929caf</color>
+    <color name="grey_blue">#929caf</color>
     <color name="text_black">#333333</color>
     <color name="warm_pink">#fd4b7d</color>
     <color name="white_light">#f8f8f8</color>

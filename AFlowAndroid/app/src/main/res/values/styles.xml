@@ -22,7 +22,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/bark_blue</item>
     </style>
 
@@ -50,7 +50,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/grey_bule</item>
+        <item name="android:textColor">@color/grey_blue</item>
     </style>
 
     <style name="SongDescription">

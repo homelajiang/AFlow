@@ -1,5 +1,6 @@
 package com.anglll.aflow.ui.dialog;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -56,10 +59,10 @@ public class NowPlayingDialog extends BottomSheetDialogFragment implements
     private MusicUtils.ServiceToken mToken;
     private LinearLayoutManager manager;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_now_playing, container, false);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        View view = View.inflate(getContext(),R.layout.dialog_now_playing,null);
         ButterKnife.bind(this, view);
         controller =
                 new NowPlayingController(this);
@@ -67,7 +70,12 @@ public class NowPlayingDialog extends BottomSheetDialogFragment implements
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(controller.getAdapter());
-        return view;
+        dialog.setContentView(view);
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.6);
+        view.setLayoutParams(layoutParams);
+        BottomSheetBehavior.from((View) view.getParent());
+        return dialog;
     }
 
     @Override

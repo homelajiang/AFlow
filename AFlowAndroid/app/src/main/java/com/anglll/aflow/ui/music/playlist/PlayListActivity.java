@@ -59,9 +59,9 @@ public class PlayListActivity extends BaseMusicActivity implements
         manager.setSpanSizeLookup(controller.getSpanSizeLookup());
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addItemDecoration(new PlayListDecoration(
-                getContext().getResources().getDimensionPixelOffset(R.dimen.divider_playlist_card)
-        ));
+        mRecyclerView.addItemDecoration(new DefaultDecoration(getContext().getResources().getDimensionPixelOffset(R.dimen.divider_playlist_card),
+                getContext().getResources().getDimensionPixelOffset(R.dimen.divider_playlist_card),
+                DefaultDecoration.COLOR_NO));
         mRecyclerView.setAdapter(controller.getAdapter());
 
         initLoader(2, null, this);
@@ -73,7 +73,8 @@ public class PlayListActivity extends BaseMusicActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        new MenuInflater(this).inflate(R.menu.playlist, menu);
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.playlist, menu);
         return true;
     }
 

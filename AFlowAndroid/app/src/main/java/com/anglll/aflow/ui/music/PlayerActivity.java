@@ -13,8 +13,16 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -22,8 +30,10 @@ import android.widget.TextView;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseActivity;
+import com.anglll.aflow.ui.dialog.MenuDialog;
 import com.anglll.aflow.ui.dialog.NowPlayingDialog;
 import com.anglll.aflow.utils.statusbar.StatusBarUtils;
+import com.anglll.aflow.widget.menu.ActionMenu;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.MusicPlaybackService;
@@ -97,7 +107,7 @@ public class PlayerActivity extends BaseActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtils.setImmersiveStatusBar(this,true);
+        StatusBarUtils.setImmersiveStatusBar(this, true);
         setContentView(R.layout.activity_music_play);
         ButterKnife.bind(this);
         initView();
@@ -216,9 +226,13 @@ public class PlayerActivity extends BaseActivity implements
         }
     }
 
-    @OnClick({R.id.play_pre, R.id.play_or_pause, R.id.play_next, R.id.track_list, R.id.add_to_playlist, R.id.play_mode, R.id.share, R.id.more})
+    @OnClick({R.id.play_pre, R.id.play_or_pause, R.id.play_next, R.id.track_list,
+            R.id.add_to_playlist, R.id.play_mode, R.id.share, R.id.more, R.id.title_left})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.title_left:
+                finish();
+                break;
             case R.id.play_pre:
                 MusicUtils.previous(this, false);
                 break;
@@ -238,6 +252,18 @@ public class PlayerActivity extends BaseActivity implements
                 updateRepeatAndShuffleStatus();
                 break;
             case R.id.share:
+                ActionMenu menu = new ActionMenu(getContext());
+                getMenuInflater().inflate(R.menu.playlist_action, menu);
+                new MenuDialog()
+                        .setMenu(menu)
+                        .setOnMenuSelectedCallback(new MenuDialog.MenuClickCallback() {
+                            @Override
+                            public void onMenuItemClick(MenuItem menuItem) {
+
+                                TT(menuItem.getTitle().toString());
+                            }
+                        })
+                        .show(getSupportFragmentManager(), "playlist");
                 break;
             case R.id.more:
                 break;
