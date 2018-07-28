@@ -41,5 +41,7 @@ public class PlayListController extends TypedEpoxyController<List<Playlist>> {
 
     public interface MusicPlayListCallback {
         void onPlayListClick(Playlist playlist);
+
+        void showPlayListMenu(Playlist playlist);
     }
 }

@@ -40,7 +40,7 @@
         android:largeHeap="@bool/config_largeHeap">
 
         <!-- Media button receiver -->
-        <receiver android:name="org.lineageos.eleven.MediaButtonIntentReceiver">
+        <receiver android:name=".MediaButtonIntentReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
                 <action android:name="android.media.AUDIO_BECOMING_NOISY" />

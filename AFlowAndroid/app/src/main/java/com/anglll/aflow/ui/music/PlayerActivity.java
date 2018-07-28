@@ -252,18 +252,6 @@ public class PlayerActivity extends BaseActivity implements
                 updateRepeatAndShuffleStatus();
                 break;
             case R.id.share:
-                ActionMenu menu = new ActionMenu(getContext());
-                getMenuInflater().inflate(R.menu.playlist_action, menu);
-                new MenuDialog()
-                        .setMenu(menu)
-                        .setOnMenuSelectedCallback(new MenuDialog.MenuClickCallback() {
-                            @Override
-                            public void onMenuItemClick(MenuItem menuItem) {
-
-                                TT(menuItem.getTitle().toString());
-                            }
-                        })
-                        .show(getSupportFragmentManager(), "playlist");
                 break;
             case R.id.more:
                 break;

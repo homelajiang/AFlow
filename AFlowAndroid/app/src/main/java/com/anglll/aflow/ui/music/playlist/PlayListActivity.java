@@ -13,12 +13,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseMusicActivity;
+import com.anglll.aflow.ui.dialog.MenuDialog;
 import com.anglll.aflow.utils.DefaultDecoration;
 import com.anglll.aflow.utils.Router;
+import com.anglll.aflow.widget.menu.ActionMenu;
 
 import org.lineageos.eleven.loaders.PlaylistLoader;
 import org.lineageos.eleven.model.Playlist;
@@ -98,6 +101,25 @@ public class PlayListActivity extends BaseMusicActivity implements
     @Override
     public void onPlayListClick(Playlist playlist) {
         Router.openPlayList(this, playlist);
+    }
+
+    @Override
+    public void showPlayListMenu(Playlist playlist) {
+        ActionMenu menu = new ActionMenu(getContext());
+        getMenuInflater().inflate(R.menu.playlist_action, menu);
+        if (playlist.isSmartPlaylist()) {
+            menu.removeItem(R.id.action_rename);
+            menu.removeItem(R.id.action_delete);
+        }
+        new MenuDialog()
+                .setMenu(menu)
+                .setOnMenuSelectedCallback(new MenuDialog.MenuClickCallback() {
+                    @Override
+                    public void onMenuItemClick(MenuItem menuItem) {
+                        TT(menuItem.getTitle().toString());
+                    }
+                })
+                .show(getSupportFragmentManager(), "playlist");
     }
 
 }

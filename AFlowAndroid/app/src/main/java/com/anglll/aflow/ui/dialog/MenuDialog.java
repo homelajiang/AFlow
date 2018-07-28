@@ -30,6 +30,7 @@ public class MenuDialog extends BottomSheetDialogFragment {
     RecyclerView mRecyclerView;
     private MenuClickCallback callback;
     private Menu menu;
+    private String title;
 
     @Nullable
     @Override
@@ -42,13 +43,19 @@ public class MenuDialog extends BottomSheetDialogFragment {
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(controller.getAdapter());
-        controller.setMenu(this,menu);
+        controller.setMenu(this, menu);
+        mTitle.setText(title);
         return view;
     }
 
 
     public MenuDialog setMenu(Menu menu) {
         this.menu = menu;
+        return this;
+    }
+
+    public MenuDialog setTitle(String title) {
+        this.title = title;
         return this;
     }
 

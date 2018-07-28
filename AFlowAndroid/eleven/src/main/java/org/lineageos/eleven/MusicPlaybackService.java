@@ -46,6 +46,7 @@ import android.media.session.MediaSession;
 import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -954,7 +955,7 @@ public class MusicPlaybackService extends Service {
             @Override
             public void onAlbumLoad(BitmapWithColors bitmap) {
                 builder.setLargeIcon(bitmap.getBitmap());
-                builder.setColor(bitmap.getVibrantDarkColor());
+//                builder.setColor(bitmap.getVibrantDarkColor());
                 if (foreground) {
                     startForeground(id, builder.build());
                 } else {
@@ -1669,8 +1670,14 @@ public class MusicPlaybackService extends Service {
         if (mNotificationPostTime == 0) {
             mNotificationPostTime = System.currentTimeMillis();
         }
+        Notification.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder = new Notification.Builder(this, channel_id);
+        } else {
+            builder = new Notification.Builder(this);
+        }
 
-        return new Notification.Builder(this, channel_id)
+        return builder
                 .setSmallIcon(R.drawable.ic_notification)
 //                .setLargeIcon(artwork.getBitmap())
                 .setContentIntent(clickIntent)
@@ -2837,7 +2844,7 @@ public class MusicPlaybackService extends Service {
         }
     }
 
-    public static void setAlbumCoverGetter(AlbumCoverGetter getter){
+    public static void setAlbumCoverGetter(AlbumCoverGetter getter) {
         albumCoverGetter = getter;
     }
 
