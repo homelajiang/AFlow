@@ -1,6 +1,4 @@
-package com.anglll.aflow.ui.music.playlist.detail;
-
-import android.support.v7.widget.RecyclerView;
+package com.anglll.aflow.ui.music.list;
 
 import com.airbnb.epoxy.EpoxyController;
 import com.anglll.aflow.ui.epoxy.models.MusicPlayListItemModel_;
@@ -12,17 +10,15 @@ import org.lineageos.eleven.model.Song;
 import java.util.Collections;
 import java.util.List;
 
-public class DetailController extends EpoxyController {
+public class LocalMusicListController extends EpoxyController {
     private PlayListDetailCallback callback;
-    private RecyclerView.RecycledViewPool recycledViewPool;
 
     public Playlist playlist;
     public List<Song> songList = Collections.emptyList();
     public Song firstSong = null;
 
-    DetailController(PlayListDetailCallback callback, RecyclerView.RecycledViewPool recycledViewPool) {
+    LocalMusicListController(PlayListDetailCallback callback) {
         this.callback = callback;
-        this.recycledViewPool = recycledViewPool;
     }
 
     public void setPlaylist(Playlist playlist) {
@@ -55,5 +51,4 @@ public class DetailController extends EpoxyController {
                     .song(songList.get(i)));
         }
     }
-
 }

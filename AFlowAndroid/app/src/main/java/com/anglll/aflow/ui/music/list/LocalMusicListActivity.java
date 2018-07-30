@@ -1,8 +1,10 @@
-package com.anglll.aflow.ui.music.playlist.detail;
+package com.anglll.aflow.ui.music.list;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,13 +15,12 @@ import android.support.v7.widget.Toolbar;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseMusicActivity;
 import com.anglll.aflow.ui.imp.PlayListDetailCallback;
-import com.anglll.aflow.utils.Router;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.Config;
 import org.lineageos.eleven.loaders.LastAddedLoader;
 import org.lineageos.eleven.loaders.LocalSongLoader;
-import org.lineageos.eleven.loaders.PlaylistSongLoader;
+import org.lineageos.eleven.loaders.SmartPlaylistInfoLoader;
 import org.lineageos.eleven.loaders.TopTracksLoader;
 import org.lineageos.eleven.model.Playlist;
 import org.lineageos.eleven.model.Song;
@@ -27,22 +28,23 @@ import org.lineageos.eleven.sectionadapter.SectionCreator;
 import org.lineageos.eleven.sectionadapter.SectionListContainer;
 import org.lineageos.eleven.utils.MusicUtils;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DetailActivity extends BaseMusicActivity implements
-        PlayListDetailCallback {
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
+public class LocalMusicListActivity extends BaseMusicActivity implements PlayListDetailCallback {
+
     @BindView(R.id.cover)
     SimpleDraweeView mCover;
     @BindView(R.id.toolBar)
     Toolbar mToolBar;
-
-    private DetailController controller = new DetailController(this, null);
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBar;
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.floatingActionButton)
+    FloatingActionButton mFloatingActionButton;
+    private LocalMusicListController controller;
     private Playlist playlist;
 
     @Override
@@ -50,45 +52,27 @@ public class DetailActivity extends BaseMusicActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_playlist_detail);
         ButterKnife.bind(this);
-        initData();
-        initView();
+        init();
+
     }
 
-    private void initData() {
-        if (getIntent() == null) {
-            finish();
-            return;
-        }
-        playlist = new Playlist(
-                getIntent().getLongExtra(Router.PLAYLIST_ID, 0),
-                getIntent().getStringExtra(Router.PLAYLIST_NAME),
-                getIntent().getIntExtra(Router.PLAYLIST_COUNT, 0)
-        );
-        if (playlist.mPlaylistId == 0) {
-            finish();
-            return;
-        }
-        controller.setPlaylist(playlist);
-        Config.SmartPlaylistType type = Config.SmartPlaylistType.getTypeById(playlist.mPlaylistId);
-        if (type != null) {
-            initLoader(0, null, new DefaultPlayListCallback(type));
-        } else {
-            initLoader(0, null, new UserPlayListCallback());
-        }
-    }
-
-    private void initView() {
+    private void init() {
         setSupportActionBar(mToolBar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(playlist.mPlaylistName);
+//            getSupportActionBar().setTitle(playlist.mPlaylistName);
         }
+        controller = new LocalMusicListController(this);
         controller.setSpanCount(1);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 1);
         manager.setSpanSizeLookup(controller.getSpanSizeLookup());
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(controller.getAdapter());
+
+        getContainingLoaderManager().initLoader(0, null, new SmartPlaylistInfoCallback());
+        getContainingLoaderManager().initLoader(1, null, new DefaultPlayListCallback());
+
     }
 
     @OnClick(R.id.floatingActionButton)
@@ -96,11 +80,13 @@ public class DetailActivity extends BaseMusicActivity implements
         playPlaylist(playlist, 0);
     }
 
-    private void updateController(List<Song> songs) {
-        controller.setSongList(songs);
-        if (songs.size() > 0)
-            mCover.setImageURI(MusicUtils.getAlbumUri(songs.get(0).mAlbumId));
+    @Override
+    public void onPlayPlayList(int index) {
 
+    }
+
+    @OnClick(R.id.floatingActionButton)
+    public void onViewClicked() {
     }
 
     @Override
@@ -109,26 +95,29 @@ public class DetailActivity extends BaseMusicActivity implements
         controller.updateCurrentSongPosition();
     }
 
-    @Override
-    public void onPlayPlayList(int index) {
-        playPlaylist(playlist, index);
+    public void updatePlaylistMeta(Playlist playlist) {
+        this.playlist = playlist;
+        mCover.setImageURI(MusicUtils.getAlbumUri(playlist.coverSong.mAlbumId));
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setTitle(this.playlist.mPlaylistName);
     }
 
-    class UserPlayListCallback implements LoaderManager.LoaderCallbacks<List<Song>> {
+
+    class SmartPlaylistInfoCallback implements LoaderManager.LoaderCallbacks<Playlist> {
 
         @NonNull
         @Override
-        public Loader<List<Song>> onCreateLoader(int id, @Nullable Bundle args) {
-            return new PlaylistSongLoader(getContext(), playlist.mPlaylistId);
+        public Loader<Playlist> onCreateLoader(int id, @Nullable Bundle args) {
+            return new SmartPlaylistInfoLoader(getContext(), Config.SmartPlaylistType.LocalSong);
         }
 
         @Override
-        public void onLoadFinished(@NonNull Loader<List<Song>> loader, List<Song> data) {
-            updateController(data);
+        public void onLoadFinished(@NonNull Loader<Playlist> loader, Playlist data) {
+            updatePlaylistMeta(data);
         }
 
         @Override
-        public void onLoaderReset(@NonNull Loader<List<Song>> loader) {
+        public void onLoaderReset(@NonNull Loader<Playlist> loader) {
 
         }
     }
@@ -137,8 +126,8 @@ public class DetailActivity extends BaseMusicActivity implements
 
         private final Config.SmartPlaylistType type;
 
-        public DefaultPlayListCallback(Config.SmartPlaylistType type) {
-            this.type = type;
+        public DefaultPlayListCallback() {
+            this.type = Config.SmartPlaylistType.LocalSong;
         }
 
         @NonNull
@@ -170,7 +159,7 @@ public class DetailActivity extends BaseMusicActivity implements
 
         @Override
         public void onLoadFinished(@NonNull Loader<SectionListContainer<Song>> loader, SectionListContainer<Song> data) {
-            updateController(data.mListResults);
+            controller.setSongList(data.mListResults);
         }
 
         @Override
@@ -178,4 +167,5 @@ public class DetailActivity extends BaseMusicActivity implements
 
         }
     }
+
 }

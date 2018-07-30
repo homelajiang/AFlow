@@ -1,4 +1,4 @@
-package com.anglll.aflow.ui.music;
+package com.anglll.aflow.ui.music.player;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -13,16 +13,8 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -30,10 +22,8 @@ import android.widget.TextView;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseActivity;
-import com.anglll.aflow.ui.dialog.MenuDialog;
 import com.anglll.aflow.ui.dialog.NowPlayingDialog;
 import com.anglll.aflow.utils.statusbar.StatusBarUtils;
-import com.anglll.aflow.widget.menu.ActionMenu;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.MusicPlaybackService;

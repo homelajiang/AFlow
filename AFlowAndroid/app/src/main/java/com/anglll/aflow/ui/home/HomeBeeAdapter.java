@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import com.anglll.aflow.R;
 import com.anglll.aflow.ui.dialog.NowPlayingDialog;
-import com.anglll.aflow.ui.music.PlayerActivity;
+import com.anglll.aflow.ui.music.list.LocalMusicListActivity;
+import com.anglll.aflow.ui.music.player.PlayerActivity;
 import com.anglll.aflow.ui.music.playlist.PlayListActivity;
 import com.anglll.beelayout.BeeAdapter;
 import com.anglll.beelayout.BeeViewHolder;
@@ -137,7 +138,7 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
                     new NowPlayingDialog().show(context.getSupportFragmentManager(), "NOW_PLAYING_DIALOG");
                     break;
                 case 2:
-                    context.startActivity(new Intent(context, PlayListActivity.class));
+                    context.startActivity(new Intent(context, LocalMusicListActivity.class));
                     break;
                 case 3:
                     MusicUtils.previous(context, false);

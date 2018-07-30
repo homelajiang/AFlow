@@ -1,6 +1,5 @@
 package com.anglll.aflow.ui.epoxy.models;
 
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageButton;
@@ -12,7 +11,7 @@ import com.airbnb.epoxy.EpoxyModelClass;
 import com.airbnb.epoxy.EpoxyModelWithHolder;
 import com.anglll.aflow.R;
 import com.anglll.aflow.base.BaseEpoxyHolder;
-import com.anglll.aflow.ui.music.playlist.detail.DetailController;
+import com.anglll.aflow.ui.imp.PlayListDetailCallback;
 
 import org.lineageos.eleven.model.Song;
 
@@ -29,7 +28,7 @@ public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicP
     boolean playing;
 
     @EpoxyAttribute
-    DetailController.PlayListDetailCallback callback;
+    PlayListDetailCallback callback;
 
     @Override
     public void bind(@NonNull ViewHolder holder) {
