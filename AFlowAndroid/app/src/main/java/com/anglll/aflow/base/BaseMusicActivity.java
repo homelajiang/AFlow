@@ -67,61 +67,6 @@ public class BaseMusicActivity extends BaseActivity implements ServiceConnection
         onMetaChanged();
     }
 
-    private void getMusicQueue() {
-        getSupportLoaderManager().initLoader(2, null, new LoaderManager.LoaderCallbacks<List<Song>>() {
-
-            @NonNull
-            @Override
-            public Loader<List<Song>> onCreateLoader(int id, @Nullable Bundle args) {
-                return new QueueLoader(getContext());
-            }
-
-            @Override
-            public void onLoadFinished(@NonNull Loader<List<Song>> loader, List<Song> data) {
-
-            }
-
-            @Override
-            public void onLoaderReset(@NonNull Loader<List<Song>> loader) {
-
-            }
-        });
-    }
-
-    private void startPlay() {
-        getSupportLoaderManager().initLoader(1, null, new LoaderManager.LoaderCallbacks<SectionListContainer<Song>>() {
-            @NonNull
-            @Override
-            public Loader<SectionListContainer<Song>> onCreateLoader(int id, @Nullable Bundle args) {
-                // get the context
-                Context context = BaseMusicActivity.this;
-
-                // create the underlying song loader
-                SongLoader songLoader = new SongLoader(context);
-
-                // get the song comparison method to create the headers with
-                SectionCreatorUtils.IItemCompare<Song> songComparison = SectionCreatorUtils.createSongComparison(context);
-
-                // return the wrapped section creator
-                return new SectionCreator<Song>(context, songLoader, songComparison);
-            }
-
-            @Override
-            public void onLoadFinished(@NonNull Loader<SectionListContainer<Song>> loader, SectionListContainer<Song> data) {
-                long[] ret = new long[data.mListResults.size()];
-                for (int i = 0; i < data.mListResults.size(); i++) {
-                    ret[i] = data.mListResults.get(i).mSongId;
-                }
-                MusicUtils.playAll(BaseMusicActivity.this, ret, 5, -1, Config.IdType.NA, false);
-            }
-
-            @Override
-            public void onLoaderReset(@NonNull Loader<SectionListContainer<Song>> loader) {
-
-            }
-        });
-    }
-
     @Override
     public void onServiceDisconnected(ComponentName name) {
 

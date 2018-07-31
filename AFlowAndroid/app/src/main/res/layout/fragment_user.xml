@@ -58,7 +58,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:tint="@color/colorPrimary"
+                    android:tint="@color/warm_pink"
                     app:srcCompat="@drawable/ic_user_notification" />
             </FrameLayout>
 
@@ -75,7 +75,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:tint="@color/colorPrimary"
+                    android:tint="@color/warm_pink"
                     app:srcCompat="@drawable/ic_user_feed" />
             </FrameLayout>
 
@@ -92,7 +92,7 @@
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:tint="@color/colorPrimary"
+                    android:tint="@color/warm_pink"
                     app:srcCompat="@drawable/ic_user_history" />
             </FrameLayout>
 

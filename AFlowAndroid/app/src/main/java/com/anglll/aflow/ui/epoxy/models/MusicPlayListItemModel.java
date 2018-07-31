@@ -54,6 +54,12 @@ public abstract class MusicPlayListItemModel extends EpoxyModelWithHolder<MusicP
                 callback.onPlayPlayList(index);
         }
 
+        @OnClick(R.id.more)
+        void showMenus() {
+            if (callback != null)
+                callback.onShowMenu(index);
+        }
+
         @Override
         protected void bindData(Song data) {
 

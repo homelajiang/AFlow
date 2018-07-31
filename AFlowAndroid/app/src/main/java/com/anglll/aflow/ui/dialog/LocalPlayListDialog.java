@@ -1,5 +1,6 @@
-package com.anglll.aflow.ui.music.list;
+package com.anglll.aflow.ui.dialog;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,31 +16,30 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.airbnb.epoxy.EpoxyController;
 import com.anglll.aflow.R;
-import com.anglll.aflow.base.BaseMusicActivity;
-import com.anglll.aflow.ui.dialog.MenuDialog;
+import com.anglll.aflow.base.MusicDialogFragment;
+import com.anglll.aflow.ui.epoxy.models.MusicPlayListItemModel_;
 import com.anglll.aflow.ui.imp.PlayListDetailCallback;
 import com.anglll.aflow.widget.menu.ActionMenu;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.Config;
-import org.lineageos.eleven.loaders.LastAddedLoader;
 import org.lineageos.eleven.loaders.LocalSongLoader;
 import org.lineageos.eleven.loaders.SmartPlaylistInfoLoader;
-import org.lineageos.eleven.loaders.TopTracksLoader;
 import org.lineageos.eleven.model.Playlist;
 import org.lineageos.eleven.model.Song;
 import org.lineageos.eleven.sectionadapter.SectionCreator;
 import org.lineageos.eleven.sectionadapter.SectionListContainer;
 import org.lineageos.eleven.utils.MusicUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LocalMusicListActivity extends BaseMusicActivity implements PlayListDetailCallback {
+public class LocalPlayListDialog extends MusicDialogFragment implements PlayListDetailCallback {
 
     @BindView(R.id.cover)
     SimpleDraweeView mCover;
@@ -51,27 +51,22 @@ public class LocalMusicListActivity extends BaseMusicActivity implements PlayLis
     RecyclerView mRecyclerView;
     @BindView(R.id.floatingActionButton)
     FloatingActionButton mFloatingActionButton;
-    private LocalMusicListController controller;
+    private LocalPlaylistController controller;
     private Playlist playlist;
     private List<Song> songList;
 
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_music_playlist_detail);
-        ButterKnife.bind(this);
-        init();
-
+    protected int getLayoutId() {
+        return R.layout.dialog_local_musiclist;
     }
 
-    private void init() {
-        setSupportActionBar(mToolBar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//            getSupportActionBar().setTitle(playlist.mPlaylistName);
-        }
-        controller = new LocalMusicListController(this);
+    public void onViewCreated(){
+        super.onViewCreated();
+        init();
+    }
+
+    void init() {
+        controller = new LocalPlaylistController(this);
         controller.setSpanCount(1);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 1);
         manager.setSpanSizeLookup(controller.getSpanSizeLookup());
@@ -79,8 +74,10 @@ public class LocalMusicListActivity extends BaseMusicActivity implements PlayLis
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(controller.getAdapter());
 
-        getContainingLoaderManager().initLoader(0, null, new SmartPlaylistInfoCallback());
-        getContainingLoaderManager().initLoader(1, null, new DefaultPlayListCallback());
+        getActivity().getSupportLoaderManager()
+                .initLoader(0, null, new LocalPlaylistInfoCallback());
+        getActivity().getSupportLoaderManager()
+                .initLoader(1, null, new LocalPlayListCallback());
 
     }
 
@@ -89,15 +86,26 @@ public class LocalMusicListActivity extends BaseMusicActivity implements PlayLis
         playPlaylist(playlist, 0);
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new Dialog(getActivity(), R.style.DialogFullscreen);
+    }
+
     @Override
     public void onPlayPlayList(int index) {
         playPlaylist(playlist, index);
     }
 
+    public void playPlaylist(Playlist playlist, int index) {
+        MusicUtils.playAll(getContext(), getIdList(playlist), index,
+                playlist.mPlaylistId, Config.IdType.Playlist, false);
+    }
+
     @Override
     public void onShowMenu(final int index) {
         ActionMenu actionMenu = new ActionMenu(getContext());
-        getMenuInflater().inflate(R.menu.song_action, actionMenu);
+        getActivity().getMenuInflater().inflate(R.menu.song_action, actionMenu);
         actionMenu.removeItem(R.id.action_add_to_playlist);
         actionMenu.removeItem(R.id.action_remove_from_playlist);
         new MenuDialog()
@@ -109,8 +117,7 @@ public class LocalMusicListActivity extends BaseMusicActivity implements PlayLis
                         menuSelected(index, menuItem);
                     }
                 })
-                .show(getSupportFragmentManager(), "song_dialog");
-
+                .show(getActivity().getSupportFragmentManager(), "song_dialog");
     }
 
     private void menuSelected(final int index, MenuItem menuItem) {
@@ -123,7 +130,7 @@ public class LocalMusicListActivity extends BaseMusicActivity implements PlayLis
                         getSourceId(), getSourceType());
                 break;
             case R.id.action_add_to_track_list:
-                MusicUtils.addToQueue(this, getSongIdList(index), getSourceId(), getSourceType());
+                MusicUtils.addToQueue(getContext(), getSongIdList(index), getSourceId(), getSourceType());
                 break;
             case R.id.action_delete:
                 new AlertDialog.Builder(getContext())
@@ -146,6 +153,16 @@ public class LocalMusicListActivity extends BaseMusicActivity implements PlayLis
         }
     }
 
+    public long[] getIdList(Playlist playlist) {
+        if (playlist.isSmartPlaylist()) {
+            return MusicUtils.getSongListForSmartPlaylist(getContext(),
+                    Config.SmartPlaylistType.getTypeById(playlist.mPlaylistId));
+        } else {
+            return MusicUtils.getSongListForPlaylist(getContext(),
+                    playlist.mPlaylistId);
+        }
+    }
+
     private long[] getSongIdList(int index) {
         return new long[]{songList.get(index).mSongId};
     }
@@ -158,26 +175,33 @@ public class LocalMusicListActivity extends BaseMusicActivity implements PlayLis
         return Config.IdType.Playlist;
     }
 
+    public void updatePlaylistMeta(Playlist playlist) {
+        this.playlist = playlist;
+        mCover.setImageURI(MusicUtils.getAlbumUri(playlist.coverSong.mAlbumId));
+    }
 
-    @OnClick(R.id.floatingActionButton)
-    public void onViewClicked() {
+    @Override
+    public void restartLoader() {
+
+    }
+
+    @Override
+    public void onPlaylistChanged() {
+
     }
 
     @Override
     public void onMetaChanged() {
-        super.onMetaChanged();
         controller.updateCurrentSongPosition();
     }
 
-    public void updatePlaylistMeta(Playlist playlist) {
-        this.playlist = playlist;
-        mCover.setImageURI(MusicUtils.getAlbumUri(playlist.coverSong.mAlbumId));
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(this.playlist.mPlaylistName);
+    @Override
+    public void onUpdateController() {
+
     }
 
 
-    class SmartPlaylistInfoCallback implements LoaderManager.LoaderCallbacks<Playlist> {
+    class LocalPlaylistInfoCallback implements LoaderManager.LoaderCallbacks<Playlist> {
 
         @NonNull
         @Override
@@ -196,39 +220,13 @@ public class LocalMusicListActivity extends BaseMusicActivity implements PlayLis
         }
     }
 
-    class DefaultPlayListCallback implements LoaderManager.LoaderCallbacks<SectionListContainer<Song>> {
-
-        private final Config.SmartPlaylistType type;
-
-        public DefaultPlayListCallback() {
-            this.type = Config.SmartPlaylistType.LocalSong;
-        }
+    class LocalPlayListCallback implements LoaderManager.LoaderCallbacks<SectionListContainer<Song>> {
 
         @NonNull
         @Override
         public Loader<SectionListContainer<Song>> onCreateLoader(int id, @Nullable Bundle args) {
-            switch (type) {
-                case LocalSong: {
-                    LocalSongLoader loader = new LocalSongLoader(getContext());
-                    return new SectionCreator<Song>(getContext(), loader, null);
-                }
-                case LastAdded: {
-                    LastAddedLoader loader = new LastAddedLoader(getContext());
-                    return new SectionCreator<Song>(getContext(), loader, null);
-                }
-                case RecentlyPlayed: {
-                    TopTracksLoader loader = new TopTracksLoader(getContext(),
-                            TopTracksLoader.QueryType.RecentSongs);
-                    return new SectionCreator<Song>(getContext(), loader, null);
-                }
-                case TopTracks: {
-                    TopTracksLoader loader = new TopTracksLoader(getContext(),
-                            TopTracksLoader.QueryType.TopTracks);
-                    return new SectionCreator<Song>(getContext(), loader, null);
-                }
-                default:
-                    return null;
-            }
+            LocalSongLoader loader = new LocalSongLoader(getContext());
+            return new SectionCreator<Song>(getContext(), loader, null);
         }
 
         @Override
@@ -243,4 +241,46 @@ public class LocalMusicListActivity extends BaseMusicActivity implements PlayLis
         }
     }
 
+    public class LocalPlaylistController extends EpoxyController {
+        private PlayListDetailCallback callback;
+
+        public Playlist playlist;
+        public List<Song> songList = Collections.emptyList();
+        public Song firstSong = null;
+
+        LocalPlaylistController(PlayListDetailCallback callback) {
+            this.callback = callback;
+        }
+
+        public void setPlaylist(Playlist playlist) {
+            this.playlist = playlist;
+            requestModelBuild();
+        }
+
+        public void setSongList(List<Song> songList) {
+            this.songList = songList;
+            if (!songList.isEmpty())
+                firstSong = songList.get(0);
+            requestModelBuild();
+        }
+
+        public void updateCurrentSongPosition() {
+            requestModelBuild();
+        }
+
+        @Override
+        protected void buildModels() {
+
+            // TODO: 2018/7/17 0017 播放位置计算不正确，不能使用当前列表的position
+//        int playingIndex = MusicUtils.getQueuePosition();
+            for (int i = 0; i < songList.size(); i++) {
+                add(new MusicPlayListItemModel_()
+                        .callback(callback)
+                        .id(i)
+                        .index(i)
+//                    .playing(playingIndex == i)
+                        .song(songList.get(i)));
+            }
+        }
+    }
 }

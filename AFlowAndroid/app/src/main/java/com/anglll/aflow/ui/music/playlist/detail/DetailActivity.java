@@ -114,6 +114,11 @@ public class DetailActivity extends BaseMusicActivity implements
         playPlaylist(playlist, index);
     }
 
+    @Override
+    public void onShowMenu(int index) {
+
+    }
+
     class UserPlayListCallback implements LoaderManager.LoaderCallbacks<List<Song>> {
 
         @NonNull

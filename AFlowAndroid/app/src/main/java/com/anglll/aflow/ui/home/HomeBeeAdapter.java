@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anglll.aflow.R;
+import com.anglll.aflow.ui.dialog.LocalPlayListDialog;
 import com.anglll.aflow.ui.dialog.NowPlayingDialog;
 import com.anglll.aflow.ui.music.list.LocalMusicListActivity;
 import com.anglll.aflow.ui.music.player.PlayerActivity;
@@ -144,6 +145,7 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
                     MusicUtils.previous(context, false);
                     break;
                 case 4:
+                    new LocalPlayListDialog().show(context.getSupportFragmentManager(),"");
                     break;
                 case 6:
                     MusicUtils.playOrPause();
