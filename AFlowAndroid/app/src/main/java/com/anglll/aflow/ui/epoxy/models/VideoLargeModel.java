@@ -2,6 +2,7 @@ package com.anglll.aflow.ui.epoxy.models;
 
 import android.net.Uri;
 import android.text.Html;
+import android.text.TextPaint;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
@@ -61,9 +62,11 @@ public abstract class VideoLargeModel extends EpoxyModelWithHolder<VideoLargeMod
             } else {
                 content = Html.fromHtml(data.getDescription()).toString();
             }
+
             if (data.getTitle().equals(content)) {
                 mTitle.setVisibility(View.GONE);
             } else {
+                mTitle.getPaint().setFakeBoldText(true);
                 mTitle.setVisibility(View.VISIBLE);
                 mTitle.setText(data.getTitle());
             }

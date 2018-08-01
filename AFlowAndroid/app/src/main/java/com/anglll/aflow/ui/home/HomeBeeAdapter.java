@@ -139,13 +139,12 @@ public class HomeBeeAdapter extends BeeAdapter<BeeViewHolder> {
                     new NowPlayingDialog().show(context.getSupportFragmentManager(), "NOW_PLAYING_DIALOG");
                     break;
                 case 2:
-                    context.startActivity(new Intent(context, LocalMusicListActivity.class));
+                    new LocalPlayListDialog().show(context.getSupportFragmentManager(),"LOCAL_MUSIC_LIST");
                     break;
                 case 3:
                     MusicUtils.previous(context, false);
                     break;
                 case 4:
-                    new LocalPlayListDialog().show(context.getSupportFragmentManager(),"");
                     break;
                 case 6:
                     MusicUtils.playOrPause();

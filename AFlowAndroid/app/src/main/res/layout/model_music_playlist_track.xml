@@ -29,7 +29,7 @@
             android:layout_height="44dp"
             android:background="?attr/selectableItemBackground"
             android:tint="@color/grey"
-            app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+            app:srcCompat="@drawable/ic_close_thin" />
 
     </LinearLayout>
 

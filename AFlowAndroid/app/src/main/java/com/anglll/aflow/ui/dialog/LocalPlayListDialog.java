@@ -5,16 +5,15 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.airbnb.epoxy.EpoxyController;
 import com.anglll.aflow.R;
@@ -22,7 +21,6 @@ import com.anglll.aflow.base.MusicDialogFragment;
 import com.anglll.aflow.ui.epoxy.models.MusicPlayListItemModel_;
 import com.anglll.aflow.ui.imp.PlayListDetailCallback;
 import com.anglll.aflow.widget.menu.ActionMenu;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.lineageos.eleven.Config;
 import org.lineageos.eleven.loaders.LocalSongLoader;
@@ -41,16 +39,16 @@ import butterknife.OnClick;
 
 public class LocalPlayListDialog extends MusicDialogFragment implements PlayListDetailCallback {
 
-    @BindView(R.id.cover)
-    SimpleDraweeView mCover;
-    @BindView(R.id.toolBar)
-    Toolbar mToolBar;
-    @BindView(R.id.app_bar)
-    AppBarLayout mAppBar;
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
-    @BindView(R.id.floatingActionButton)
-    FloatingActionButton mFloatingActionButton;
+    @BindView(R.id.title_left)
+    AppCompatImageButton mTitleLeft;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.sub_title)
+    TextView mSubTitle;
+    @BindView(R.id.title_right)
+    AppCompatImageButton mTitleRight;
     private LocalPlaylistController controller;
     private Playlist playlist;
     private List<Song> songList;
@@ -60,12 +58,15 @@ public class LocalPlayListDialog extends MusicDialogFragment implements PlayList
         return R.layout.dialog_local_musiclist;
     }
 
-    public void onViewCreated(){
+    public void onViewCreated() {
         super.onViewCreated();
         init();
     }
 
     void init() {
+        mTitleLeft.setImageResource(R.drawable.ic_close_black_24dp);
+        mTitle.setText(R.string.playlist_local_music);
+
         controller = new LocalPlaylistController(this);
         controller.setSpanCount(1);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 1);
@@ -78,12 +79,11 @@ public class LocalPlayListDialog extends MusicDialogFragment implements PlayList
                 .initLoader(0, null, new LocalPlaylistInfoCallback());
         getActivity().getSupportLoaderManager()
                 .initLoader(1, null, new LocalPlayListCallback());
-
     }
 
-    @OnClick(R.id.floatingActionButton)
-    void playAll() {
-        playPlaylist(playlist, 0);
+    @OnClick(R.id.title_left)
+    void back() {
+        dismiss();
     }
 
     @NonNull
@@ -177,7 +177,7 @@ public class LocalPlayListDialog extends MusicDialogFragment implements PlayList
 
     public void updatePlaylistMeta(Playlist playlist) {
         this.playlist = playlist;
-        mCover.setImageURI(MusicUtils.getAlbumUri(playlist.coverSong.mAlbumId));
+//        mCover.setImageURI(MusicUtils.getAlbumUri(playlist.coverSong.mAlbumId));
     }
 
     @Override

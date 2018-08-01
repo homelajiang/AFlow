@@ -19,8 +19,7 @@
 
     <style name="DialogFullscreen" parent="@android:style/Theme.Material.Light.DialogWhenLarge">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:statusBarColor">@color/warm_pink</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <!--<item name="android:statusBarColor">@color/colorPrimaryDark</item>-->
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
 
@@ -88,6 +87,4 @@
         <item name="android:textColor">@color/text_black</item>
     </style>
 
-
-    <color name="temp">#66000000</color>
 </resources>
