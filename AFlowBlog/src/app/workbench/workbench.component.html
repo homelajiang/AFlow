@@ -131,15 +131,22 @@
   <div nz-col nzSpan="8">
     <nz-card nzTitle="Popular Posts" [nzExtra]="extraTemplate">
 
-      <div style="float: left;width: 30%;">
-        <img src="https://via.placeholder.com/72x45"/>
-      </div>
+      <div style="display: flex;">
+        <div>
+          <img src="https://via.placeholder.com/72x45"/>
+        </div>
 
-      <div style="float: left;width: 70%;">
-        <div>Roadgjfldhjglfjdslgjfldsjglfdsjlgjfdslgjlfsdjglfdsgdfs</div>
-        <div>Text</div>
+        <div style="flex: 1;">
+          <div style="    width: 100%;
+    height: auto;
+    word-wrap:break-word;
+    word-break:break-all;
+    overflow: hidden;">
+            Roaglfdsgdfsgjfldjgoresjgoijsogjofsdljgfdsg
+          </div>
+          <div>Text</div>
+        </div>
       </div>
-
 
     </nz-card>
     <ng-template #extraTemplate>

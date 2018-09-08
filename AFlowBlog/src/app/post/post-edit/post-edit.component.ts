@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-blog-edit',
-  templateUrl: './blog-edit.component.html',
-  styleUrls: ['./blog-edit.component.css']
+  templateUrl: './post-edit.component.html',
+  styleUrls: ['./post-edit.component.css']
 })
-export class BlogEditComponent implements OnInit {
+export class PostEditComponent implements OnInit {
 
   constructor() { }
 

@@ -15,8 +15,8 @@ import { ContentComponent } from './content/content.component';
 import { LoginComponent } from './login/login.component';
 import { MediaAddComponent } from './media/media-add/media-add.component';
 import { MediaListComponent } from './media/media-list/media-list.component';
-import { BlogEditComponent } from './blog/blog-edit/blog-edit.component';
-import { BlogListComponent } from './blog/blog-list/blog-list.component';
+import { PostEditComponent } from './post/post-edit/post-edit.component';
+import { PostListComponent } from './post/post-list/post-list.component';
 import { CommentComponent } from './comment/comment.component';
 import { TagComponent } from './tag/tag.component';
 import { CategoriesComponent } from './categories/categories.component';
@@ -35,8 +35,8 @@ registerLocaleData(zh);
     LoginComponent,
     MediaAddComponent,
     MediaListComponent,
-    BlogEditComponent,
-    BlogListComponent,
+    PostEditComponent,
+    PostListComponent,
     CommentComponent,
     TagComponent,
     CategoriesComponent,
