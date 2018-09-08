@@ -1,0 +1,56 @@
+<!--<nz-list
+  [nzDataSource]="data"
+  [nzItemLayout]="'vertical'"
+  [nzRenderItem]="item">
+  <ng-template #item let-item>
+    <nz-list-item [nzContent]="item.content" [nzActions]="[starAction,likeAction,msgAction,fdAction]">
+      <ng-template #starAction><i class="anticon anticon-star-o" style=""></i> 批准</ng-template>
+      <ng-template #likeAction><i class="anticon anticon-like-o" style=""></i> 回复</ng-template>
+      <ng-template #msgAction><i class="anticon anticon-message" style=""></i> 垃圾评论</ng-template>
+      <ng-template #fdAction><i class="anticon anticon-message" style=""></i> 移至回收站</ng-template>
+      <nz-list-item-meta
+        [nzTitle]="nzTitle"
+        nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
+        <ng-template #nzTitle>
+          <a href="{{item.href}}">{{item.title}}</a>
+          comment
+          <a href="{{item.href}}">《{{item.title}}》</a>
+          <i class="anticon anticon-flag"></i>[待审]
+        </ng-template>
+      </nz-list-item-meta>
+    </nz-list-item>
+  </ng-template>
+</nz-list>-->
+
+<div style="display: flex;">
+  <div>
+    <nz-avatar nzSize="large" nzIcon="anticon anticon-user"></nz-avatar>
+  </div>
+
+  <div style="flex:1;overflow: hidden;">
+    <div>
+      <a href="#">xxxXx</a>
+      comment
+      《
+      <a href="#">Как закалялась сталь </a>
+      》
+      <i class="anticon anticon-flag"></i>[待审]
+    </div>
+    We always knew our daughter Kendall was going be a performer of some sort. She entertained people in our small town
+    by putting on shows on our front porch when she was only three or four. Blonde-haired, blue-eyed, and beautiful, she
+    sang like a little angel and mesmerized1 everyone.
+    <div>
+
+      <div>
+        <a href="#">批准</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a href="#">回复</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a href="#">垃圾评论</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a href="#">移至回收站</a>
+      </div>
+
+    </div>
+  </div>
+</div>

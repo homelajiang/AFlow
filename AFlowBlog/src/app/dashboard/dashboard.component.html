@@ -1,5 +1,5 @@
 <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 8, xl: 8, xxl: 8 }">
-  <div nz-col nzSpan="8">
+  <div nz-col nzSpan="6">
     <nz-card nzTitle="At a Glance" [nzExtra]="extraTemplate">
       <div nz-row>
 
@@ -88,7 +88,7 @@
     </ng-template>
   </div>
 
-  <div nz-col nzSpan="8">
+  <div nz-col nzSpan="6">
     <nz-card nzTitle="Views" [nzExtra]="extraTemplate">
       <div nz-row>
 
@@ -128,25 +128,34 @@
     </ng-template>
   </div>
 
-  <div nz-col nzSpan="8">
+  <div nz-col nzSpan="6">
     <nz-card nzTitle="Popular Posts" [nzExtra]="extraTemplate">
+      <app-post-dashboard></app-post-dashboard>
+      <app-post-dashboard></app-post-dashboard>
+      <app-post-dashboard></app-post-dashboard>
+    </nz-card>
+    <ng-template #extraTemplate>
+      <a>More</a>
+    </ng-template>
+  </div>
 
-      <div style="display: flex;">
-        <div>
-          <img src="https://via.placeholder.com/72x45"/>
-        </div>
+  <div nz-col nzSpan="6">
+    <nz-card nzTitle="Activity" [nzExtra]="extraTemplate">
 
-        <div style="flex: 1;">
-          <div style="    width: 100%;
-    height: auto;
-    word-wrap:break-word;
-    word-break:break-all;
-    overflow: hidden;">
-            Roaglfdsgdfsgjfldjgoresjgoijsogjofsdljgfdsg
-          </div>
-          <div>Text</div>
-        </div>
-      </div>
+      <nz-timeline>
+        <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
+        <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
+        <nz-timeline-item>
+          <p><b>Solve initial network problems 1</b>
+          <p>
+            <i>10 new comments</i>
+        </nz-timeline-item>
+        <nz-timeline-item nzColor="red" [nzDot]="dotTemplate">Technical testing 2015-09-01</nz-timeline-item>
+        <nz-timeline-item>Network problems being solved 2015-09-01</nz-timeline-item>
+      </nz-timeline>
+      <ng-template #dotTemplate>
+        <i class="anticon anticon-clock-circle-o" style="font-size: 16px;"></i>
+      </ng-template>
 
     </nz-card>
     <ng-template #extraTemplate>
@@ -154,17 +163,37 @@
     </ng-template>
   </div>
 
+  <div nz-col nzSpan="12">
+    <nz-card nzTitle="Recent Comments" [nzExtra]="extraTemplate">
+      <app-comment-dashboard></app-comment-dashboard>
+      <app-comment-dashboard></app-comment-dashboard>
+      <app-comment-dashboard></app-comment-dashboard>
+      <div>
+        <a href="#">全部
+          <span>（12）</span>
+        </a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a href="#">待审
+          <span>（6）</span>
+        </a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a href="#">已批准
+          <span>（6）</span>
+        </a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a href="#">垃圾
+          <span>（0）</span>
+        </a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a href="#">回收站
+          <span>（0）</span>
+        </a>
+      </div>
+    </nz-card>
+    <ng-template #extraTemplate>
+      <a>More</a>
+    </ng-template>
+  </div>
+
+
 </div>
-...
-<br/>
-Really
-<br/>...<br/>...<br/>...<br/>
-long
-<br/>...<br/>...<br/>...<br/>...<br/>...<br/>...
-<br/>...<br/>...<br/>...<br/>...<br/>...<br/>...
-<br/>...<br/>...<br/>...<br/>...<br/>...<br/>...
-<br/>...<br/>...<br/>...<br/>...<br/>...<br/>...
-<br/>...<br/>...<br/>...<br/>...<br/>...<br/>...
-<br/>...<br/>...<br/>...<br/>...<br/>...<br/>...
-<br/>...<br/>...<br/>...<br/>...<br/>...<br/>
-content

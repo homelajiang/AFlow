@@ -21,7 +21,9 @@ import { CommentComponent } from './comment/comment.component';
 import { TagComponent } from './tag/tag.component';
 import { CategoriesComponent } from './categories/categories.component';
 import {appRouting} from './app.router';
-import { WorkbenchComponent } from './workbench/workbench.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { PostDashboardComponent } from './post/post-dashboard/post-dashboard.component';
+import { CommentDashboardComponent } from './comment/comment-dashboard/comment-dashboard.component';
 
 registerLocaleData(zh);
 
@@ -40,7 +42,9 @@ registerLocaleData(zh);
     CommentComponent,
     TagComponent,
     CategoriesComponent,
-    WorkbenchComponent
+    DashboardComponent,
+    PostDashboardComponent,
+    CommentDashboardComponent
   ],
   imports: [
     BrowserModule,
