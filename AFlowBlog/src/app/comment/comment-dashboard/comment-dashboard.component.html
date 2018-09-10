@@ -1,27 +1,3 @@
-<!--<nz-list
-  [nzDataSource]="data"
-  [nzItemLayout]="'vertical'"
-  [nzRenderItem]="item">
-  <ng-template #item let-item>
-    <nz-list-item [nzContent]="item.content" [nzActions]="[starAction,likeAction,msgAction,fdAction]">
-      <ng-template #starAction><i class="anticon anticon-star-o" style=""></i> 批准</ng-template>
-      <ng-template #likeAction><i class="anticon anticon-like-o" style=""></i> 回复</ng-template>
-      <ng-template #msgAction><i class="anticon anticon-message" style=""></i> 垃圾评论</ng-template>
-      <ng-template #fdAction><i class="anticon anticon-message" style=""></i> 移至回收站</ng-template>
-      <nz-list-item-meta
-        [nzTitle]="nzTitle"
-        nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
-        <ng-template #nzTitle>
-          <a href="{{item.href}}">{{item.title}}</a>
-          comment
-          <a href="{{item.href}}">《{{item.title}}》</a>
-          <i class="anticon anticon-flag"></i>[待审]
-        </ng-template>
-      </nz-list-item-meta>
-    </nz-list-item>
-  </ng-template>
-</nz-list>-->
-
 <div style="display: flex;">
   <div>
     <nz-avatar nzSize="large" nzIcon="anticon anticon-user"></nz-avatar>
