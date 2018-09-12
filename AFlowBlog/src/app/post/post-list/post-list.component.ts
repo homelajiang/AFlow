@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-post-list',
@@ -7,28 +7,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostListComponent implements OnInit {
 
-  dataSet = [
+  data = [
     {
-      key    : '1',
-      name   : 'John Brown',
-      age    : 32,
-      address: 'New York No. 1 Lake Park'
+      title: 'Ant Design Title 1'
     },
     {
-      key    : '2',
-      name   : 'Jim Green',
-      age    : 42,
-      address: 'London No. 1 Lake Park'
+      title: 'Ant Design Title 2'
     },
     {
-      key    : '3',
-      name   : 'Joe Black',
-      age    : 32,
-      address: 'Sidney No. 1 Lake Park'
+      title: 'Ant Design Title 3'
+    },
+    {
+      title: 'Ant Design Title 4'
+    }
+    ,
+    {
+      title: 'Ant Design Title 5'
     }
   ];
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

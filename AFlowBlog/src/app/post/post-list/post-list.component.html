@@ -1,28 +1,70 @@
-<nz-card>
+<div style="padding: 30px;">
 
-  <div style="display: flex;">
+  <div style="display: flex;justify-content: space-between;margin-bottom: 30px;">
+    <button nz-button nzType="primary"><i class="anticon anticon-file-add"></i>New Post</button>
     <div>
-      <img src="https://via.placeholder.com/210x132"/>
-    </div>
-
-    <div style="flex: 1;overflow: hidden;padding-left: 10px;padding-right: 10px;">
-      <div class="post-item-title">
-        New Orleans From All Angles
-      </div>
-      <div class="post-item-title">
-        New Orleans From All Angles
-      </div>
-      <div>
-        684 views • 23 comments
-      </div>
-    </div>
-
-    <div>
-      <button nz-button nzType="primary" nzSize="large" nzShape="circle"><i class="anticon anticon-download"></i></button>
-      <button nz-button nzType="primary" nzSize="large" nzShape="circle"><i class="anticon anticon-download"></i></button>
-      <button nz-button nzType="primary" nzSize="large" nzShape="circle"><i class="anticon anticon-download"></i></button>
-      <button nz-button nzType="primary" nzSize="large" nzShape="circle"><i class="anticon anticon-download"></i></button>
+      <button nz-button nzType="primary"><i class="anticon anticon-file-add"></i>New Post
+      </button>
+      <button nz-button nzType="primary" style="margin-left: 24px;"><i class="anticon anticon-file-add"></i>New Post
+      </button>
     </div>
   </div>
 
-</nz-card>
+  <nz-card [nzBordered]="false" nzTitle="Posts List" [nzExtra]="extraTemplate">
+
+    <nz-list
+      [nzDataSource]="data"
+      [nzItemLayout]="'horizontal'"
+      [nzPagination]="pagination"
+      [nzRenderItem]="item">
+      <ng-template #item let-item>
+        <nz-list-item [nzContent]="nzContent" [nzActions]="[editAction,moreAction]">
+          <ng-template #editAction><a>edit</a></ng-template>
+          <ng-template #moreAction><a>more</a></ng-template>
+          <nz-list-item-meta
+            [nzTitle]="nzTitle"
+            nzDescription="#android #user #yuan">
+            <ng-template #nzTitle>
+              <a href="https://ng.ant.design">{{item.title}}</a>
+            </ng-template>
+            <ng-template #nzContent>
+              <div>
+                <span>Owner</span>
+                <p>Allen</p>
+              </div>
+              <div>
+                <span>last update</span>
+                <p>2019-10-01</p>
+              </div>
+              <div>
+                <span>comments</span>
+                <p>16</p>
+              </div>
+              <div>
+                <span>categories</span>
+                <p>android</p>
+              </div>
+            </ng-template>
+          </nz-list-item-meta>
+        </nz-list-item>
+      </ng-template>
+      <ng-template #pagination>
+        <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
+      </ng-template>
+    </nz-list>
+
+  </nz-card>
+
+  <ng-template #extraTemplate>
+    <nz-radio-group>
+      <label nz-radio-button nzValue="A">All</label>
+      <label nz-radio-button nzValue="B">Published</label>
+      <label nz-radio-button nzValue="C">draft</label>
+    </nz-radio-group>
+
+    <nz-input-group nzSuffixIcon="anticon anticon-search" style="width: 250px;">
+      <input type="text" nz-input placeholder="input search text">
+    </nz-input-group>
+  </ng-template>
+
+</div>
