@@ -22,6 +22,8 @@
 var LRUCache = require('lrucache');
 var rendered = LRUCache(1024);
 
+require('mathjax');
+
 var mathjax = null;
 
 module.exports = class MoeditorMathRenderer {

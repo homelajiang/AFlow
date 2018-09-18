@@ -13,6 +13,9 @@ import SVGFixer from '../../assets/moe/svgfixer';
 import * as url from 'url';
 // import * as path from 'path';
 
+import * as highlightjs from 'highlight.js';
+import * as LRUCache from 'lrucache';
+
 import 'codemirror/mode/markdown/markdown';
 import 'codemirror/mode/gfm/gfm';
 import 'codemirror/addon/mode/simple';
@@ -62,6 +65,7 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
   private editMode: boolean;
   private lineNumbers: number[];
   private scrollMap = new Array(2); // 滚动记录器
+  private codeCache = LRUCache(512);
 
   // 编辑模式、预览模式
 
@@ -101,17 +105,25 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
       showCursorWhenSelecting: true
     });
 
+    const codeMirror: any = document.querySelector('#editor > .CodeMirror');
+    codeMirror.style.lineHeight = 2;
+
+
     this.editor.focus();
 
-    this.editor.setValue('\n\n\n\n>引用\n* 元\--啦啦--n\n**哇呕**\nfunction(){\nalert("yuan");\n}\n\n' +
-      '## 回复可见的是');
+    this.editor.setValue('\n\n' + '## 回复可见的是\n' +
+      '>引用\n\n* 元\--啦啦--n\n**哇呕**\n```javascript\nfunction(){\nalert("yuan");\n}\n' +
+      'module.exports = require(\'./lib/marked\');\n' +
+      'import "com.android.utils.*"' + '\n' +
+      '```\n');
 
     this.editor.on('change', (e, obj) => {
-
+      this.updateAsync();
     });
 
-    this.updateAsync();
-
+    setTimeout(() => {
+      this.updateAsync();
+    }, 0);
   }
 
   moeMarkInit() {
@@ -119,11 +131,27 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
       math: true,
       lineNumber: true,
       breaks: false,
+      // highlight: (code, lang) => {
+      //   const key = lang + '|' + code;
+      //   let res = this.codeCache.get(key);
+      //   if (res === undefined) {
+      //     try {
+      //       if (!lang || lang === '') {
+      //         res = highlightjs.highlightAuto(code).value;
+      //       } else {
+      //         res = highlightjs.highlight(lang, code).value;
+      //       }
+      //     } catch (e) {
+      //       res = code;
+      //     }
+      //     this.codeCache.set(key, res);
+      //   }
+      //   return res;
+      // },
       highlight: MoeditorHighlight,
       umlchart: true,
       umlRenderer: MoeditorUMLRenderer
     });
-    console.log(this.moeMark('I am using __markdown__.'));
   }
 
 
@@ -137,77 +165,80 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
       this.updatePreviewRunning = false;
       if (this.updatePreview) {
         setTimeout(this.updateAsync());
-        this.updateComplete();
-        return;
       }
-
-      if (this.mdContent !== content) {
-        this.mdContent = content;
-        this.changed = true;
-      }
-
-      let mathCnt = 0, mathID = 0, rendered = null;
-      const math = new Array();
-      const rendering = true;
-
-      this.moeMark(content, {
-        mathRenderer: (str, display) => {
-          const res = MoeditorMathRender.tryRender(str, display);
-          if (res !== undefined) {
-            return res;
-          } else {
-            mathCnt++, mathID++;
-            const id = 'math-' + mathID;
-            const r = '<span id="' + id + '"></span>';
-            math[id] = {s: str, display: display};
-            return r;
-          }
-        }
-      }, (err, val) => {
-        rendered = document.createElement('span');
-        rendered.innerHTML = val;
-        MoeditorMathRender.renderMany(math, (m) => {
-
-          m.forEach(function (id) {
-            rendered.querySelector('#' + id).innerHTML = m[id].res;
-          });
-
-          const imgs = rendered.querySelectorAll('img') || [];
-
-          imgs.forEach((img) => {
-            let src = img.getattrbute('src');
-            if (url.parse(src).protocol === null) {
-              /*              if (!path.isAbsolute(src)) {
-                              src = path.resolve('', src); // todo 文件目录
-                            }*/
-              src = url.resolve('file://', src);
-            }
-            img.setAttribute('src', src);
-          });
-
-          const set = new Set();
-          const lineNumbers = rendered.querySelectorAll('moemark-linenumber') || [];
-          lineNumbers.forEach((elem) => {
-            set.add(parseInt(elem.getAttribute('i'), 10));
-          });
-
-          this.lineNumbers = (Array.from(set)).sort((a, b) => {
-            return a - b;
-          });
-
-          this.scrollMap = undefined;
-          document.getElementById('container').innerHTML = rendered.innerHTML;
-          SVGFixer(document.getElementById('container'));
-
-          this.updateComplete();
-          this.updatePreviewRunning = false;
-          if (this.updatePreview) {
-            setTimeout(this.updateAsync());
-          }
-
-        });
-      });
+      this.updateComplete();
+      return;
     }
+
+
+    if (this.mdContent !== content) {
+      this.mdContent = content;
+      this.changed = true;
+    }
+
+    let mathCnt = 0, mathID = 0, rendered = null;
+    const math = new Array();
+    const rendering = true;
+
+    this.moeMark(content, {
+      mathRenderer: (str, display) => {
+        const res = MoeditorMathRender.tryRender(str, display);
+        if (res !== undefined) {
+          return res;
+        } else {
+          mathCnt++, mathID++;
+          const id = 'math-' + mathID;
+          const r = '<span id="' + id + '"></span>';
+          math[id] = {s: str, display: display};
+          return r;
+        }
+      }
+    }, (err, val) => {
+      rendered = document.createElement('span');
+      rendered.innerHTML = val;
+      document.getElementById('container').innerHTML = rendered.innerHTML;
+
+      MoeditorMathRender.renderMany(math, (m) => {
+
+        m.forEach(function (id) {
+          rendered.querySelector('#' + id).innerHTML = m[id].res;
+        });
+
+        const imgs = rendered.querySelectorAll('img') || [];
+
+        imgs.forEach((img) => {
+          let src = img.getattrbute('src');
+          if (url.parse(src).protocol === null) {
+            /*              if (!path.isAbsolute(src)) {
+                            src = path.resolve('', src); // todo 文件目录
+                          }*/
+            src = url.resolve('file://', src);
+          }
+          img.setAttribute('src', src);
+        });
+
+        const set = new Set();
+        const lineNumbers = rendered.querySelectorAll('moemark-linenumber') || [];
+        lineNumbers.forEach((elem) => {
+          set.add(parseInt(elem.getAttribute('i'), 10));
+        });
+
+        this.lineNumbers = (Array.from(set)).sort((a, b) => {
+          return a - b;
+        });
+
+        this.scrollMap = undefined;
+        document.getElementById('container').innerHTML = rendered.innerHTML;
+        SVGFixer(document.getElementById('container'));
+
+        this.updateComplete();
+        this.updatePreviewRunning = false;
+        if (this.updatePreview) {
+          setTimeout(this.updateAsync(), 0);
+        }
+
+      });
+    });
   }
 
   private updateComplete() {

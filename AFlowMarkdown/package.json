@@ -28,6 +28,7 @@
     "js-sequence-diagrams": "^1000000.0.6",
     "lodash": "^4.17.11",
     "lrucache": "^1.0.3",
+    "mathjax": "^2.7.5",
     "moemark": "^0.3.10",
     "path": "^0.12.7",
     "raphael": "^2.2.7",
