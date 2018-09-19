@@ -110,11 +110,12 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
 
     this.editor.focus();
 
-    this.editor.setValue('\n\n' + '## 回复可见的是\n' +
+/*    this.editor.setValue('\n\n' + '## 回复可见的是\n' +
       '>引用\n\n* 元\--啦啦--n\n**哇呕**\n```javascript\nfunction(){\nalert("yuan");\n}\n' +
       'module.exports = require(\'./lib/marked\');\n' +
       'import "com.android.utils.*"' + '\n' +
-      '```\n' + '$$E=mc^2$$');
+      '```\n' + '$$E=mc^2$$');*/
+    this.editor.setValue('$$E=mc^2$$');
 
     this.editor.on('change', (e, obj) => {
       this.updateAsync();
@@ -130,23 +131,6 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
       math: true,
       lineNumber: true,
       breaks: false,
-      // highlight: (code, lang) => {
-      //   const key = lang + '|' + code;
-      //   let res = this.codeCache.get(key);
-      //   if (res === undefined) {
-      //     try {
-      //       if (!lang || lang === '') {
-      //         res = highlightjs.highlightAuto(code).value;
-      //       } else {
-      //         res = highlightjs.highlight(lang, code).value;
-      //       }
-      //     } catch (e) {
-      //       res = code;
-      //     }
-      //     this.codeCache.set(key, res);
-      //   }
-      //   return res;
-      // },
       highlight: MoeditorHighlight,
       umlchart: true,
       umlRenderer: MoeditorUMLRenderer
@@ -185,7 +169,7 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
         if (res !== undefined) {
           return res;
         } else {
-          mathCnt++, mathID++;
+          mathCnt++; mathID++;
           const id = 'math-' + mathID;
           const r = '<span id="' + id + '"></span>';
           math[id] = {s: str, display: display};
@@ -195,17 +179,12 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
     }, (err, val) => {
       rendered = document.createElement('span');
       rendered.innerHTML = val;
-      document.getElementById('container').innerHTML = rendered.innerHTML;
 
       MoeditorMathRender.renderMany(math, (m) => {
 
         for (const id of Object.keys(m)) {
           rendered.querySelector('#' + id).innerHTML = m[id].res;
         }
-
-        /*        m.forEach(function (id) {
-                  rendered.querySelector('#' + id).innerHTML = m[id].res;
-                });*/
 
         const imgs = rendered.querySelectorAll('img') || [];
 

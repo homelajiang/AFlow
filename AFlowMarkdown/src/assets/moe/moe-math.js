@@ -21,6 +21,7 @@
 
 var LRUCache = require('lrucache');
 var rendered = LRUCache(1024);
+var katex = require('katex');
 
 // require('mathjax');
 
@@ -28,47 +29,47 @@ var mathjax = null;
 
 module.exports = class MoeditorMathRenderer {
 
-    static renderMany(a, cb) {
-        if (a === []) {
-            cb(a);
-            return;
-        }
-      let div = document.createElement('div');
-        div.style.width = div.style.height = 0;
-        div.style.visibility = 'hidden';
-        document.body.appendChild(div);
-        for (let id in a) {
-            let span = document.createElement('span');
-            span.innerText = (a[id].display ? '$$' : '$') + a[id].s + (a[id].display ? '$$' : '$');
-            span.id = id;
-            div.appendChild(span);
-        }
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
-        MathJax.Hub.Queue(() => {
-            for (let id in a) {
-                let span = div.querySelector('#' + id);
-                a[id].res = (span.querySelector('svg') || span).outerHTML;
-                if (a[id].display) {
-                    a[id].res = '<div style="width: 100%; text-align: center">' + a[id].res + '</div>';
-                }
-                rendered.set((a[id].display ? 'd' : 'i') + a[id].s, a[id].res);
-
-            }
-            document.body.removeChild(div);
-            cb(a);
-        });
+  static renderMany(a, cb) {
+    if (a === []) {
+      cb(a);
+      return;
     }
-
-    static tryRender(str, display) {
-        var res = rendered.get((display ? 'd' : 'i') + str);
-        if (res === undefined) {
-            try {
-                res = katex.renderToString(str, { displayMode: display });
-                rendered.set((display ? 'd' : 'i') + str, res);
-            } catch(e) {
-                res = undefined;
-            }
-        }
-        return res;
+    let div = document.createElement('div');
+    div.style.width = div.style.height = 0;
+    div.style.visibility = 'hidden';
+    document.body.appendChild(div);
+    for (let id in a) {
+      let span = document.createElement('span');
+      span.innerText = (a[id].display ? '$$' : '$') + a[id].s + (a[id].display ? '$$' : '$');
+      span.id = id;
+      div.appendChild(span);
     }
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(() => {
+      for (let id in a) {
+        let span = div.querySelector('#' + id);
+        a[id].res = (span.querySelector('svg') || span).outerHTML;
+        if (a[id].display) {
+          a[id].res = '<div style="width: 100%; text-align: center">' + a[id].res + '</div>';
+        }
+        rendered.set((a[id].display ? 'd' : 'i') + a[id].s, a[id].res);
+
+      }
+      document.body.removeChild(div);
+      cb(a);
+    });
+  }
+
+  static tryRender(str, display) {
+    var res = rendered.get((display ? 'd' : 'i') + str);
+    if (res === undefined) {
+      try {
+        res = katex.renderToString(str, {displayMode: display});
+        rendered.set((display ? 'd' : 'i') + str, res);
+      } catch (e) {
+        res = undefined;
+      }
+    }
+    return res;
+  }
 };
