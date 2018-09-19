@@ -10,7 +10,7 @@ import MoeditorMathRender from '../../assets/moe/moe-math';
 
 import SVGFixer from '../../assets/moe/svgfixer';
 
-import * as url from 'url';
+import url from 'url';
 // import * as path from 'path';
 
 import * as LRUCache from 'lrucache';
@@ -203,9 +203,9 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
           rendered.querySelector('#' + id).innerHTML = m[id].res;
         }
 
-/*        m.forEach(function (id) {
-          rendered.querySelector('#' + id).innerHTML = m[id].res;
-        });*/
+        /*        m.forEach(function (id) {
+                  rendered.querySelector('#' + id).innerHTML = m[id].res;
+                });*/
 
         const imgs = rendered.querySelectorAll('img') || [];
 
