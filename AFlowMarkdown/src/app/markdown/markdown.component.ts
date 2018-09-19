@@ -13,7 +13,6 @@ import SVGFixer from '../../assets/moe/svgfixer';
 import * as url from 'url';
 // import * as path from 'path';
 
-import * as highlightjs from 'highlight.js';
 import * as LRUCache from 'lrucache';
 
 import 'codemirror/mode/markdown/markdown';
@@ -115,7 +114,7 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
       '>引用\n\n* 元\--啦啦--n\n**哇呕**\n```javascript\nfunction(){\nalert("yuan");\n}\n' +
       'module.exports = require(\'./lib/marked\');\n' +
       'import "com.android.utils.*"' + '\n' +
-      '```\n');
+      '```\n' + '$$E=mc^2$$');
 
     this.editor.on('change', (e, obj) => {
       this.updateAsync();
@@ -177,7 +176,7 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
     }
 
     let mathCnt = 0, mathID = 0, rendered = null;
-    const math = new Array();
+    const math = [];
     const rendering = true;
 
     this.moeMark(content, {
@@ -200,14 +199,18 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
 
       MoeditorMathRender.renderMany(math, (m) => {
 
-        m.forEach(function (id) {
+        for (const id of Object.keys(m)) {
           rendered.querySelector('#' + id).innerHTML = m[id].res;
-        });
+        }
+
+/*        m.forEach(function (id) {
+          rendered.querySelector('#' + id).innerHTML = m[id].res;
+        });*/
 
         const imgs = rendered.querySelectorAll('img') || [];
 
         imgs.forEach((img) => {
-          let src = img.getattrbute('src');
+          let src = img.getAttribute('src');
           if (url.parse(src).protocol === null) {
             /*              if (!path.isAbsolute(src)) {
                             src = path.resolve('', src); // todo 文件目录

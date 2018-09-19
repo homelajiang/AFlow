@@ -22,18 +22,18 @@
 var LRUCache = require('lrucache');
 var rendered = LRUCache(1024);
 
-require('mathjax');
+// require('mathjax');
 
 var mathjax = null;
 
 module.exports = class MoeditorMathRenderer {
 
     static renderMany(a, cb) {
-        if (a == []) {
+        if (a === []) {
             cb(a);
             return;
         }
-        let div = document.createElement('div');
+      let div = document.createElement('div');
         div.style.width = div.style.height = 0;
         div.style.visibility = 'hidden';
         document.body.appendChild(div);
