@@ -10,7 +10,10 @@ import MoeditorMathRender from '../../assets/moe/moe-math';
 
 import SVGFixer from '../../assets/moe/svgfixer';
 
-import url from 'url';
+
+/*import * as url from 'url';
+import * as path from 'path';*/
+
 // import * as path from 'path';
 
 import * as LRUCache from 'lrucache';
@@ -44,8 +47,6 @@ import 'codemirror/addon/mode/overlay';
 import 'codemirror/addon/mode/multiplex';
 import 'codemirror/addon/scroll/simplescrollbars';
 import 'codemirror/addon/selection/active-line';
-
-// import '../../assets/moe/base16-light.css';
 
 
 @Component({
@@ -110,12 +111,12 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
 
     this.editor.focus();
 
-/*    this.editor.setValue('\n\n' + '## 回复可见的是\n' +
-      '>引用\n\n* 元\--啦啦--n\n**哇呕**\n```javascript\nfunction(){\nalert("yuan");\n}\n' +
-      'module.exports = require(\'./lib/marked\');\n' +
-      'import "com.android.utils.*"' + '\n' +
-      '```\n' + '$$E=mc^2$$');*/
-    this.editor.setValue('$$E=mc^2$$');
+    /*    this.editor.setValue('\n\n' + '## 回复可见的是\n' +
+          '>引用\n\n* 元\--啦啦--n\n**哇呕**\n```javascript\nfunction(){\nalert("yuan");\n}\n' +
+          'module.exports = require(\'./lib/marked\');\n' +
+          'import "com.android.utils.*"' + '\n' +
+          '```\n' + '$$E=mc^2$$');*/
+    this.editor.setValue('1111$$E=mc^2$$');
 
     this.editor.on('change', (e, obj) => {
       this.updateAsync();
@@ -169,7 +170,8 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
         if (res !== undefined) {
           return res;
         } else {
-          mathCnt++; mathID++;
+          mathCnt++;
+          mathID++;
           const id = 'math-' + mathID;
           const r = '<span id="' + id + '"></span>';
           math[id] = {s: str, display: display};
@@ -186,18 +188,18 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
           rendered.querySelector('#' + id).innerHTML = m[id].res;
         }
 
-        const imgs = rendered.querySelectorAll('img') || [];
-
-        imgs.forEach((img) => {
-          let src = img.getAttribute('src');
-          if (url.parse(src).protocol === null) {
-            /*              if (!path.isAbsolute(src)) {
-                            src = path.resolve('', src); // todo 文件目录
-                          }*/
-            src = url.resolve('file://', src);
-          }
-          img.setAttribute('src', src);
-        });
+        // 不支持图片路径
+        /*        const imgs = rendered.querySelectorAll('img') || [];
+                imgs.forEach((img) => {
+                  let src = img.getAttribute('src');
+                  if (url.parse(src).protocol === null) {
+                    if (!path.isAbsolute(src)) {
+                      src = path.resolve('', src);
+                    }
+                    src = url.resolve('file://', src);
+                  }
+                  img.setAttribute('src', src);
+                });*/
 
         const set = new Set();
         const lineNumbers = rendered.querySelectorAll('moemark-linenumber') || [];

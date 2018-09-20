@@ -34,12 +34,12 @@ div.style.display = 'none';
 document.body.appendChild(div);
 
 function renderSequence(str) {
-  /*    let diagram = Sequence.parse(str);
-      diagram.drawSVG(div, { theme: 'simple' });
-      let res = div.innerHTML;
-      div.innerHTML = '';
-      return `<div>${res}</div>`;*/
-  renderFlow(str);
+  /*  let diagram = Sequence.parse(str);
+    diagram.drawSVG(div, {theme: 'simple'});
+    let res = div.innerHTML;
+    div.innerHTML = '';
+    return `<div>${res}</div>`;*/
+  return renderFlow(str);
 }
 
 function renderFlow(str) {
