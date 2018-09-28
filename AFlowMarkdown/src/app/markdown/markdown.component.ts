@@ -52,7 +52,9 @@ import 'codemirror/addon/selection/active-line';
 @Component({
   selector: 'app-markdown',
   templateUrl: './markdown.component.html',
-  styleUrls: ['./markdown.component.css']
+  styleUrls: ['./markdown.component.css',
+    './base16-light.css',
+    './gfm_style.css']
 })
 export class MarkdownComponent implements OnInit, AfterViewInit {
   private editor: CodeMirror.EditorFromTextArea;
@@ -111,12 +113,12 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
 
     this.editor.focus();
 
-    /*    this.editor.setValue('\n\n' + '## 回复可见的是\n' +
-          '>引用\n\n* 元\--啦啦--n\n**哇呕**\n```javascript\nfunction(){\nalert("yuan");\n}\n' +
-          'module.exports = require(\'./lib/marked\');\n' +
-          'import "com.android.utils.*"' + '\n' +
-          '```\n' + '$$E=mc^2$$');*/
-    this.editor.setValue('1111$$E=mc^2$$');
+    this.editor.setValue('\n\n' + '## 回复可见的是\n' +
+      '>引用\n\n* 元\--啦啦--n\n**哇呕**\n```javascript\nfunction(){\nalert("yuan");\n}\n' +
+      'module.exports = require(\'./lib/marked\');\n' +
+      'import "com.android.utils.*"' + '\n' +
+      '```\n' + '$$E=mc^2$$');
+    // this.editor.setValue('1111$$E=mc^2$$');
 
     this.editor.on('change', (e, obj) => {
       this.updateAsync();
@@ -212,8 +214,8 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
         });
 
         this.scrollMap = undefined;
-        document.getElementById('container').innerHTML = rendered.innerHTML;
-        SVGFixer(document.getElementById('container'));
+        document.getElementById('pre-container').innerHTML = rendered.innerHTML;
+        SVGFixer(document.getElementById('pre-container'));
 
         this.updateComplete();
         this.updatePreviewRunning = false;
