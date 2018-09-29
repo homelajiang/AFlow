@@ -318,15 +318,15 @@ notransition
     transition: all 500ms ease-in-out;
 }*/
 
-body[settings-editor-font="default"] #editor * {
+/*body[settings-editor-font="default"] #editor * {
   font-family: 'Roboto Mono', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Liberation Mono', 'Dejavu Mans Mono', monospace !important;
+}*/
+
+#editor * {
+  font-family: 'Roboto Mono', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Liberation Mono', 'Dejavu Mans Mono', 'monospace', 'Noto Sans CJK SC', 'Source Han Sans SC', 'Microsoft Yahei' !important;
 }
 
-html[lang="zh_CN"] body[settings-editor-font="default"] #editor * {
-  font-family: 'Roboto Mono', 'Menlo', 'Ubuntu Mono', 'Consolas', 'Liberation Mono', 'Dejavu Mans Mono', monospace, 'Noto Sans CJK SC', 'Source Han Sans SC', 'Microsoft Yahei' !important;
-}
-
-body[settings-editor-font="monospace"] #editor * {
+/*body[settings-editor-font="monospace"] #editor * {
   font-family: monospace !important;
 }
 
@@ -336,7 +336,7 @@ body[settings-editor-font="serif"] #editor * {
 
 body[settings-editor-font="sans"] #editor * {
   font-family: sans-serif !important;
-}
+}*/
 
 .CodeMirror-wrap, .CodeMirror pre, .CodeMirror span, .CodeMirror-vscrollbar div, .CodeMirror-measure {
   transition: none !important;

@@ -24,6 +24,7 @@ import {appRouting} from './app.router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PostDashboardComponent } from './post/post-dashboard/post-dashboard.component';
 import { CommentDashboardComponent } from './comment/comment-dashboard/comment-dashboard.component';
+import { MarkdownComponent } from './markdown/markdown.component';
 
 registerLocaleData(zh);
 
@@ -44,7 +45,8 @@ registerLocaleData(zh);
     CategoriesComponent,
     DashboardComponent,
     PostDashboardComponent,
-    CommentDashboardComponent
+    CommentDashboardComponent,
+    MarkdownComponent
   ],
   imports: [
     BrowserModule,

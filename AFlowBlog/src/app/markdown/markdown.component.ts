@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as CodeMirror from 'codemirror';
 
 import MoeMark from 'moemark';
@@ -9,13 +9,6 @@ import MoeditorUMLRenderer from '../../assets/moe/moe-uml';
 import MoeditorMathRender from '../../assets/moe/moe-math';
 
 import SVGFixer from '../../assets/moe/svgfixer';
-
-
-/*import * as url from 'url';
-import * as path from 'path';*/
-
-// import * as path from 'path';
-
 
 import 'codemirror/mode/markdown/markdown';
 import 'codemirror/mode/gfm/gfm';
