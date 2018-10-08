@@ -1,15 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as CodeMirror from 'codemirror';
 
-import MoeMark from 'moemark';
-
-import MoeditorHighlight from '../../assets/moe/moe-highlight';
-import MoeditorUMLRenderer from '../../assets/moe/moe-uml';
-
-import MoeditorMathRender from '../../assets/moe/moe-math';
-
-import SVGFixer from '../../assets/moe/svgfixer';
-
 import 'codemirror/mode/markdown/markdown';
 import 'codemirror/mode/gfm/gfm';
 import 'codemirror/addon/mode/simple';
@@ -48,18 +39,8 @@ import 'codemirror/addon/selection/active-line';
 })
 export class MarkdownComponent implements OnInit, AfterViewInit {
   private editor: CodeMirror.EditorFromTextArea;
-  private moeMark;
-  private updatePreview = false;
-  private updatePreviewRunning = false;
-  private mdContent: string;
-  private force: boolean; // 强制刷新
-  private changed: boolean; // 文本是否改动
-  private editMode: boolean; // 编辑模式
-  private lineNumbers: number[];
-  private scrollMap = new Array(2); // 滚动记录器
 
   // 编辑模式、预览模式
-
 
   constructor() {
   }
@@ -73,17 +54,16 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
    */
   ngAfterViewInit() {
     this.codeMirrorInit();
-    this.moeMarkInit();
   }
 
 
   codeMirrorInit() {
     this.editor = CodeMirror.fromTextArea(document.querySelector('#editor textarea'), {
       lineNumbers: true,
-      // mode: moeApp.config.get('math') ? 'gfm_math' : 'gfm',
       mode: 'gfm',
       theme: 'base16-light',
-      lineWrapping: true,
+      // 文字多时换行是否滚动
+      lineWrapping: false,
       extraKeys: {
         Enter: 'newlineAndIndentContinueMarkdownList',
         Home: 'goLineLeft',
@@ -93,7 +73,9 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
       tabSize: 4,
       indentUnit: 4,
       viewportMargin: Infinity,
-      showCursorWhenSelecting: true
+      showCursorWhenSelecting: true,
+      // null隐藏滚动条
+      scrollbarStyle: null,
     });
 
     const codeMirror: any = document.querySelector('#editor > .CodeMirror');
@@ -123,109 +105,7 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 
-  moeMarkInit() {
-    this.moeMark = MoeMark.setOptions({
-      math: true,
-      lineNumber: true,
-      breaks: false,
-      highlight: MoeditorHighlight,
-      umlchart: true,
-      umlRenderer: MoeditorUMLRenderer
-    });
-  }
-
-
   private updateAsync() {
-    this.updatePreview = false;
-    this.updatePreviewRunning = false;
-
-    const content = this.editor.getValue();
-
-    localStorage.setItem('temp_post', content);
-
-    if (this.mdContent === content && !this.force) {
-      this.updatePreviewRunning = false;
-      if (this.updatePreview) {
-        setTimeout(this.updateAsync());
-      }
-      this.updateComplete();
-      return;
-    }
-
-
-    if (this.mdContent !== content) {
-      this.mdContent = content;
-      this.changed = true;
-    }
-
-    let mathCnt = 0, mathID = 0, rendered = null;
-    const math = [];
-    const rendering = true;
-
-    this.moeMark(content, {
-      mathRenderer: (str, display) => {
-        const res = MoeditorMathRender.tryRender(str, display);
-        if (res !== undefined) {
-          return res;
-        } else {
-          mathCnt++;
-          mathID++;
-          const id = 'math-' + mathID;
-          const r = '<span id="' + id + '"></span>';
-          math[id] = {s: str, display: display};
-          return r;
-        }
-      }
-    }, (err, val) => {
-      rendered = document.createElement('span');
-      rendered.innerHTML = val;
-
-      MoeditorMathRender.renderMany(math, (m) => {
-
-        for (const id of Object.keys(m)) {
-          rendered.querySelector('#' + id).innerHTML = m[id].res;
-        }
-
-        // 不支持图片路径
-        /*        const imgs = rendered.querySelectorAll('img') || [];
-                imgs.forEach((img) => {
-                  let src = img.getAttribute('src');
-                  if (url.parse(src).protocol === null) {
-                    if (!path.isAbsolute(src)) {
-                      src = path.resolve('', src);
-                    }
-                    src = url.resolve('file://', src);
-                  }
-                  img.setAttribute('src', src);
-                });*/
-
-        const set = new Set();
-        const lineNumbers = rendered.querySelectorAll('moemark-linenumber') || [];
-        lineNumbers.forEach((elem) => {
-          set.add(parseInt(elem.getAttribute('i'), 10));
-        });
-
-        this.lineNumbers = (Array.from(set)).sort((a, b) => {
-          return a - b;
-        });
-
-        this.scrollMap = undefined;
-        document.getElementById('pre-container').innerHTML = rendered.innerHTML;
-        SVGFixer(document.getElementById('pre-container'));
-
-        this.updateComplete();
-        this.updatePreviewRunning = false;
-        if (this.updatePreview) {
-          setTimeout(this.updateAsync(), 0);
-        }
-
-      });
-    });
   }
-
-  private updateComplete() {
-    // fuck
-  }
-
 
 }

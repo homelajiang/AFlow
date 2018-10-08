@@ -2,6 +2,3 @@
 @import "../node_modules/codemirror/lib/codemirror.css";
 @import "./assets/moe/base16-light.css";
 @import "./assets/moe/moe-style.css";
-@import "assets/moe/gfm_style.css";
-@import "../node_modules/highlight.js/styles/github.css";
-@import "../node_modules/katex/dist/katex.min.css";

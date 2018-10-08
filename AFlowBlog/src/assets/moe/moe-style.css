@@ -97,35 +97,27 @@
 
 #markdown_main {
   transition: all 500ms ease-in-out;
-  position: fixed;
-  left: 0;
-  top: 0;
   width: 100%;
   height: 100%;
 }
 
-notransition
 #editor-container {
   height: calc(100% - 25px);
+  display: flex;
+  flex-direction: row;
 }
 
 #left-panel {
-  position: absolute;
-  left: 0;
-  width: 50%;
-  height: calc(100% - 25px);
+  flex-grow: 1;
   transition: all 500ms ease-in-out;
 }
 
 #right-panel {
-  position: absolute;
-  right: 0;
-  width: 50%;
-  height: calc(100% - 25px);
+  flex-grow: 1;
   transition: all 500ms ease-in-out;
 }
 
-#markdown_main.read-mode #left-panel {
+/*#markdown_main.read-mode #left-panel {
   left: -50%;
   width: 50%;
 }
@@ -151,7 +143,7 @@ notransition
 #markdown_main.write-mode #right-panel {
   right: -50%;
   width: 50%;
-}
+}*/
 
 #editor {
   width: 100%;

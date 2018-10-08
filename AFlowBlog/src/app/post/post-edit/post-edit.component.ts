@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+
+const tagsFromServer = ['Movie', 'Books', 'Music', 'Sports'];
 
 @Component({
   selector: 'app-post-edit',
@@ -6,10 +8,52 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./post-edit.component.css']
 })
 export class PostEditComponent implements OnInit {
+  hotTags = tagsFromServer;
+  selectedTags = [];
 
-  constructor() { }
+  tags = ['Unremovable', 'Tag 2', 'Tag 3'];
+  inputVisible = false;
+  inputValue = '';
+
+  constructor() {
+  }
 
   ngOnInit() {
+  }
+
+  @ViewChild('inputElement') inputElement: ElementRef;
+
+  handleClose(removedTag: {}): void {
+    this.tags = this.tags.filter(tag => tag !== removedTag);
+  }
+
+  sliceTagName(tag: string): string {
+    const isLongTag = tag.length > 20;
+    return isLongTag ? `${tag.slice(0, 20)}...` : tag;
+  }
+
+  showInput(): void {
+    this.inputVisible = true;
+    setTimeout(() => {
+      this.inputElement.nativeElement.focus();
+    }, 10);
+  }
+
+  handleInputConfirm(): void {
+    if (this.inputValue && this.tags.indexOf(this.inputValue) === -1) {
+      this.tags.push(this.inputValue);
+    }
+    this.inputValue = '';
+    this.inputVisible = false;
+  }
+
+  handleChange(checked: boolean, tag: string): void {
+    if (checked) {
+      this.selectedTags.push(tag);
+    } else {
+      this.selectedTags = this.selectedTags.filter(t => t !== tag);
+    }
+    console.log('You are interested in: ', this.selectedTags);
   }
 
 }
