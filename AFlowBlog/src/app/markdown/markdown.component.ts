@@ -85,15 +85,15 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
     this.editor.focus();
 
     const temp_post = localStorage.getItem('temp_post');
-    if (temp_post !== undefined) {
+    if (temp_post !== null) {
       this.editor.setValue(temp_post);
     }
 
-    /*    this.editor.setValue('\n\n' + '## 回复可见的是\n' +
+        this.editor.setValue('\n\n' + '## 回复可见的是\n' +
           '>引用\n\n* 元\--啦啦--n\n**哇呕**\n```javascript\nfunction(){\nalert("yuan");\n}\n' +
           'module.exports = require(\'./lib/marked\');\n' +
           'import "com.android.utils.*"' + '\n' +
-          '```\n' + '$$E=mc^2$$');*/
+          '```\n' + '$$E=mc^2$$');
     // this.editor.setValue('1111$$E=mc^2$$');
 
     this.editor.on('change', (e, obj) => {
