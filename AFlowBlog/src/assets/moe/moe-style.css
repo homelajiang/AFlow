@@ -102,12 +102,13 @@
 }
 
 #editor-container {
-  height: calc(100% - 25px);
+  height: 100%;
   display: flex;
   flex-direction: row;
 }
 
 #left-panel {
+  width: 500px;
   flex-grow: 1;
   transition: all 500ms ease-in-out;
 }
@@ -337,6 +338,8 @@ body[settings-editor-font="sans"] #editor * {
 #editor .CodeMirror {
   width: 100%;
   height: 100%;
+  padding-bottom: 35px;
+  min-height: 500px;
 }
 
 #pre-container-wrapper {

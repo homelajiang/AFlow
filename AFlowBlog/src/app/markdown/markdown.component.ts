@@ -59,11 +59,11 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
 
   codeMirrorInit() {
     this.editor = CodeMirror.fromTextArea(document.querySelector('#editor textarea'), {
-      lineNumbers: true,
+      lineNumbers: false,
       mode: 'gfm',
       theme: 'base16-light',
-      // 文字多时换行是否滚动
-      lineWrapping: false,
+      // 自动换行
+      lineWrapping: true,
       extraKeys: {
         Enter: 'newlineAndIndentContinueMarkdownList',
         Home: 'goLineLeft',
@@ -89,11 +89,11 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
       this.editor.setValue(temp_post);
     }
 
-        this.editor.setValue('\n\n' + '## 回复可见的是\n' +
-          '>引用\n\n* 元\--啦啦--n\n**哇呕**\n```javascript\nfunction(){\nalert("yuan");\n}\n' +
-          'module.exports = require(\'./lib/marked\');\n' +
-          'import "com.android.utils.*"' + '\n' +
-          '```\n' + '$$E=mc^2$$');
+    this.editor.setValue('## 回复可见的是\n' +
+      '>引用\n\n* 元\--啦啦--n\n**哇呕**\n```javascript\nfunction(){\nalert("yuan");\n}\n' +
+      'module.exports = require(\'./lib/marked\');\n' +
+      'import "com.android.utils.*"' + '\n' +
+      '```\n' + '$$E=mc^2$$');
     // this.editor.setValue('1111$$E=mc^2$$');
 
     this.editor.on('change', (e, obj) => {
