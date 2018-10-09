@@ -25,6 +25,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PostDashboardComponent } from './post/post-dashboard/post-dashboard.component';
 import { CommentDashboardComponent } from './comment/comment-dashboard/comment-dashboard.component';
 import { MarkdownComponent } from './markdown/markdown.component';
+import { Code404Component } from './code404/code404.component';
 
 registerLocaleData(zh);
 
@@ -46,7 +47,8 @@ registerLocaleData(zh);
     DashboardComponent,
     PostDashboardComponent,
     CommentDashboardComponent,
-    MarkdownComponent
+    MarkdownComponent,
+    Code404Component
   ],
   imports: [
     BrowserModule,
