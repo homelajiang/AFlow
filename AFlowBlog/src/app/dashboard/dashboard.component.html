@@ -1,6 +1,33 @@
 <div style="margin:0 24px;">
-  <div nz-row [nzGutter]="24">
 
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="6">
+      <nz-card [nzBordered]="false" [nzBodyStyle]="cardBottomPadding">
+        <div style="line-height: 22px;height: 22px;color:rgba(0,0,0,.45);">
+          <span>
+            <span>总销售量</span>
+          </span>
+          <span nz-tooltip nzTitle="prompt text" style="position: absolute;right: 0;top: 0;margin-top: 20px;margin-right: 24px;">
+            <strong><i class="anticon anticon-info-circle-o"></i></strong>
+          </span>
+        </div>
+        <div style="margin-top: 4px;">
+          <span style="font-size: 30px;line-height: 38px;color:rgba(0,0,0,.85)">¥ 126,560</span>
+        </div>
+
+        <div style="height:46px;background-color: #28d573 ;">
+
+        </div>
+        <nz-divider style="margin:12px 0 8px 0;"></nz-divider>
+        <div>
+          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">日销售量</span>
+          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">￥12,423</span>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+
+  <div nz-row [nzGutter]="24">
     <div nz-col [nzSpan]="16">
       <nz-card nzTitle="Cart Title" [nzBodyStyle]="cardNoPadding">
         <div nz-card-grid>

@@ -10,7 +10,9 @@ export class DashboardComponent implements OnInit {
   cardNoPadding = {
     padding: 0
   };
-
+  cardBottomPadding = {
+    padding: '20px 24px 8px',
+  };
 
   constructor() {
   }
