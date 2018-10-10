@@ -11,7 +11,6 @@ import zh from '@angular/common/locales/zh';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { DrawerComponent } from './drawer/drawer.component';
-import { ContentComponent } from './content/content.component';
 import { LoginComponent } from './login/login.component';
 import { MediaAddComponent } from './media/media-add/media-add.component';
 import { MediaListComponent } from './media/media-list/media-list.component';
@@ -35,7 +34,6 @@ registerLocaleData(zh);
     HeaderComponent,
     FooterComponent,
     DrawerComponent,
-    ContentComponent,
     LoginComponent,
     MediaAddComponent,
     MediaListComponent,

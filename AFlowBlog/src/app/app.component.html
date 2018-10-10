@@ -1,8 +1,54 @@
 <nz-layout>
-  <app-drawer></app-drawer>
+  <nz-sider style="overflow: auto; height: 100vh; position: fixed; left: 0">
+    <div class="logo">
+    </div>
+
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'">
+      <li nz-menu-item><span><i class="anticon anticon-file"></i><span class="nav-text">Dashboard</span></span></li>
+      <li nz-menu-item><span><i class="anticon anticon-video-camera"></i><span class="nav-text">Posts</span></span></li>
+      <li nz-menu-item><span><i class="anticon anticon-upload"></i><span class="nav-text">Comments</span></span></li>
+      <li nz-menu-item><span><i class="anticon anticon-cloud-o"></i><span class="nav-text">Medias</span></span></li>
+      <li nz-menu-item><span><i class="anticon anticon-bar-chart"></i><span
+        class="nav-text">Categories/Tags</span></span>
+      </li>
+      <li nz-menu-item><span><i class="anticon anticon-appstore-o"></i><span class="nav-text">Setting</span></span></li>
+    </ul>
+  </nz-sider>
   <nz-layout style="margin-left:200px;background-color: #f2f2f2;">
-    <app-header></app-header>
-    <app-content></app-content>
-    <app-footer></app-footer>
+    <nz-header style="background: #f2f2f2; padding:0 30px;;">
+      <h1 style="display: inline-block;
+    font-size: 30px;
+    line-height: 64px;
+    margin: 0;">Dashboard</h1>
+
+      <!--  <a [routerLink]="['/']">主页</a>
+        <a [routerLink]="['/dashboard']">Dashboard</a>
+        <a [routerLink]="['/posts']">Posts</a>
+        <a [routerLink]="['/comments']">Comments</a>
+        <a [routerLink]="['/categories']">Categories</a>
+        <a [routerLink]="['/tags']">Tags</a>-->
+
+      <div style="float: right;">
+        <nz-badge nzDot style="margin: 20px;">
+          <i class="anticon anticon-message" style="font-size: 14px;"></i>
+        </nz-badge>
+
+        <nz-badge nzDot>
+          <nz-avatar nzSrc="https://s1.ax1x.com/2018/10/09/iYMxC6.jpg" [nzSize]="'small'"
+                     [nzShape]="'square'"></nz-avatar>
+        </nz-badge>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div>
+        <!--<app-dashboard></app-dashboard>-->
+        <!--<app-media-list></app-media-list>-->
+        <!--<app-post-list></app-post-list>-->
+        <!--<app-categories></app-categories>-->
+        <!--<app-post-edit></app-post-edit>-->
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <nz-footer style="text-align: center;">Ant Design ©2018 Implement By Angular</nz-footer>
   </nz-layout>
 </nz-layout>
