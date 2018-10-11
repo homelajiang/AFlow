@@ -14,6 +14,21 @@ export class DashboardComponent implements OnInit {
     padding: '20px 24px 8px',
   };
 
+  data = [
+    {
+      title: 'Ant Design Title 1'
+    },
+    {
+      title: 'Ant Design Title 2'
+    },
+    {
+      title: 'Ant Design Title 3'
+    },
+    {
+      title: 'Ant Design Title 4'
+    }
+  ];
+
   constructor() {
   }
 
