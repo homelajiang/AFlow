@@ -7,6 +7,17 @@ import {Component, OnInit} from '@angular/core';
 })
 export class PostListComponent implements OnInit {
 
+  gridStyle = {
+    padding: 0,
+    margin: '5px',
+    width: '40px',
+    height: '40px'
+  };
+
+  actionStyle = {
+    padding: 0
+  };
+
   data = [
     {
       title: 'Ant Design Title 1'

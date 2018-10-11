@@ -15,45 +15,95 @@
     </div>
   </div>
 
-    <nz-list
-      [nzDataSource]="data"
-      [nzItemLayout]="'horizontal'"
-      [nzPagination]="pagination"
-      [nzRenderItem]="item">
-      <ng-template #item let-item>
-        <nz-list-item [nzContent]="nzContent" [nzActions]="[editAction,moreAction]">
-          <ng-template #editAction><a>edit</a></ng-template>
-          <ng-template #moreAction><a>more</a></ng-template>
-          <nz-list-item-meta
-            [nzTitle]="nzTitle"
-            nzDescription="#android #user #yuan">
-            <ng-template #nzTitle>
-              <a href="https://ng.ant.design">{{item.title}}</a>
-            </ng-template>
-            <ng-template #nzContent>
-              <div>
-                <span>Owner</span>
-                <p>Allen</p>
+  <nz-list
+    [nzDataSource]="data"
+    [nzItemLayout]="'horizontal'"
+    [nzPagination]="pagination"
+    [nzRenderItem]="item">
+    <ng-template #item let-item>
+      <nz-list-item>
+        <nz-list-item-meta
+          [nzDescription]="nzDescription">
+          <ng-template #nzDescription>
+            <nz-card>
+              <div style="display: flex;">
+                <div style="flex-shrink: 0;margin-right: 24px;">
+                  <img src="https://via.placeholder.com/216x135"/>
+                </div>
+                <div style="flex-grow: 1;height: 135px;display: flex;flex-direction: column;">
+                  <div style="flex-shrink: 0;">
+                    <strong style="font-size: 16px;">{{item.title}}</strong>
+                    <span style="color: rgba(0,0,0,.45);font-size: 12px;margin-left: 10px;">3小时前</span>
+                  </div>
+                  <div style="margin-top: 6px;flex-grow: 1;">
+                          <span>
+                            欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！
+                          欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！ 欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！
+                          欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！
+                          欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！
+                          </span>
+                  </div>
+
+                  <div style="flex-shrink: 0;">
+                    <a href="#">文学</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <span>#Android</span>
+                    <span>#Android</span>
+                    <span>#Android</span>
+                    <span>#Android</span>
+                    <span>#Android</span>
+                  </div>
+
+                </div>
+                <div style="flex-shrink:0;margin-left: 60px;margin-right: 36px;width: 150px;height: 135px;
+                text-align: center;display: flex;    align-items: center;">
+                  <nz-card [nzBordered]="false" [nzBodyStyle]="actionStyle" style="height: 100px;">
+                    <div nz-card-grid [ngStyle]="gridStyle">
+                      <div style="padding: 5px;display: flex;
+                      justify-content: center;align-items: center;flex-direction:column;">
+                        <i class="anticon anticon-question-circle-o"></i>
+                        <span style="font-size: 10px;">Edit</span>
+                      </div>
+                    </div>
+                    <div nz-card-grid [ngStyle]="gridStyle">
+                      <div style="padding: 5px;display: flex;
+                      justify-content: center;align-items: center;flex-direction:column;">
+                        <i class="anticon anticon-question-circle-o"></i>
+                        <span style="font-size: 10px;">Edit</span>
+                      </div>
+                    </div>
+                    <div nz-card-grid [ngStyle]="gridStyle">
+                      <div style="padding: 5px;display: flex;
+                      justify-content: center;align-items: center;flex-direction:column;">
+                        <i class="anticon anticon-question-circle-o"></i>
+                        <span style="font-size: 10px;">Edit</span>
+                      </div>
+                    </div>
+                    <div nz-card-grid [ngStyle]="gridStyle">
+                      <div style="padding: 5px;display: flex;
+                      justify-content: center;align-items: center;flex-direction:column;">
+                        <i class="anticon anticon-question-circle-o"></i>
+                        <span style="font-size: 10px;">Edit</span>
+                      </div>
+                    </div>
+                    <div nz-card-grid [ngStyle]="gridStyle">
+                      <div style="padding: 5px;display: flex;
+                      justify-content: center;align-items: center;flex-direction:column;">
+                        <i class="anticon anticon-question-circle-o"></i>
+                        <span style="font-size: 10px;">Edit</span>
+                      </div>
+                    </div>
+                  </nz-card>
+                </div>
               </div>
-              <div>
-                <span>last update</span>
-                <p>2019-10-01</p>
-              </div>
-              <div>
-                <span>comments</span>
-                <p>16</p>
-              </div>
-              <div>
-                <span>categories</span>
-                <p>android</p>
-              </div>
-            </ng-template>
-          </nz-list-item-meta>
-        </nz-list-item>
-      </ng-template>
-      <ng-template #pagination>
-        <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
-      </ng-template>
-    </nz-list>
+            </nz-card>
+          </ng-template>
+        </nz-list-item-meta>
+      </nz-list-item>
+    </ng-template>
+    <ng-template #pagination>
+      <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
+    </ng-template>
+  </nz-list>
 
 </div>
