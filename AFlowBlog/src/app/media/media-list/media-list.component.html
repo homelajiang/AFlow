@@ -1,31 +1,3 @@
-<!--<nz-list
-  [nzDataSource]="data"
-  [nzRenderItem]="item"
-  [nzGrid]="{gutter: 16, xs: 24, sm: 12, md: 6, lg: 6, xl: 4 }">
-  <ng-template #item let-item>
-    <nz-list-item [nzContent]="nzContent">
-      <ng-template #nzContent>
-&lt;!&ndash;        <nz-card nzHoverable style="width:240px;padding: 10px;" [nzCover]="coverTemplate">
-          <nz-card-meta nzTitle="Europe Street beat"></nz-card-meta>
-        </nz-card>
-        <ng-template #coverTemplate>
-          <img alt="example" src="https://cdn.dribbble.com/users/19894/screenshots/491652/sprawsmicons.jpg"/>
-        </ng-template>&ndash;&gt;
-        <nz-card [nzTitle]="item.title">
-          Card content
-        </nz-card>
-      </ng-template>
-    </nz-list-item>
-  </ng-template>
-</nz-list>-->
-
-<!--<nz-card nzHoverable style="width:240px;padding: 10px 10px 0px 10px;" [nzCover]="coverTemplate">
-  <nz-card-meta nzTitle="Europe Street beat"></nz-card-meta>
-</nz-card>
-<ng-template #coverTemplate>
-  <img alt="example" src="https://cdn.dribbble.com/users/19894/screenshots/491652/sprawsmicons.jpg"/>
-</ng-template>-->
-
 <div>
   <nz-dropdown>
     <a nz-dropdown>
@@ -81,7 +53,7 @@
 
 <div style="display:flex;flex-wrap:wrap;justify-content: center;">
 
-  <div style="width:220px;" *ngFor="let item of data">
+  <div style="width:220px;margin: 10px;" *ngFor="let item of data">
     <div style="background-color: white;width:220px;height:161px;padding: 10px;
   border:1px solid #e8e8e8;border-radius: 3px;">
       <div style="display:block;width: 200px;height: 141px;">
@@ -89,7 +61,12 @@
       </div>
 
     </div>
-    <div style="padding: 5px 10px;font-weight: 600;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+    <!--<div style="padding: 5px 10px;font-weight: 600;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">-->
+    <div style="padding: 5px 10px;font-weight: 600;overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;">
       Black Clover le nouvel arc est présenté en vidéo VOSTFR
     </div>
   </div>

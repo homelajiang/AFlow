@@ -1,16 +1,6 @@
 <div style="padding: 30px;">
 
-<!--  <div style="display: flex;justify-content: space-between;margin-bottom: 30px;">
-    <button nz-button nzType="primary"><i class="anticon anticon-file-add"></i>New Post</button>
-    <div>
-      <button nz-button nzType="primary"><i class="anticon anticon-file-add"></i>New Post
-      </button>
-      <button nz-button nzType="primary" style="margin-left: 24px;"><i class="anticon anticon-file-add"></i>New Post
-      </button>
-    </div>
-  </div>-->
-
-  <nz-card [nzBordered]="false" nzTitle="Posts List" [nzExtra]="extraTemplate">
+  <nz-card [nzBordered]="false" [nzExtra]="extraTemplate">
 
     <nz-list
       [nzDataSource]="data"
@@ -27,15 +17,11 @@
             nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team">
             <ng-template #nzTitle>
               <a href="https://ng.ant.design">{{item.title}}</a>
+              <span style="font-size: 10px;color: rgba(0,0,0,.45);margin-left: 10px;">3小时前</span>
             </ng-template>
             <ng-template #nzContent>
               <div>
-                <span>categories</span>
-                <p>《那是一种内在的东西》</p>
-              </div>
-              <div>
-                <span>publish time</span>
-                <p>2019-10-01</p>
+                <a>《那是一种内在的东西》</a>
               </div>
             </ng-template>
           </nz-list-item-meta>

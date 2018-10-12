@@ -35,6 +35,22 @@ export class MediaListComponent implements OnInit {
     {
       title: 'Title 7',
       src: 'https://via.placeholder.com/300*x200'
+    },
+    {
+      title: 'Title 8',
+      src: 'https://via.placeholder.com/300*x200'
+    },
+    {
+      title: 'Title 9',
+      src: 'https://via.placeholder.com/300*x200'
+    },
+    {
+      title: 'Title 10',
+      src: 'https://via.placeholder.com/300*x200'
+    },
+    {
+      title: 'Title 11',
+      src: 'https://via.placeholder.com/300*x200'
     }
   ];
 
