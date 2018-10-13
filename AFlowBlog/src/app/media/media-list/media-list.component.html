@@ -1,77 +1,36 @@
-<div>
-  <nz-dropdown>
-    <a nz-dropdown>
-      All type <i class="anticon anticon-down"></i>
-    </a>
-    <ul nz-menu nzSelectable>
-      <li nz-menu-item>
-        <a>Image</a>
-      </li>
-      <li nz-menu-item>
-        <a>Video</a>
-      </li>
-      <li nz-menu-item>
-        <a>Music</a>
-      </li>
-      <li nz-menu-item>
-        <a>Document</a>
-      </li>
-      <li nz-menu-item>
-        <a>Other</a>
-      </li>
-    </ul>
-  </nz-dropdown>
+<div style="padding: 30px;">
+  <div style="display: flex;justify-content: space-between;margin-bottom: 30px;">
+    <button nz-button nzType="primary"><i class="anticon anticon-file-add"></i>New Post</button>
+    <div>
+      <nz-radio-group>
+        <label nz-radio-button nzValue="A">All</label>
+        <label nz-radio-button nzValue="B">Published</label>
+        <label nz-radio-button nzValue="C">draft</label>
+      </nz-radio-group>
 
-  <nz-dropdown>
-    <a nz-dropdown>
-      All time <i class="anticon anticon-down"></i>
-    </a>
-    <ul nz-menu nzSelectable>
-      <li nz-menu-item>
-        <a>this past week</a>
-      </li>
-      <li nz-menu-item>
-        <a>this past month</a>
-      </li>
-      <li nz-menu-item>
-        <a>this past year</a>
-      </li>
-      <li nz-menu-item>
-        <a>All time</a>
-      </li>
-    </ul>
-  </nz-dropdown>
-
-  <nz-input-group style="width: 300px;float: right;" nzSuffixIcon="anticon anticon-search">
-    <input type="text" nz-input placeholder="input search text">
-  </nz-input-group>
-
-  <div style="clear:both;"></div>
-
-</div>
-
-
-<div style="display:flex;flex-wrap:wrap;justify-content: center;">
-
-  <div style="width:220px;margin: 10px;" *ngFor="let item of data">
-    <div style="background-color: white;width:220px;height:161px;padding: 10px;
-  border:1px solid #e8e8e8;border-radius: 3px;">
-      <div style="display:block;width: 200px;height: 141px;">
-        <img alt="example" src="https://via.placeholder.com/200x141"/>
-      </div>
-
-    </div>
-    <!--<div style="padding: 5px 10px;font-weight: 600;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">-->
-    <div style="padding: 5px 10px;font-weight: 600;overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;">
-      Black Clover le nouvel arc est présenté en vidéo VOSTFR
+      <nz-input-group nzSuffixIcon="anticon anticon-search" style="width: 250px;">
+        <input type="text" nz-input placeholder="input search text">
+      </nz-input-group>
     </div>
   </div>
 
+
+  <div style="display:flex;flex-wrap:wrap;justify-content: center;">
+
+    <div style="width:220px;margin: 10px;" *ngFor="let item of data">
+      <div style="background-color: white;width:220px;height:161px;padding: 10px;
+  border:1px solid #e8e8e8;border-radius: 3px;">
+        <div style="display:block;width: 200px;height: 141px;">
+          <img alt="example" src="https://via.placeholder.com/200x141"/>
+        </div>
+
+      </div>
+      <div style="padding: 5px 10px;font-weight: 600;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+        Black Clover le nouvel arc est présenté en vidéo VOSTFR
+      </div>
+    </div>
+
+  </div>
+
 </div>
-
-
 
