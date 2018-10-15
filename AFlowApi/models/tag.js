@@ -1,9 +1,11 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var TagSchema = new Schema({
-    title: {type: String, require: true},
-    image: {type: String}
+const TagSchema = new Schema({
+    name: {type: String, require: true},
+    alias: {type: String},
+    image: {type: String},
+    description: {type: String}
 }, {
     versionKey: false // You should be aware of the outcome after set to false
 });
@@ -27,6 +29,6 @@ TagSchema.static({
     }
 });
 
-var Tag = mongoose.model('Tag', TagSchema);
+const Tag = mongoose.model('Tag', TagSchema);
 
 module.exports = Tag;

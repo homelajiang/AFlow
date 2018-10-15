@@ -1,11 +1,12 @@
 const config = require("../../config");
 const mongoose = require('mongoose');
 
-mongoose.connect(config.blog.db_connection, {}, (err) => {
+mongoose.connect(config.blog.db_connection, { useNewUrlParser: true }, (err) => {
     if (err)
         return console.log("数据库链接失败！！！");
     require('seneca')()
-        .use(require('./plugins/blog_plugin'))
+        .use(require('./plugins/post_plugin'))
+        .use(require('./plugins/tag'))
         .listen(config.blog.port);
 });
 mongoose.Promise = global.Promise;

@@ -1,9 +1,11 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var CategoriesSchema = new Schema({
+const CategoriesSchema = new Schema({
     name: {type: String, require: true},
-    image: {type: String}
+    alias: {type: String},
+    image: {type: String},
+    description: {type: String}
 }, {
     versionKey: false // You should be aware of the outcome after set to false
 });
@@ -15,6 +17,6 @@ CategoriesSchema.static({
     }
 });
 
-var Categories = mongoose.model('Categories', CategoriesSchema);
+const Categories = mongoose.model('Categories', CategoriesSchema);
 
 module.exports = Categories;

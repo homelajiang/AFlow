@@ -1,24 +1,28 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var Categories = require('./categories');
-var Tag = require('./tag');
-var User = require('./profile');
+const Categories = require('./categories');
+const Tag = require('./tag');
+const Profile = require('./profile');
+
 const DRAFT = 0;
-const PUBLISHED = 1;
+const PENDING = 1;
+const PUBLISHED = 2;
 const DELETED = -1;
 
-var PostSchema = new Schema({
+const PostSchema = new Schema({
     title: {type: String, require: true},
     description: {type: String, require: true},
     content: {type: String, require: true},
-    md_content: {type: String, require: true},
     create_date: {type: Date, require: true, default: Date.now()},
     modify_date: {type: Date, require: true, default: Date.now()},
-    tags: [{type: Schema.Types.ObjectId, ref: 'Tag', required: true}],
-    categories: {type: Schema.Types.ObjectId, ref: 'Categories', required: true},
-    creator: {type: Schema.Types.ObjectId, ref: 'User', required: true},
-    status: {type: Number, default: DRAFT}//0 草稿，1 已发布 -1 已删除
+    open: {type: Number, default: 0},//公开性 0 公开  1 密码保护 2 私密
+    password: {type: String},//保护密码
+    open_comment: {type: Boolean, default: true},//是否开放评论
+    tags: [{type: Schema.Types.ObjectId, ref: 'Tag'}],
+    categories: {type: Schema.Types.ObjectId, ref: 'Categories'},
+    creator: {type: Schema.Types.ObjectId, ref: 'Profile', required: true},
+    status: {type: Number, default: DRAFT}//0 草稿，1 待审核 -1 已删除 2 已发布
 }, {
     versionKey: false // You should be aware of the outcome after set to false
 });
@@ -161,7 +165,7 @@ PostSchema.static({
      */
     delPosts: function (postIds, callback) {
         Post.where({_id: {$in: postIds}})
-            .update({status:DELETED})
+            .update({status: DELETED})
     },
     /**
      * 批量移除文章<b>(彻底删除文章)</b>
@@ -176,6 +180,6 @@ PostSchema.static({
 
 });
 
-var Post = mongoose.model('Post', PostSchema);
+const Post = mongoose.model('Post', PostSchema);
 
 module.exports = Post;
