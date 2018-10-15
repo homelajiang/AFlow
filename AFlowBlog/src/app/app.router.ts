@@ -7,7 +7,7 @@ import {Code404Component} from './code404/code404.component';
 import {LoginComponent} from './login/login.component';
 import {PostEditComponent} from './post/post-edit/post-edit.component';
 import {MediaListComponent} from './media/media-list/media-list.component';
-import {MediaAddComponent} from './media/media-add/media-add.component';
+import {TagComponent} from './tag/tag.component';
 
 const router: Routes = [
   {path: '', component: DashboardComponent},
@@ -17,10 +17,9 @@ const router: Routes = [
   {path: 'post/new', component: PostEditComponent},
   {path: 'post/edit', component: PostEditComponent},
   {path: 'medias', component: MediaListComponent},
-  {path: 'media/new', component: MediaAddComponent},
   {path: 'comments', component: CommentComponent},
   {path: 'categories', component: CategoriesComponent},
-  {path: 'tags', component: CategoriesComponent},
+  {path: 'tags', component: TagComponent},
   {path: '**', component: Code404Component}
 ];
 

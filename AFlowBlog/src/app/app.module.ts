@@ -12,7 +12,6 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { DrawerComponent } from './drawer/drawer.component';
 import { LoginComponent } from './login/login.component';
-import { MediaAddComponent } from './media/media-add/media-add.component';
 import { MediaListComponent } from './media/media-list/media-list.component';
 import { PostEditComponent } from './post/post-edit/post-edit.component';
 import { PostListComponent } from './post/post-list/post-list.component';
@@ -35,7 +34,6 @@ registerLocaleData(zh);
     FooterComponent,
     DrawerComponent,
     LoginComponent,
-    MediaAddComponent,
     MediaListComponent,
     PostEditComponent,
     PostListComponent,

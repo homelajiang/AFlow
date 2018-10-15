@@ -95,7 +95,7 @@
           <span style="font-size: 30px;line-height: 38px;color:rgba(0,0,0,.85)">70%</span>
         </div>
 
-        <div style="height:46px;background-color: #28d573 ;">
+        <div style="height:46px;">
           <div nz-row>
 
             <div nz-col nzSpan="12">
@@ -167,262 +167,288 @@
       </nz-card>
     </div>
 
-    <div nz-col [nzSpan]="8" style="margin-top: 24px;">
+    <div nz-col [nzSpan]="8">
 
-      <nz-card nzTitle="Popular Posts" [nzExtra]="extraTemplate">
-        <app-post-dashboard></app-post-dashboard>
-        <app-post-dashboard></app-post-dashboard>
-        <app-post-dashboard></app-post-dashboard>
-        <app-post-dashboard></app-post-dashboard>
-        <app-post-dashboard></app-post-dashboard>
-      </nz-card>
-      <ng-template #extraTemplate>
-        <a>More</a>
-      </ng-template>
+      <div nz-row style="margin-top: 24px;" [nzGutter]="24">
 
-    </div>
-
-    <!--    <div nz-col [nzSpan]="16">
-          <nz-card nzTitle="Cart Title" [nzBodyStyle]="cardNoPadding">
-            <div nz-card-grid>
-              <nz-card-meta [nzTitle]="nzTitle"
-                            [nzDescription]="nzDescription"></nz-card-meta>
-
-              <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
-                <a href="/">程序员日常</a>
-                <span>a year ago</span>
-              </div>
-            </div>
-            <div nz-card-grid>
-              <nz-card-meta [nzTitle]="nzTitle"
-                            [nzDescription]="nzDescription"></nz-card-meta>
-
-              <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
-                <a href="/">程序员日常</a>
-                <span>a year ago</span>
-              </div>
-            </div>
-            <div nz-card-grid>
-              <nz-card-meta [nzTitle]="nzTitle"
-                            [nzDescription]="nzDescription"></nz-card-meta>
-
-              <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
-                <a href="/">程序员日常</a>
-                <span>a year ago</span>
-              </div>
-            </div>
-            <div nz-card-grid>
-              <nz-card-meta [nzTitle]="nzTitle"
-                            [nzDescription]="nzDescription"></nz-card-meta>
-
-              <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
-                <a href="/">程序员日常</a>
-                <span>a year ago</span>
-              </div>
-            </div>
-            <div nz-card-grid>
-              <nz-card-meta [nzTitle]="nzTitle"
-                            [nzDescription]="nzDescription"></nz-card-meta>
-
-              <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
-                <a href="/">程序员日常</a>
-                <span>a year ago</span>
-              </div>
-            </div>
-            <div nz-card-grid>
-              <nz-card-meta [nzTitle]="nzTitle"
-                            [nzDescription]="nzDescription"></nz-card-meta>
-
-              <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
-                <a href="/">程序员日常</a>
-                <span>a year ago</span>
-              </div>
-            </div>
-
-
-            <ng-template #nzTitle>
-              <nz-avatar nzSize="small"
-                         nzSrc="https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png"></nz-avatar>
-              <a style="margin-left: 12px;color: rgba(0, 0, 0, 0.85);" href="/">Alipay</a>
-            </ng-template>
-
-            <ng-template #nzDescription>
-              那是一种内在的东西，他们到达不了，也无法触及的
-            </ng-template>
-          </nz-card>
-
-          <div nz-row [nzGutter]="24" style="margin-top: 24px;">
-
-            <div nz-col [nzSpan]="12">
-              <nz-card nzTitle="Popular Posts" [nzExtra]="extraTemplate">
-                <app-post-dashboard></app-post-dashboard>
-                <app-post-dashboard></app-post-dashboard>
-                <app-post-dashboard></app-post-dashboard>
-                <app-post-dashboard></app-post-dashboard>
-                <app-post-dashboard></app-post-dashboard>
-              </nz-card>
-              <ng-template #extraTemplate>
-                <a>More</a>
-              </ng-template>
-            </div>
-
-            <div nz-col [nzSpan]="12">
-              <nz-card nzTitle="Activity">
-
-                <nz-timeline>
-                  <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
-                  <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
-                  <nz-timeline-item>
-                    <p><b>Solve initial network problems 1</b>
-                    <p>
-                      <i>10 new comments</i>
-                  </nz-timeline-item>
-                  <nz-timeline-item nzColor="red" [nzDot]="dotTemplate">Technical testing 2015-09-01</nz-timeline-item>
-                  <nz-timeline-item>Network problems being solved 2015-09-01</nz-timeline-item>
-                </nz-timeline>
-                <ng-template #dotTemplate>
-                  <i class="anticon anticon-clock-circle-o" style="font-size: 16px;"></i>
-                </ng-template>
-
-              </nz-card>
-              <ng-template #extraTemplate>
-                <a>More</a>
-              </ng-template>
-            </div>
-
-          </div>
-        </div>
-
-        <div nz-col [nzSpan]="8">
-
-          <nz-card nzTitle="At a Glance">
-            <div nz-row>
-
-              <div nz-col nzSpan="12">
-                <i class="anticon anticon-exception"></i>
-                <b>12</b>
-                Posts
-              </div>
-
-              <div nz-col nzSpan="12">
-                <i class="anticon anticon-exception"></i>
-                <b>12</b>
-                Pages
-              </div>
-
-            </div>
-
-            <div nz-row>
-
-              <div nz-col nzSpan="12">
-                <i class="anticon anticon-exception"></i>
-                <b>112</b>
-                Comments
-              </div>
-
-              <div nz-col nzSpan="12">
-                <i class="anticon anticon-exception"></i>
-                <b>1</b>
-                Moderation
-              </div>
-
-            </div>
-
-            <nz-divider></nz-divider>
-            <div nz-row>
-
-              <div nz-col nzSpan="12">
-                <b>STORAGE</b>
-                70%
-              </div>
-
-              <div nz-col nzSpan="12" style="text-align: end;">
-                <b>7Gb</b>
-                of
-                <b>10Gb</b>
-              </div>
-            </div>
-
-            <nz-progress [nzPercent]="70" [nzShowInfo]="false"></nz-progress>
-
-            <div nz-row>
-
-              <div nz-col nzSpan="12">
-                <i class="anticon anticon-exception"></i>
-                <b>12</b>
-                Images
-              </div>
-
-              <div nz-col nzSpan="12">
-                <i class="anticon anticon-exception"></i>
-                <b>12</b>
-                Videos
-              </div>
-
-            </div>
-
-            <div nz-row>
-
-              <div nz-col nzSpan="12">
-                <i class="anticon anticon-exception"></i>
-                <b>112</b>
-                Musics
-              </div>
-
-              <div nz-col nzSpan="12">
-                <i class="anticon anticon-exception"></i>
-                <b>1</b>
-                Other Files
-              </div>
-
-            </div>
-
-          </nz-card>
-
-          <nz-card nzTitle="Views" style="margin-top: 24px;" [nzExtra]="extraTemplate">
-            <div style="height: 200px;background-color: antiquewhite;"></div>
-          </nz-card>
-          <ng-template #extraTemplate>
-            <nz-dropdown>
-              <a nz-dropdown>
-                The pass week<i class="anticon anticon-down"></i>
-              </a>
-              <ul nz-menu nzSelectable>
-                <li nz-menu-item>
-                  <a>The pass week</a>
-                </li>
-                <li nz-menu-item>
-                  <a>The pass month</a>
-                </li>
-                <li nz-menu-item>
-                  <a>The pass year</a>
-                </li>
-
-                <li nz-menu-item>
-                  <a>All time</a>
-                </li>
-              </ul>
-            </nz-dropdown>
-          </ng-template>
-
-          <nz-card nzTitle="Upload Files" nzt style="margin-top: 24px;">
+        <div nz-col [nzSpan]="24">
+          <nz-card>
             <nz-upload
               nzType="drag"
               [nzMultiple]="true"
               [nzLimit]="2"
+              nzListType="picture"
               nzAction="https://jsonplaceholder.typicode.com/posts/"
-            >
+              (nzChange)="handleChange($event)">
               <p class="ant-upload-drag-icon">
-                <i class="anticon anticon-cloud-upload-o"></i>
+                <i class="anticon anticon-inbox"></i>
               </p>
               <p class="ant-upload-text">Click or drag file to this area to upload</p>
-              <p class="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data
-                or
-                other band files</p>
+              <p class="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company
+                data or other band files</p>
             </nz-upload>
           </nz-card>
+        </div>
 
-        </div>-->
+        <div nz-col [nzSpan]="24"  style="margin-top: 24px;">
+
+          <nz-card nzTitle="Popular Posts" [nzExtra]="extraTemplate">
+            <app-post-dashboard></app-post-dashboard>
+            <app-post-dashboard></app-post-dashboard>
+            <app-post-dashboard></app-post-dashboard>
+            <app-post-dashboard></app-post-dashboard>
+            <app-post-dashboard></app-post-dashboard>
+          </nz-card>
+          <ng-template #extraTemplate>
+            <a>More</a>
+          </ng-template>
+        </div>
+
+<!--          <div nz-col [nzSpan]="16">
+              <nz-card nzTitle="Cart Title" [nzBodyStyle]="cardNoPadding">
+                <div nz-card-grid>
+                  <nz-card-meta [nzTitle]="nzTitle"
+                                [nzDescription]="nzDescription"></nz-card-meta>
+
+                  <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
+                    <a href="/">程序员日常</a>
+                    <span>a year ago</span>
+                  </div>
+                </div>
+                <div nz-card-grid>
+                  <nz-card-meta [nzTitle]="nzTitle"
+                                [nzDescription]="nzDescription"></nz-card-meta>
+
+                  <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
+                    <a href="/">程序员日常</a>
+                    <span>a year ago</span>
+                  </div>
+                </div>
+                <div nz-card-grid>
+                  <nz-card-meta [nzTitle]="nzTitle"
+                                [nzDescription]="nzDescription"></nz-card-meta>
+
+                  <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
+                    <a href="/">程序员日常</a>
+                    <span>a year ago</span>
+                  </div>
+                </div>
+                <div nz-card-grid>
+                  <nz-card-meta [nzTitle]="nzTitle"
+                                [nzDescription]="nzDescription"></nz-card-meta>
+
+                  <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
+                    <a href="/">程序员日常</a>
+                    <span>a year ago</span>
+                  </div>
+                </div>
+                <div nz-card-grid>
+                  <nz-card-meta [nzTitle]="nzTitle"
+                                [nzDescription]="nzDescription"></nz-card-meta>
+
+                  <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
+                    <a href="/">程序员日常</a>
+                    <span>a year ago</span>
+                  </div>
+                </div>
+                <div nz-card-grid>
+                  <nz-card-meta [nzTitle]="nzTitle"
+                                [nzDescription]="nzDescription"></nz-card-meta>
+
+                  <div style="display: flex;justify-content: space-between;font-size: 12px;margin-top: 8px;">
+                    <a href="/">程序员日常</a>
+                    <span>a year ago</span>
+                  </div>
+                </div>
+
+
+                <ng-template #nzTitle>
+                  <nz-avatar nzSize="small"
+                             nzSrc="https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png"></nz-avatar>
+                  <a style="margin-left: 12px;color: rgba(0, 0, 0, 0.85);" href="/">Alipay</a>
+                </ng-template>
+
+                <ng-template #nzDescription>
+                  那是一种内在的东西，他们到达不了，也无法触及的
+                </ng-template>
+              </nz-card>
+
+              <div nz-row [nzGutter]="24" style="margin-top: 24px;">
+
+                <div nz-col [nzSpan]="12">
+                  <nz-card nzTitle="Popular Posts" [nzExtra]="extraTemplate">
+                    <app-post-dashboard></app-post-dashboard>
+                    <app-post-dashboard></app-post-dashboard>
+                    <app-post-dashboard></app-post-dashboard>
+                    <app-post-dashboard></app-post-dashboard>
+                    <app-post-dashboard></app-post-dashboard>
+                  </nz-card>
+                  <ng-template #extraTemplate>
+                    <a>More</a>
+                  </ng-template>
+                </div>
+
+                <div nz-col [nzSpan]="12">
+                  <nz-card nzTitle="Activity">
+
+                    <nz-timeline>
+                      <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
+                      <nz-timeline-item>Create a services site 2015-09-01</nz-timeline-item>
+                      <nz-timeline-item>
+                        <p><b>Solve initial network problems 1</b>
+                        <p>
+                          <i>10 new comments</i>
+                      </nz-timeline-item>
+                      <nz-timeline-item nzColor="red" [nzDot]="dotTemplate">Technical testing 2015-09-01</nz-timeline-item>
+                      <nz-timeline-item>Network problems being solved 2015-09-01</nz-timeline-item>
+                    </nz-timeline>
+                    <ng-template #dotTemplate>
+                      <i class="anticon anticon-clock-circle-o" style="font-size: 16px;"></i>
+                    </ng-template>
+
+                  </nz-card>
+                  <ng-template #extraTemplate>
+                    <a>More</a>
+                  </ng-template>
+                </div>
+
+              </div>
+            </div>
+
+            <div nz-col [nzSpan]="8">
+
+              <nz-card nzTitle="At a Glance">
+                <div nz-row>
+
+                  <div nz-col nzSpan="12">
+                    <i class="anticon anticon-exception"></i>
+                    <b>12</b>
+                    Posts
+                  </div>
+
+                  <div nz-col nzSpan="12">
+                    <i class="anticon anticon-exception"></i>
+                    <b>12</b>
+                    Pages
+                  </div>
+
+                </div>
+
+                <div nz-row>
+
+                  <div nz-col nzSpan="12">
+                    <i class="anticon anticon-exception"></i>
+                    <b>112</b>
+                    Comments
+                  </div>
+
+                  <div nz-col nzSpan="12">
+                    <i class="anticon anticon-exception"></i>
+                    <b>1</b>
+                    Moderation
+                  </div>
+
+                </div>
+
+                <nz-divider></nz-divider>
+                <div nz-row>
+
+                  <div nz-col nzSpan="12">
+                    <b>STORAGE</b>
+                    70%
+                  </div>
+
+                  <div nz-col nzSpan="12" style="text-align: end;">
+                    <b>7Gb</b>
+                    of
+                    <b>10Gb</b>
+                  </div>
+                </div>
+
+                <nz-progress [nzPercent]="70" [nzShowInfo]="false"></nz-progress>
+
+                <div nz-row>
+
+                  <div nz-col nzSpan="12">
+                    <i class="anticon anticon-exception"></i>
+                    <b>12</b>
+                    Images
+                  </div>
+
+                  <div nz-col nzSpan="12">
+                    <i class="anticon anticon-exception"></i>
+                    <b>12</b>
+                    Videos
+                  </div>
+
+                </div>
+
+                <div nz-row>
+
+                  <div nz-col nzSpan="12">
+                    <i class="anticon anticon-exception"></i>
+                    <b>112</b>
+                    Musics
+                  </div>
+
+                  <div nz-col nzSpan="12">
+                    <i class="anticon anticon-exception"></i>
+                    <b>1</b>
+                    Other Files
+                  </div>
+
+                </div>
+
+              </nz-card>
+
+              <nz-card nzTitle="Views" style="margin-top: 24px;" [nzExtra]="extraTemplate">
+                <div style="height: 200px;background-color: antiquewhite;"></div>
+              </nz-card>
+              <ng-template #extraTemplate>
+                <nz-dropdown>
+                  <a nz-dropdown>
+                    The pass week<i class="anticon anticon-down"></i>
+                  </a>
+                  <ul nz-menu nzSelectable>
+                    <li nz-menu-item>
+                      <a>The pass week</a>
+                    </li>
+                    <li nz-menu-item>
+                      <a>The pass month</a>
+                    </li>
+                    <li nz-menu-item>
+                      <a>The pass year</a>
+                    </li>
+
+                    <li nz-menu-item>
+                      <a>All time</a>
+                    </li>
+                  </ul>
+                </nz-dropdown>
+              </ng-template>
+
+              <nz-card nzTitle="Upload Files" nzt style="margin-top: 24px;">
+                <nz-upload
+                  nzType="drag"
+                  [nzMultiple]="true"
+                  [nzLimit]="2"
+                  nzAction="https://jsonplaceholder.typicode.com/posts/"
+                >
+                  <p class="ant-upload-drag-icon">
+                    <i class="anticon anticon-cloud-upload-o"></i>
+                  </p>
+                  <p class="ant-upload-text">Click or drag file to this area to upload</p>
+                  <p class="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data
+                    or
+                    other band files</p>
+                </nz-upload>
+              </nz-card>
+
+            </div>-->
+
+      </div>
+
+    </div>
 
   </div>
 </div>
