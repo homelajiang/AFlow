@@ -11,18 +11,21 @@ const PUBLISHED = 2;
 const DELETED = -1;
 
 const PostSchema = new Schema({
-    title: {type: String, require: true},
-    description: {type: String, require: true},
-    content: {type: String, require: true},
-    create_date: {type: Date, require: true, default: Date.now()},
-    modify_date: {type: Date, require: true, default: Date.now()},
+    title: {type: String, default: "未命名"},
+    description: {type: String},
+    content: {type: String},
+    create_date: {type: Date, default: Date.now()},
+    modify_date: {type: Date, default: Date.now()},
     open: {type: Number, default: 0},//公开性 0 公开  1 密码保护 2 私密
-    password: {type: String},//保护密码
+    password: {type: String, default: '000000'},//保护密码
     open_comment: {type: Boolean, default: true},//是否开放评论
+    need_review: {type: Boolean, default: false},//评论是否需要审核
     tags: [{type: Schema.Types.ObjectId, ref: 'Tag'}],
     categories: {type: Schema.Types.ObjectId, ref: 'Categories'},
-    creator: {type: Schema.Types.ObjectId, ref: 'Profile', required: true},
-    status: {type: Number, default: DRAFT}//0 草稿，1 待审核 -1 已删除 2 已发布
+    creator: {type: Schema.Types.ObjectId, ref: 'Profile'},
+    status: {type: Number, default: DRAFT},//0 草稿，1 待审核 -1 已删除 2 已发布
+    delete_date: {type: Date, default: Date.now()},
+    delete_reason: {type: String,default:""}
 }, {
     versionKey: false // You should be aware of the outcome after set to false
 });

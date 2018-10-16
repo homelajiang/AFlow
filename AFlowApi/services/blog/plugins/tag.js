@@ -5,34 +5,24 @@ module.exports = function (options) {
 
     //添加tag
     this.add('role:tag,cmd:add', async function (args, respond) {
-        const temp = JSON.parse(args.tag);
-        const t = await Tag.findOne({name: temp.name});
+        const tag = args.tag;
+        const t = await Tag.findOne({name: tag.name});
         if (t) {
-            respond("分类名已存在");
+            respond(new Error("标签已存在"));
             return;
         }
-        new Tag(temp)
+        new Tag(tag)
             .save(respond);
     });
 
     //删除tag
     this.add('role:tag,cmd:remove', async function (args, respond) {
-        Tag.findByIdAndRemove(args.id, respond);
+        Tag.findOneAndDelete({_id: args.id}, respond);
     });
 
     //修改tag
     this.add('role:tag,cmd:update', async function (args, respond) {//修改不检查重复
-        const tag = {};
-        if (args.name)
-            tag.name = args.name;
-        if (args.alias)
-            tag.alias = args.alias;
-        if (args.image)
-            tag.image = args.image;
-        if (args.description)
-            tag.description = args.description;
-
-        Tag.findByIdAndUpdate(args.id, tag, respond);
+        Tag.updateOne({_id: args.id}, args.tag, respond);
     });
 
     //查询tag
@@ -44,14 +34,33 @@ module.exports = function (options) {
         try {
             const pageSize = parseInt(args.pageSize);
             const pageNum = parseInt(args.pageNum);
-            const count = await Tag.count();
-            const tags = await Tag.find()
-                .populate('categories')
-                .populate('create')
-                .populate('tags')
-                .skip((pageNum - 1) * pageSize)
-                .limit(pageSize)
-                .sort({create_date: -1});
+
+            let tags;
+            let count;
+
+            if (args.key) {
+                count = await Tag.find()
+                    .or([
+                        {name: {$regex: new RegExp(args.key, 'i')}},
+                        {alias: {$regex: new RegExp(args.key, 'i')}},
+                        {description: {$regex: new RegExp(args.key, 'i')}}
+                    ])
+                    .countDocuments();
+                tags = await Tag.find().or([
+                    {name: {$regex: new RegExp(args.key, 'i')}},
+                    {alias: {$regex: new RegExp(args.key, 'i')}},
+                    {description: {$regex: new RegExp(args.key, 'i')}}
+                ])
+                    .skip((pageNum - 1) * pageSize)
+                    .limit(pageSize)
+                    .sort({create_date: -1});
+            } else {
+                count = await Tag.countDocuments();
+                tags = await Tag.find()
+                    .skip((pageNum - 1) * pageSize)
+                    .limit(pageSize)
+                    .sort({create_date: -1});
+            }
             respond(null, Util.generatePageModel(pageSize, pageNum, count, tags));
         } catch (e) {
             respond(e);

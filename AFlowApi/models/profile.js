@@ -2,10 +2,10 @@ const moment = require('moment');
 const config = require('../config');
 const Path = require('path');
 
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var profileSchema = mongoose.Schema({
-    confirmed: {type: Boolean, default: false},//用户是否被验证
+const profileSchema = mongoose.Schema({
+    confirmed: {type: Boolean, default: false},//用户是否验证
     role: {type: Number, default: 0},
     username: {type: String, required: true},
     userImg: {type: String, default: '/sa/simg/CN_Logo_Gray.png'},
