@@ -18,7 +18,7 @@ let comment = {
     content: '受教了，这个方法真的有用。'
 };
 
-describe('categories_test', () => {
+describe('comment_test', () => {
 
     before(function (done) {
         async.waterfall([
@@ -26,9 +26,7 @@ describe('categories_test', () => {
                 mongoose.connect(config.blog.db_connection, {useNewUrlParser: true}, (err) => {
                     cb(err);
                 })
-            }
-            ,
-            function (cb) {
+            }, function (cb) {
                 new Post(post)
                     .save((err, res) => {
                         if (!err)
@@ -39,6 +37,16 @@ describe('categories_test', () => {
         ], (err, res) => {
             done(err, res);
         });
+    });
+
+    after(function (done) {
+        async.waterfall([
+            (cb) => {
+                Post.deleteOne({_id: post._id}, cb);
+            }
+        ], (err, res) => {
+            done(err, res);
+        })
     });
 
     it('Add Comment', (done) => {
@@ -73,6 +81,7 @@ describe('categories_test', () => {
                 res.should.have.property("name", "Allen");
                 res.should.have.property("email", "876031687@qq.com");
                 res.should.have.property("content", "受教了，这个方法真的有用。");
+                done();
             })
     });
 
@@ -91,6 +100,7 @@ describe('categories_test', () => {
                 res.should.have.property("pageSize", 10);
                 res.should.have.property("pageNum", 1);
                 res.list.should.be.an.Array();
+                done();
             })
     });
 
@@ -131,6 +141,7 @@ describe('categories_test', () => {
             should.not.exist(err);
             should.exist(res);
             res.should.have.property('_id', comment._id);
+            done();
         })
     });
 

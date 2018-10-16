@@ -5,28 +5,32 @@ module.exports = function (options) {
 
     //添加categories
     this.add('role:categories,cmd:add', async function (args, respond) {
-        const categories = args.categories;
-        const t = await Categories.findOne({name: categories.name});
-        if (t) {
-            respond(new Error("该分类已存在"));
-            return;
+        try {
+            const categories = args.categories;
+            const t = await Categories.findOne({name: categories.name});
+            if (t) {
+                respond(new Error("该分类已存在"));
+                return;
+            }
+            new Categories(categories)
+                .save(respond);
+        } catch (e) {
+            respond(e);
         }
-        new Categories(categories)
-            .save(respond);
     });
 
     //删除categories
-    this.add('role:categories,cmd:remove', async function (args, respond) {
+    this.add('role:categories,cmd:remove', function (args, respond) {
         Categories.findOneAndDelete({_id: args.id}, respond);
     });
 
     //修改categories
-    this.add('role:categories,cmd:update', async function (args, respond) {//修改不检查重复
+    this.add('role:categories,cmd:update', function (args, respond) {//修改不检查重复
         Categories.updateOne({_id: args.id}, args.categories, respond);
     });
 
     //查询categories
-    this.add('role:categories,cmd:query', async function (args, respond) {
+    this.add('role:categories,cmd:query', function (args, respond) {
         Categories.findById(args.id, respond);
     });
 

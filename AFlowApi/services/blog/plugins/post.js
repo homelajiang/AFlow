@@ -65,8 +65,7 @@ const categoriesSeneca = seneca.make('categories');*/
 
 module.exports = function (options) {
     //添加post
-    this.add('role:post,cmd:add', async (msg, respond) => {
-
+    this.add('role:post,cmd:add', (msg, respond) => {
 
         new Post(msg.post)
             .save(respond);

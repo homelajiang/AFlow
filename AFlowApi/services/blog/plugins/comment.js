@@ -50,12 +50,12 @@ module.exports = function (options) {
     });
 
     //删除comment
-    this.add('role:comment,cmd:remove', async function (args, respond) {
+    this.add('role:comment,cmd:remove', function (args, respond) {
         Comment.findOneAndDelete({_id: args.id}, respond);
     });
 
     //修改comment
-    this.add('role:comment,cmd:update', async function (args, respond) {//修改不检查重复
+    this.add('role:comment,cmd:update', function (args, respond) {//修改不检查重复
         const comment = args.comment;
         comment.modify_date = Date.now();
 
