@@ -1,40 +1,64 @@
 const Tag = require('../../../models/tag');
 const Util = require('../util');
+const Boom = require('boom');
+
 
 module.exports = function (options) {
 
     //添加tag
-    this.add('role:tag,cmd:add', async function (args, respond) {
+    this.add('role:tag,cmd:add', async (args, respond) => {
         try {
             const tag = args.tag;
-            const t = await Tag.findOne({name: tag.name});
-            if (t) {
-                respond(new Error("标签已存在"));
-                return;
-            }
-            new Tag(tag)
-                .save(respond);
+            if (await Tag.findOne({name: tag.name}))
+                throw Boom.badRequest("标签已存在");
+
+            const t = await new Tag(tag).save();
+            respond(null, t.model);
         } catch (e) {
+            if (!Boom.isBoom(e))
+                e = Boom.badRequest("保存失败");
             respond(e);
         }
     });
 
     //删除tag
-    this.add('role:tag,cmd:remove', function (args, respond) {
-        Tag.findOneAndDelete({_id: args.id}, respond);
+    this.add('role:tag,cmd:remove', async (args, respond) => {
+        try {
+            await Tag.findOneAndDelete({_id: args.id});
+            respond(null);
+        } catch (e) {
+            if (!Boom.isBoom(e))
+                e = Boom.badRequest("删除失败");
+            respond(e);
+        }
     });
 
     //修改tag
-    this.add('role:tag,cmd:update', function (args, respond) {//修改不检查重复
-        Tag.updateOne({_id: args.id}, args.tag, respond);
+    this.add('role:tag,cmd:update', async (args, respond) => {//name 不允许修改
+        try {
+            await Tag.updateOne({_id: args.id}, Tag.getUpdateModel(args.tag));
+            const tag = Tag.findOne({_id: args.id});
+            respond(null, tag);
+        } catch (e) {
+            if (!Boom.isBoom(e))
+                e = Boom.badRequest("修改失败");
+            respond(e);
+        }
     });
 
     //查询tag
-    this.add('role:tag,cmd:query', function (args, respond) {
-        Tag.findById(args.id, respond);
+    this.add('role:tag,cmd:query', async (args, respond) => {
+        try {
+            const tag = await Tag.findById(args.id);
+            respond(null, tag.model);
+        } catch (e) {
+            if (!Boom.isBoom(e))
+                e = Boom.badRequest("查询失败");
+            respond(e);
+        }
     });
 
-    this.add('role:tag,cmd:list', async function (args, respond) {
+    this.add('role:tag,cmd:list', async (args, respond) => {
         try {
             const pageSize = parseInt(args.pageSize);
             const pageNum = parseInt(args.pageNum);
@@ -65,8 +89,14 @@ module.exports = function (options) {
                     .limit(pageSize)
                     .sort({create_date: -1});
             }
-            respond(null, Util.generatePageModel(pageSize, pageNum, count, tags));
+            const temp = [];
+            tags.forEach((tag) => {
+                temp.push(tag.model);
+            });
+            respond(null, Util.generatePageModel(pageSize, pageNum, count, temp));
         } catch (e) {
+            if (!Boom.isBoom(e))
+                e = Boom.badRequest("查询失败");
             respond(e);
         }
     });

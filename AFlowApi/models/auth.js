@@ -1,17 +1,28 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var Profile = require('./profile');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const Profile = require('./profile');
 
-var authSchema = mongoose.Schema({
-    username: {type: String, required: true},
-    email: {type: String, required: true},
-    mobile: {type: String, default: null},//
+const authSchema = new Schema({
+    username: {type: String, required: true},//登陆验证字段
     password: {type: String, required: true},
+    status: {type: Number, default: 0},//账号状态 : 0 正常 -1 冻结
+    role: {type: Number, default: 0},// 默认0 保留字段
     profile: {type: Schema.Types.ObjectId, ref: 'Profile', require: true}
 }, {
     versionKey: false
 });
 
+authSchema.virtual('model')
+    .get(function () {
+        return {
+            id:this._id,
+            username: this.username,
+            status: this.status,
+            role: this.role,
+            profile: this.profile.model
+        };
+    });
 
-var Auth = mongoose.model('Auth', authSchema);
+
+const Auth = mongoose.model('Auth', authSchema);
 module.exports = Auth;

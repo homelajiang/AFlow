@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const TagSchema = new Schema({
+const tagSchema = new Schema({
     name: {type: String, require: true},
     alias: {type: String},
     image: {type: String},
@@ -10,7 +10,25 @@ const TagSchema = new Schema({
     versionKey: false // You should be aware of the outcome after set to false
 });
 
-TagSchema.static({
+tagSchema.virtual('model')
+    .get(function () {
+        return {
+            id: this._id,
+            name: this.name,
+            alias: this.alias,
+            image: this.image,
+            description: this.description
+        }
+    });
+
+tagSchema.static({
+    getUpdateModel: (model) => {
+        const temp = {};
+        model.alias ? temp.alias = model.alias : '';
+        model.image ? temp.image = model.image : '';
+        model.description ? temp.description = model.description : '';
+        return temp;
+    },
     /**
      * 搜索和关键字类似的tag列表
      * @param q
@@ -29,6 +47,6 @@ TagSchema.static({
     }
 });
 
-const Tag = mongoose.model('Tag', TagSchema);
+const Tag = mongoose.model('Tag', tagSchema);
 
 module.exports = Tag;

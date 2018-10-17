@@ -54,7 +54,7 @@ describe('categories_test', () => {
             .act({
                 role: 'categories',
                 cmd: 'query',
-                id: test_categories._id
+                id: test_categories.id
             }, (err, res) => {
                 should.not.exist(err);
                 should.exist(res);
@@ -102,20 +102,19 @@ describe('categories_test', () => {
             .act({
                 role: 'categories',
                 cmd: 'update',
-                id: test_categories._id,
+                id: test_categories.id,
                 categories: {
                     alias: 'seneca_test',
                     image: 'test',
                     description: 'test'
                 }
-            }, (err, res) => {
+            }, (err) => {
                 should.not.exist(err);
-                should.exist(res);
             })
             .act({
                 role: 'categories',
                 cmd: 'query',
-                id: test_categories._id
+                id: test_categories.id
             }, (err, res) => {
                 should.not.exist(err);
                 should.exist(res);
@@ -132,11 +131,9 @@ describe('categories_test', () => {
         seneca.act({
             role: 'categories',
             cmd: 'remove',
-            id: test_categories._id
-        }, (err, res) => {
+            id: test_categories.id
+        }, (err) => {
             should.not.exist(err);
-            should.exist(res);
-            res.should.have.property("_id", test_categories._id);
             done();
         });
     });
@@ -146,6 +143,6 @@ describe('categories_test', () => {
 
 function test_seneca(cb) {
     return Seneca({log: 'test'})
-        .test(cb)
+        .test(cb,'print')
         .use(require('../plugins/categories'))
 }

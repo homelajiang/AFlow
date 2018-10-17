@@ -54,7 +54,7 @@ describe('tag_test', () => {
             .act({
                 role: 'tag',
                 cmd: 'query',
-                id: test_tag._id
+                id: test_tag.id
             }, (err, res) => {
                 should.not.exist(err);
                 should.exist(res);
@@ -103,20 +103,19 @@ describe('tag_test', () => {
             .act({
                 role: 'tag',
                 cmd: 'update',
-                id: test_tag._id,
+                id: test_tag.id,
                 tag: {
                     alias: 'seneca_test',
                     image: 'test',
                     description: 'test'
                 }
-            }, (err, res) => {
+            }, (err) => {
                 should.not.exist(err);
-                should.exist(res);
             })
             .act({
                 role: 'tag',
                 cmd: 'query',
-                id: test_tag._id
+                id: test_tag.id
             }, (err, res) => {
                 should.not.exist(err);
                 should.exist(res);
@@ -133,11 +132,9 @@ describe('tag_test', () => {
         seneca.act({
             role: 'tag',
             cmd: 'remove',
-            id: test_tag._id
-        }, (err, res) => {
+            id: test_tag.id
+        }, (err) => {
             should.not.exist(err);
-            should.exist(res);
-            res.should.have.property("_id", test_tag._id);
             done();
         });
     });
@@ -147,6 +144,6 @@ describe('tag_test', () => {
 
 function test_seneca(cb) {
     return Seneca({log: 'test'})
-        .test(cb)
+        .test(cb,'print')
         .use(require('../plugins/tag'))
 }

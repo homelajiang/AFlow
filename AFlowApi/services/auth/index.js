@@ -5,8 +5,8 @@ mongoose.connect(config.auth.db_connection, {}, (err) => {
     if (err)
         return console.log(err);
     require('seneca')()
-        .use(require('./plugins/auth_plugin'))
-        .use(require('./plugins/profile_plugin'))
+        .use(require('./plugins/auth'))
+        .use(require('./plugins/profile'))
         .listen(config.auth.port);
 });
 mongoose.Promise = global.Promise;

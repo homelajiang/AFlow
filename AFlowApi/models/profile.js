@@ -4,17 +4,17 @@ const Path = require('path');
 
 const mongoose = require('mongoose');
 
-const profileSchema = mongoose.Schema({
-    confirmed: {type: Boolean, default: false},//用户是否验证
-    role: {type: Number, default: 0},
-    username: {type: String, required: true},
-    userImg: {type: String, default: '/sa/simg/CN_Logo_Gray.png'},
+const profileSchema = new Schema({
+    confirmed: {type: Boolean, default: false},//是否认证
+    username: {type: String, required: true},//登陆用户名
+    nickname: {type: String, default: ""},// 用户昵称
+    userImg: {type: String, default: '/sa/simg/CN_Logo_Gray.png'},//用户邮箱
     gender: {type: Number, default: 0},
-    email: {type: String, required: true},
+    email: {type: String},
     signature: {type: String, default: "我这个人很勤，但是什么都没有写。"},
     joinDate: {type: Date, default: Date.now},
     lastLoginDate: {type: Date, default: Date.now},
-    mobile: {type: String, default: null}
+    mobile: {type: String}
 }, {
     versionKey: false // You should be aware of the outcome after set to false
 });
@@ -24,7 +24,9 @@ const profileSchema = mongoose.Schema({
 profileSchema.virtual('model')
     .get(function () {
         return {
+            id: this._id,
             username: this.username,
+            nickname: this.nickname,
             userImg: Path.join(config.base_url, this.userImg),
             // require('../lib/static.js').map(this.userImg),
             gender: this.gender,
@@ -50,8 +52,8 @@ profileSchema.virtual('_lastLoginDate')
 
 
 profileSchema.static({
-    getUpdateMode: function (model) {
-        var temp = {};
+    getUpdateModel: function (model) {
+        const temp = {};
         model.nickname ? temp.nickname = model.nickname : '';
         model.userImg ? temp.userImg = model.userImg : '';
         model.gender ? temp.gender = model.gender : '';
@@ -84,7 +86,7 @@ profileSchema.static({
 
 // Profile.findOne();
 
-var Profile = mongoose.model('Profile', profileSchema);
+const Profile = mongoose.model('Profile', profileSchema);
 
 module.exports = Profile;
 
