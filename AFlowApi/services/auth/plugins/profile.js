@@ -9,7 +9,7 @@ module.exports = function profile(options) {
             const profile = await Profile.findOne({_id: args.id});
             if (!profile)
                 throw Boom.notFound("用户不存在");
-            respond(null, profile.model);
+            respond(null, profile);
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("获取用户信息失败");
@@ -24,7 +24,7 @@ module.exports = function profile(options) {
 
             if (!profile)
                 throw Boom.notFound("用户不存在");
-            respond(null, profile.model);
+            respond(null, profile);
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("获取用户信息失败");

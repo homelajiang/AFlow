@@ -42,7 +42,6 @@ describe('tag_test', () => {
                 should.not.exist(err);
                 should.exist(res);
                 res.should.have.property("name", "Seneca");
-
                 test_tag = res;
                 done();
             });
@@ -54,7 +53,7 @@ describe('tag_test', () => {
             .act({
                 role: 'tag',
                 cmd: 'query',
-                id: test_tag.id
+                id: test_tag._id
             }, (err, res) => {
                 should.not.exist(err);
                 should.exist(res);
@@ -103,7 +102,7 @@ describe('tag_test', () => {
             .act({
                 role: 'tag',
                 cmd: 'update',
-                id: test_tag.id,
+                id: test_tag._id,
                 tag: {
                     alias: 'seneca_test',
                     image: 'test',
@@ -115,7 +114,7 @@ describe('tag_test', () => {
             .act({
                 role: 'tag',
                 cmd: 'query',
-                id: test_tag.id
+                id: test_tag._id
             }, (err, res) => {
                 should.not.exist(err);
                 should.exist(res);
@@ -132,7 +131,7 @@ describe('tag_test', () => {
         seneca.act({
             role: 'tag',
             cmd: 'remove',
-            id: test_tag.id
+            id: test_tag._id
         }, (err) => {
             should.not.exist(err);
             done();

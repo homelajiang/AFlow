@@ -137,10 +137,8 @@ describe('comment_test', () => {
             role: 'comment',
             cmd: 'remove',
             id: comment._id
-        }, (err, res) => {
+        }, (err) => {
             should.not.exist(err);
-            should.exist(res);
-            res.should.have.property('_id', comment._id);
             done();
         })
     });

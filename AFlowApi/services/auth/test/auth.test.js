@@ -28,10 +28,10 @@ describe('auth_test', () => {
     after((done) => {
         async.waterfall([
             (cb) => {
-                Profile.deleteOne({_id: auth.profile.id}, cb);
+                Profile.deleteOne({_id: auth.profile._id}, cb);
             },
             (data, cb) => {
-                Auth.deleteOne({_id: auth.id}, cb);
+                Auth.deleteOne({_id: auth._id}, cb);
             }
         ], (err, res) => {
             done(err, res);

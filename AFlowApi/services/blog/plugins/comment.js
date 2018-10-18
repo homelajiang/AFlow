@@ -1,5 +1,5 @@
 const Comment = require('../../../models/comment');
-const Util = require('../util');
+const Util = require('../../util');
 const Post = require('../../../models/post');
 const Boom = require('boom');
 
@@ -21,8 +21,7 @@ module.exports = function (options) {
             if (temp.need_review)
                 comment.status = 1;//评论待审核
 
-            const res = await new Comment(comment).save();
-            respond(null, res.model);
+            respond(null, await new Comment(comment).save());
 
         } catch (e) {
             if (!Boom.isBoom(e))
@@ -35,8 +34,7 @@ module.exports = function (options) {
     //查询comment
     this.add('role:comment,cmd:query', async (args, respond) => {
         try {
-            const comment = await Comment.findById(args.id);
-            respond(null, comment.model);
+            respond(null, await Comment.findById(args.id));
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("查询失败");
@@ -44,7 +42,7 @@ module.exports = function (options) {
         }
     });
 
-    this.add('role:comment,cmd:list', async function (args, respond) {
+    this.add('role:comment,cmd:list', async (args, respond) => {
         try {
             const pageSize = parseInt(args.pageSize);
             const pageNum = parseInt(args.pageNum);
@@ -56,12 +54,7 @@ module.exports = function (options) {
                 .limit(pageSize)
                 .sort({create_date: -1});
 
-            const temp = [];
-            comments.forEach((comment) => {
-                temp.push(comment.model);
-            });
-
-            respond(null, Util.generatePageModel(pageSize, pageNum, count, temp));
+            respond(null, Util.generatePageModel(pageSize, pageNum, count, comments));
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("查询失败");
@@ -85,7 +78,7 @@ module.exports = function (options) {
     this.add('role:comment,cmd:update', async (args, respond) => {//修改不检查重复
         try {
             await Comment.updateOne({_id: args.id}, Comment.getUpdateModel(args.comment));
-            const comment = Comment.findOne({_id: args._id});
+            const comment = Comment.findOne({_id: args.id});
             respond(null, comment);
         } catch (e) {
             if (!Boom.isBoom(e))

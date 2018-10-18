@@ -42,7 +42,6 @@ describe('categories_test', () => {
                 should.not.exist(err);
                 should.exist(res);
                 res.should.have.property("name", "Seneca");
-
                 test_categories = res;
                 done();
             });
@@ -54,7 +53,7 @@ describe('categories_test', () => {
             .act({
                 role: 'categories',
                 cmd: 'query',
-                id: test_categories.id
+                id: test_categories._id
             }, (err, res) => {
                 should.not.exist(err);
                 should.exist(res);
@@ -102,7 +101,7 @@ describe('categories_test', () => {
             .act({
                 role: 'categories',
                 cmd: 'update',
-                id: test_categories.id,
+                id: test_categories._id,
                 categories: {
                     alias: 'seneca_test',
                     image: 'test',
@@ -114,7 +113,7 @@ describe('categories_test', () => {
             .act({
                 role: 'categories',
                 cmd: 'query',
-                id: test_categories.id
+                id: test_categories._id
             }, (err, res) => {
                 should.not.exist(err);
                 should.exist(res);
@@ -131,7 +130,7 @@ describe('categories_test', () => {
         seneca.act({
             role: 'categories',
             cmd: 'remove',
-            id: test_categories.id
+            id: test_categories._id
         }, (err) => {
             should.not.exist(err);
             done();

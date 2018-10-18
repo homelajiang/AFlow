@@ -25,7 +25,7 @@ const PostSchema = new Schema({
     creator: {type: Schema.Types.ObjectId, ref: 'Profile'},
     status: {type: Number, default: DRAFT},//0 草稿，1 待审核 -1 已删除 2 已发布
     delete_date: {type: Date, default: Date.now()},
-    delete_reason: {type: String,default:""}
+    delete_reason: {type: String, default: ""}
 }, {
     versionKey: false // You should be aware of the outcome after set to false
 });
@@ -40,6 +40,38 @@ PostSchema.virtual('simple_model')
     });
 
 PostSchema.static({
+    getInsertModel: function (model) {
+        let temp = {};
+        model.title ? temp.title = model.title : '';
+        model.description ? temp.description = model.description : '';
+        model.content ? temp.content = model.content : '';
+        model.open ? temp.open = model.open : '';
+        model.password ? temp.password = model.password : '';
+        model.open_comment ? temp.open_comment = model.open_comment : '';
+        model.need_review ? temp.need_review = model.need_review : '';
+        model.password ? temp.password = model.password : '';
+        model.tags ? temp.tags = model.tags : '';
+        model.categories ? temp.categories = model.categories : '';
+        return temp;
+    },
+    getUpdateModel: function (model) {
+        let temp = {
+            modify_date: Date.now()
+        };
+        model.title ? temp.title = model.title : '';
+        model.description ? temp.description = model.description : '';
+        model.content ? temp.content = model.content : '';
+        model.open ? temp.open = model.open : '';
+        model.password ? temp.password = model.password : '';
+        model.open_comment ? temp.open_comment = model.open_comment : '';
+        model.need_review ? temp.need_review = model.need_review : '';
+        model.password ? temp.password = model.password : '';
+        model.tags ? temp.tags = model.tags : '';
+        model.categories ? temp.categories = model.categories : '';
+        model.status ? temp.status = model.status : '';
+        return temp;
+    },
+
     getPostById: function (postId, cb) {
         Post.findOne({_id: postId})
             .populate('categories')

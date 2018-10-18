@@ -37,7 +37,6 @@ describe('post_test', () => {
             res.should.have.property("title", "test title");
             res.should.have.property("description", "test description");
             res.should.have.property("content", "test content  ## yuan");
-
             test_post = res;
             done();
         });
@@ -132,9 +131,8 @@ describe('post_test', () => {
                 cmd: 'delete',
                 id: test_post._id,
                 delete_reason: "delete_reason"
-            }, (err, res) => {
+            }, (err) => {
                 should.not.exist(err);
-                should.exist(res);
             })
             .act({
                 role: 'post',
@@ -155,10 +153,8 @@ describe('post_test', () => {
             role: 'post',
             cmd: 'remove',
             id: test_post._id
-        }, (err, res) => {
+        }, (err) => {
             should.not.exist(err);
-            should.exist(res);
-            res.should.have.property("_id", test_post._id);
             done();
         });
     });

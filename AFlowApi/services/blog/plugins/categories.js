@@ -1,19 +1,18 @@
 const Categories = require('../../../models/categories');
-const Util = require('../util');
+const Util = require('../../util');
 const Boom = require('boom');
 
 
 module.exports = function (options) {
 
     //添加categories
-    this.add('role:categories,cmd:add', async function (args, respond) {
+    this.add('role:categories,cmd:add', async (args, respond) => {
         try {
             const categories = args.categories;
             if (await Categories.findOne({name: categories.name}))
                 throw Boom.badRequest("该分类已存在");
 
-            const t = await new Categories(categories).save();
-            respond(null, t.model);
+            respond(null, await new Categories(categories).save());
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("保存失败");
@@ -49,8 +48,7 @@ module.exports = function (options) {
     //查询categories
     this.add('role:categories,cmd:query', async (args, respond) => {
         try {
-            const categories = await Categories.findById(args.id);
-            respond(null, categories.model);
+            respond(null, await Categories.findById(args.id));
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("查询失败");
@@ -58,7 +56,7 @@ module.exports = function (options) {
         }
     });
 
-    this.add('role:categories,cmd:list', async function (args, respond) {
+    this.add('role:categories,cmd:list', async (args, respond) => {
         try {
             const pageSize = parseInt(args.pageSize);
             const pageNum = parseInt(args.pageNum);
@@ -88,11 +86,7 @@ module.exports = function (options) {
                     .limit(pageSize)
                     .sort({create_date: -1});
             }
-            const temp = [];
-            categories.forEach((categories) => {
-                temp.push(categories.model);
-            });
-            respond(null, Util.generatePageModel(pageSize, pageNum, count, temp));
+            respond(null, Util.generatePageModel(pageSize, pageNum, count, categories));
         } catch (e) {
             respond(e);
         }

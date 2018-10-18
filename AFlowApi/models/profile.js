@@ -3,6 +3,7 @@ const config = require('../config');
 const Path = require('path');
 
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const profileSchema = new Schema({
     confirmed: {type: Boolean, default: false},//是否认证

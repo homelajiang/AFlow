@@ -21,7 +21,7 @@ module.exports = function auth(options) {
             if (auth.status === -1)
                 throw Boom.unauthorized("账号被冻结");
 
-            respond(null, auth.model);
+            respond(null, auth);
 
         } catch (e) {
             if (!Boom.isBoom(e))
@@ -54,7 +54,7 @@ module.exports = function auth(options) {
                 .populate('profile');
 
             //back
-            respond(null, auth.model);
+            respond(null, auth);
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("注册失败,请重试");

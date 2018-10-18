@@ -1,5 +1,5 @@
 const Tag = require('../../../models/tag');
-const Util = require('../util');
+const Util = require('../../util');
 const Boom = require('boom');
 
 
@@ -12,8 +12,7 @@ module.exports = function (options) {
             if (await Tag.findOne({name: tag.name}))
                 throw Boom.badRequest("标签已存在");
 
-            const t = await new Tag(tag).save();
-            respond(null, t.model);
+            respond(null, await new Tag(tag).save());
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("保存失败");
@@ -37,7 +36,7 @@ module.exports = function (options) {
     this.add('role:tag,cmd:update', async (args, respond) => {//name 不允许修改
         try {
             await Tag.updateOne({_id: args.id}, Tag.getUpdateModel(args.tag));
-            const tag = Tag.findOne({_id: args.id});
+            const tag = await Tag.findOne({_id: args.id});
             respond(null, tag);
         } catch (e) {
             if (!Boom.isBoom(e))
@@ -49,8 +48,7 @@ module.exports = function (options) {
     //查询tag
     this.add('role:tag,cmd:query', async (args, respond) => {
         try {
-            const tag = await Tag.findById(args.id);
-            respond(null, tag.model);
+            respond(null, await Tag.findById(args.id));
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("查询失败");
@@ -89,11 +87,7 @@ module.exports = function (options) {
                     .limit(pageSize)
                     .sort({create_date: -1});
             }
-            const temp = [];
-            tags.forEach((tag) => {
-                temp.push(tag.model);
-            });
-            respond(null, Util.generatePageModel(pageSize, pageNum, count, temp));
+            respond(null, Util.generatePageModel(pageSize, pageNum, count, tags));
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("查询失败");

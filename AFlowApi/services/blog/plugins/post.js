@@ -1,7 +1,7 @@
 const Post = require('../../../models/post');
 const Tag = require('../../../models/tag');
 const Categories = require('../../../models/categories');
-const Util = require('../util');
+const Util = require('../../util');
 /*const async = require('async');
 const seneca = require('seneca')();
 seneca
@@ -65,19 +65,30 @@ const categoriesSeneca = seneca.make('categories');*/
 
 module.exports = function (options) {
     //添加post
-    this.add('role:post,cmd:add', (msg, respond) => {
-
-        new Post(msg.post)
-            .save(respond);
+    this.add('role:post,cmd:add', async (args, respond) => {
+        try {
+            respond(null, await new Post(Post.getInsertModel(args.post)).save());
+        }
+        catch (e) {
+            if (!Boom.isBoom(e))
+                e = Boom.badRequest("保存失败");
+            respond(e);
+        }
     });
 
     //查询post(id)
-    this.add('role:post,cmd:query', (msg, respond) => {
-        Post.findById(msg.id)
-            .populate('categories')
-            .populate('creator')
-            .populate('tags')
-            .exec(respond);
+    this.add('role:post,cmd:query', async (args, respond) => {
+        try {
+            const post = await Post.findById(args.id)
+                .populate('categories')
+                .populate('creator')
+                .populate('tags');
+            respond(null, post);
+        } catch (e) {
+            if (!Boom.isBoom(e))
+                e = Boom.badRequest("查询失败");
+            respond(e);
+        }
     });
 
 //查询post列表
@@ -122,31 +133,53 @@ module.exports = function (options) {
             }
 
             respond(null, Util.generatePageModel(pageSize, pageNum, count, posts));
-        } catch (err) {
-            respond(err, null);
+        } catch (e) {
+            if (!Boom.isBoom(e))
+                e = Boom.badRequest("查询失败");
+            respond(e);
         }
     });
 
     //删除post
-    this.add('role:post,cmd:remove', function (args, respond) {
+    this.add('role:post,cmd:remove', async (args, respond) => {
         // Post.remove({_id: {$in: JSON.parse(msg.ids)}}, respond);
-        Post.findOneAndDelete({_id: args.id}, respond);
+        try {
+            await Post.findOneAndDelete({_id: args.id});
+            respond(null)
+        } catch (e) {
+            if (!Boom.isBoom(e))
+                e = Boom.badRequest("删除失败");
+            respond(e);
+        }
     });
 
     //标记删除post
-    this.add('role:post,cmd:delete', function (args, respond) {
-        Post.updateOne({_id: args.id}, {
-            status: -1,
-            delete_date: Date.now(),
-            delete_reason: args.delete_reason
-        }, respond);
+    this.add('role:post,cmd:delete', async (args, respond) => {
+        try {
+            await Post.updateOne({_id: args.id}, {
+                status: -1,
+                delete_date: Date.now(),
+                delete_reason: args.delete_reason
+            });
+            respond(null)
+        } catch (e) {
+            if (!Boom.isBoom(e))
+                e = Boom.badRequest("删除失败");
+            respond(e);
+        }
     });
 
     //更新post
-    this.add('role:post,cmd:update', (args, respond) => {
-        const post = args.post;
-        post.modify_date = Date.now();
-        Post.updateOne({_id: args.id}, post, respond);
+    this.add('role:post,cmd:update', async (args, respond) => {
+        try {
+            await Post.updateOne({_id: args.id}, Post.getUpdateModel(args.post));
+            const post = await Post.findOne({_id: args.id});
+            respond(null, post);
+        } catch (e) {
+            if (!Boom.isBoom(e))
+                e = Boom.badRequest("修改失败");
+            respond(e);
+        }
     });
 
     return 'post';
