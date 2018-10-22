@@ -63,7 +63,7 @@ const init = async () => {
     });
     await server.register(Inert);
 
-    await server.register(hapiAuthJWT);
+/*    await server.register(hapiAuthJWT);
     server.auth.strategy('jwt', 'jwt', {
         key: jwtSecret,
         validate,
@@ -72,7 +72,7 @@ const init = async () => {
             // algorithms: ['HS256']    // specify your secure algorithm}
         }
     });
-    server.auth.default('jwt');
+    server.auth.default('jwt');*/
 
     routes.forEach(function (r) {
         server.route(r);

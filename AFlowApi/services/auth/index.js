@@ -1,7 +1,7 @@
 const config = require("../config");
 const mongoose = require('mongoose');
 
-mongoose.connect(config.auth.db_connection, {}, (err) => {
+mongoose.connect(config.auth.db_connection, {useNewUrlParser: true}, (err) => {
     if (err)
         return console.log(err);
     require('seneca')()

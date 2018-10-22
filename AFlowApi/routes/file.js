@@ -6,7 +6,10 @@ const Boom = require('boom');
 const Joi = require('joi');
 const Path = require('path');
 const fs = require('fs');
+const async = require('async');
 const UUID = require('uuid/v1');
+const DatetimeUtil = require('../utils/datetime_util');
+const IAMGE_ROOT = Path.resolve(__dirname, '../public');
 
 const seneca = require('seneca')()
     .use("basic")
@@ -20,18 +23,18 @@ const act = Promise.promisify(seneca.act, {context: seneca});
 module.exports = [
     {
         method: 'GET',
-        path: '/api/v1/uploads/{fileName}',
+        path: '/upload/{date_time}/{fileName}',
         handler: {
             directory: {
                 path: 'uploads/',
-                redirectToSlash: true,
+                // redirectToSlash: true,
                 index: true,
             }
         }
     },
     {
         method: 'GET',
-        path: '/api/v1/file/{id}',
+        path: '/file/{id}',
         handler: async (request, h) => {
             try {
                 return await act({
@@ -42,13 +45,14 @@ module.exports = [
                 });
             } catch (err) {
                 // Bounce.ignore(err, { name: 'ValidationError' });       // rethrow any non validation errors, or
-                throw Boom.notFound();
+                if (!Boom.isBoom(Boom))
+                    throw Boom.badRequest();
             }
         }
     },
     {
         method: 'GET',
-        path: '/api/v1/file',
+        path: '/file',
         handler: async function (request, h) {
             try {
                 return await act({
@@ -74,7 +78,7 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/api/v1/file',
+        path: '/file',
         config: {
             payload: {
                 output: 'stream',
@@ -83,11 +87,18 @@ module.exports = [
                 maxBytes: 5 * 1024 * 1024
             }
         },
-        handler: async function (request, h) {
+        handler: async (request, h) => {
             const fileName = Path.basename(request.payload.file.hapi.filename);
             const fileFormat = (fileName).split(".");
-            const targetDir = Path.resolve(__dirname, '../public');
-            const targetName = "uploads/" + Date.now() + '-' + UUID() + "." + fileFormat[fileFormat.length - 1];
+
+            const datetimeDir = DatetimeUtil.datetimePathFormat(Date.now());
+
+            const targetDir = Path.join(IAMGE_ROOT, "uploads/" + datetimeDir + "/");
+
+            if (!fs.existsSync(targetDir))
+                fs.mkdirSync(targetDir);
+
+            const targetName = UUID() + "." + fileFormat[fileFormat.length - 1];
             const targetPath = Path.join(targetDir, targetName);
             const encode = request.payload.file._encoding;
             fs.writeFileSync(targetPath, request.payload.file._data, {encoding: encode ? encode : 'utf8'});
@@ -95,16 +106,19 @@ module.exports = [
                 act({
                     role: 'file',
                     cmd: 'add',
-                    host: base_url,
-                    name: fileName,
-                    path: targetName,
-                    mimetype: request.payload.file.hapi.headers["content-type"]
+                    file: {
+                        name: fileName,
+                        path: datetimeDir + "/" + targetName,
+                        mimetype: request.payload.file.hapi.headers["content-type"]
+                    },
+                    host: base_url
                 });
+
         }
     },
     {
         method: 'DELETE',
-        path: '/api/v1/file/{id}',
+        path: '/file/{id}',
         handler: async function (request, h) {
             try {
                 return await act({role: "file", cmd: "remove", id: request.params.id});

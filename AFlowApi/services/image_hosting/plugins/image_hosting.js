@@ -11,7 +11,7 @@ module.exports = function (options) {
     this.add('role:file,cmd:add', async (args, respond) => {
         try {
             const file = await new File(File.getInsertModel(args.file)).save();
-            respond(null, file);
+            respond(null,file.model);
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("上传文件失败");
