@@ -48,7 +48,12 @@ module.exports = function (options) {
     //查询tag
     this.add('role:tag,cmd:query', async (args, respond) => {
         try {
-            respond(null, await Tag.findById(args.id));
+            const tag = await Tag.findById(args.id);
+            if (tag) {
+                respond(null, tag);
+            } else {
+                respond(Boom.notFound("tag不存在"));
+            }
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("查询失败");

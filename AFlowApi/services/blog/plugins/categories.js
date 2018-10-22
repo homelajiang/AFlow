@@ -48,7 +48,12 @@ module.exports = function (options) {
     //查询categories
     this.add('role:categories,cmd:query', async (args, respond) => {
         try {
-            respond(null, await Categories.findById(args.id));
+            const categories = await Categories.findById(args.id);
+            if (categories) {
+                respond(null, categories);
+            } else {
+                respond(Boom.notFound("分类不存在"));
+            }
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("查询失败");

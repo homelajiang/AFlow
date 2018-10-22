@@ -83,7 +83,11 @@ module.exports = function (options) {
                 .populate('categories')
                 .populate('creator')
                 .populate('tags');
-            respond(null, post);
+            if (post) {
+                respond(null, post);
+            } else {
+                respond(Boom.notFound("文章不存在"));
+            }
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("查询失败");

@@ -34,7 +34,12 @@ module.exports = function (options) {
     //查询comment
     this.add('role:comment,cmd:query', async (args, respond) => {
         try {
-            respond(null, await Comment.findById(args.id));
+            const comment = await Comment.findById(args.id);
+            if (comment) {
+                respond(null, comment);
+            } else {
+                respond(Boom.notFound("评论不存在"));
+            }
         } catch (e) {
             if (!Boom.isBoom(e))
                 e = Boom.badRequest("查询失败");
