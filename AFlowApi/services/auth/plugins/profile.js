@@ -1,4 +1,3 @@
-const Auth = require('../../../models/auth');
 const Profile = require('../../../models/profile');
 const Boom = require('boom');
 

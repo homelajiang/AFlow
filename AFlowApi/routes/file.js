@@ -1,20 +1,20 @@
-const base_url_file = require('../config').base_url;
+const base_url = require('../services/config').image_hosting.base_url;
 const Promise = require('bluebird');
-const Config = require('../config');
+const Config = require('../services/config');
 const Bounce = require('bounce');
 const Boom = require('boom');
 const Joi = require('joi');
 const Path = require('path');
 const fs = require('fs');
-var UUID = require('uuid/v1');
+const UUID = require('uuid/v1');
 
-var seneca = require('seneca')()
+const seneca = require('seneca')()
     .use("basic")
     .use("entity")
     .client(Config.image_hosting.port);
 // Promisify the .act() method; to learn more about this technique see:
 // http://bluebirdjs.com/docs/features.html#promisification-on-steroids
-var act = Promise.promisify(seneca.act, {context: seneca});
+const act = Promise.promisify(seneca.act, {context: seneca});
 
 
 module.exports = [
@@ -37,7 +37,7 @@ module.exports = [
                 return await act({
                     role: 'file',
                     cmd: 'query',
-                    host: base_url_file,
+                    host: base_url,
                     id: request.params.id
                 });
             } catch (err) {
@@ -54,7 +54,7 @@ module.exports = [
                 return await act({
                     role: 'file',
                     cmd: 'list',
-                    host: base_url_file,
+                    host: base_url,
                     pageSize: request.query.pageSize,
                     pageNum: request.query.pageNum
                 });
@@ -85,7 +85,7 @@ module.exports = [
         },
         handler: async function (request, h) {
             const fileName = Path.basename(request.payload.file.hapi.filename);
-            var fileFormat = (fileName).split(".");
+            const fileFormat = (fileName).split(".");
             const targetDir = Path.resolve(__dirname, '../public');
             const targetName = "uploads/" + Date.now() + '-' + UUID() + "." + fileFormat[fileFormat.length - 1];
             const targetPath = Path.join(targetDir, targetName);
@@ -95,7 +95,7 @@ module.exports = [
                 act({
                     role: 'file',
                     cmd: 'add',
-                    host: base_url_file,
+                    host: base_url,
                     name: fileName,
                     path: targetName,
                     mimetype: request.payload.file.hapi.headers["content-type"]

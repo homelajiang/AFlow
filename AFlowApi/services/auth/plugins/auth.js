@@ -8,14 +8,13 @@ module.exports = function auth(options) {
     this.add('role:auth,cmd:query', async (args, respond) => {
         try {
             //check username
-            //todo 编码密码
-            const auth = await Auth.findOne({
-                username: args.username,
-                password: args.password
-            })
+            const auth = await Auth.findOne({username: args.username})
                 .populate('profile');
 
             if (!auth)
+                throw Boom.notFound("用户不存在");
+
+            if (auth.password !== args.password)
                 throw Boom.unauthorized("账户和密码不匹配");
 
             if (auth.status === -1)

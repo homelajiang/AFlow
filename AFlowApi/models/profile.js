@@ -1,5 +1,5 @@
 const moment = require('moment');
-const config = require('../config');
+const config = require('../services/config');
 const Path = require('path');
 
 const mongoose = require('mongoose');
@@ -28,7 +28,7 @@ profileSchema.virtual('model')
             id: this._id,
             username: this.username,
             nickname: this.nickname,
-            userImg: Path.join(config.base_url, this.userImg),
+            userImg: Path.join(config.image_hosting.base_url, this.userImg),
             // require('../lib/static.js').map(this.userImg),
             gender: this.gender,
             email: this.email,

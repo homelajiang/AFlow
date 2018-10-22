@@ -1,4 +1,4 @@
-const Config = require('../config');
+const Config = require('../services/config');
 const Promise = require('bluebird');
 const Bounce = require('bounce');
 const Boom = require('boom');

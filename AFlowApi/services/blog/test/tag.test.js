@@ -1,6 +1,6 @@
 const Seneca = require('seneca');
 const mongoose = require('mongoose');
-const config = require("../../../config");
+const config = require("../../config");
 const async = require('async');
 const should = require('should');
 const Tag = require('../../../models/tag');

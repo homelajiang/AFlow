@@ -1,4 +1,4 @@
-const config = require("../../config");
+const config = require("../config");
 const mongoose = require('mongoose');
 
 mongoose.connect(config.auth.db_connection, {}, (err) => {
