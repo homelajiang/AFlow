@@ -87,7 +87,7 @@ module.exports = function (options) {
         try {
             const file = await File.findById(args.id);
             if (file) {
-                respond(null, file);
+                respond(null, file.model);
             } else {
                 respond(Boom.notFound("文件不存在"));
             }

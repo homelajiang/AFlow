@@ -23,11 +23,11 @@ const act = Promise.promisify(seneca.act, {context: seneca});
 module.exports = [
     {
         method: 'GET',
-        path: '/upload/{date_time}/{fileName}',
+        path: '/upload/{fileName*2}',
         handler: {
             directory: {
                 path: 'uploads/',
-                // redirectToSlash: true,
+                redirectToSlash: true,
                 index: true,
             }
         }
@@ -40,13 +40,32 @@ module.exports = [
                 return await act({
                     role: 'file',
                     cmd: 'query',
-                    host: base_url,
                     id: request.params.id
                 });
             } catch (err) {
                 // Bounce.ignore(err, { name: 'ValidationError' });       // rethrow any non validation errors, or
                 if (!Boom.isBoom(Boom))
-                    throw Boom.badRequest();
+                    err = Boom.badRequest();
+                return err;
+            }
+        }
+    },
+    {
+        method: 'POST',
+        path: '/file/{id}',
+        handler: async (request, h) => {
+            try {
+                return await act({
+                    role: 'file',
+                    cmd: 'update',
+                    id: request.params.id,
+                    file: request.body
+                });
+            } catch (err) {
+                // Bounce.ignore(err, { name: 'ValidationError' });       // rethrow any non validation errors, or
+                if (!Boom.isBoom(Boom))
+                    err = Boom.badRequest();
+                return err;
             }
         }
     },
@@ -58,7 +77,6 @@ module.exports = [
                 return await act({
                     role: 'file',
                     cmd: 'list',
-                    host: base_url,
                     pageSize: request.query.pageSize,
                     pageNum: request.query.pageNum
                 });
