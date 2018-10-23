@@ -16,9 +16,6 @@ module.exports = {
             error: true,
             message: msg ? msg : "请求错误"
         }
-    },
-    generateBoom: function (res) {
-        return Boom.boomify(new Error(res.message), {statusCode: res.code});
     }
 };
 

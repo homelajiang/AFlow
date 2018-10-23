@@ -67,12 +67,12 @@ module.exports = function (options) {
     //添加post
     this.add('role:post,cmd:add', async (args, respond) => {
         try {
-            respond(null, await new Post(Post.getInsertModel(args.post)).save());
+            const post = await new Post(Post.getInsertModel(args.post)).save();
+
+            respond(null, );
         }
         catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("保存失败");
-            respond(e);
+            Util.generateErr("创建文章失败");
         }
     });
 
