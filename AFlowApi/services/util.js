@@ -19,6 +19,21 @@ module.exports = {
             username: username,
             role: role
         }, jwtSecret);
+    },//生成错误信息
+    generateErr: function (code, msg) {
+        return {
+            code: code,
+            error: true,
+            message: msg
+        }
+    },
+    generateRes: function (data) {
+        return {
+            code: 200,
+            error: false,
+            message: "SUCCESS",
+            data: data
+        }
     }
 };
 
