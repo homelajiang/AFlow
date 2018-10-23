@@ -1,6 +1,7 @@
 const Auth = require('../../../models/auth');
 const Profile = require('../../../models/profile');
 const Boom = require('boom');
+const Util = require('../../util');
 
 module.exports = function auth(options) {
 
@@ -12,20 +13,18 @@ module.exports = function auth(options) {
                 .populate('profile');
 
             if (!auth)
-                throw Boom.notFound("用户不存在");
+                return respond(Util.generateErr("用户不存在", 404));
 
             if (auth.password !== args.password)
-                throw Boom.unauthorized("账户和密码不匹配");
+                return respond(Util.generateErr("账户和密码不匹配", 401));
 
             if (auth.status === -1)
-                throw Boom.unauthorized("账号被冻结");
+                return respond(Util.generateErr("账号被冻结", 401));
 
-            respond(null, auth);
+            respond(auth.model);
 
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("登录失败,请重试");
-            respond(e);
+            respond(Util.generateErr("登录失败,请重试"));
         }
     });
 
@@ -36,7 +35,7 @@ module.exports = function auth(options) {
             const usernameAuth = await Auth.findOne({username: args.username});
 
             if (usernameAuth)
-                throw Boom.badRequest("用户名已存在");
+                return respond(Util.generateErr("用户名已存在", 401));
 
             //insert
             const profile = await new Profile({
@@ -53,11 +52,9 @@ module.exports = function auth(options) {
                 .populate('profile');
 
             //back
-            respond(null, auth);
+            respond(auth.model);
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("注册失败,请重试");
-            respond(e);
+            respond(Util.generateErr("注册失败,请重试"));
         }
     });
 

@@ -1,6 +1,7 @@
 const moment = require('moment');
 const config = require('../services/config');
 const Path = require('path');
+const Util = require('../libs/util');
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -29,14 +30,13 @@ profileSchema.virtual('model')
             username: this.username,
             nickname: this.nickname,
             userImg: Path.join(config.image_hosting.base_url, this.userImg),
-            // require('../lib/static.js').map(this.userImg),
             gender: this.gender,
             email: this.email,
             signature: this.signature,
             confirmed: this.confirmed,
             role: this.role,
-            lastLoginDate: this._lastLoginDate,
-            joinDate: this._joinDate,
+            lastLoginDate: Util.defaultFormat(this.lastLoginDate),
+            joinDate: Util.defaultFormat(this.joinDate),
             mobile: getMobile(this.mobile)
         };
     });

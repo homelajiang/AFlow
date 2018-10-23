@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const DatetimeUtils = require('../utils/datetime_util');
+const Util = require('../libs/util');
 const BAST_URL = require('../services/config').image_hosting.base_url;
 const Schema = mongoose.Schema;
 
@@ -23,8 +23,8 @@ fileSchema.virtual('model')
             path: BAST_URL + "upload/" + this.path,
             description: this.description,
             mimetype: this.mimetype,
-            create_date: DatetimeUtils.defaultFormat(this.create_date),
-            modify_date: DatetimeUtils.defaultFormat(this.modify_date)
+            create_date: Util.defaultFormat(this.create_date),
+            modify_date: Util.defaultFormat(this.modify_date)
         }
     });
 

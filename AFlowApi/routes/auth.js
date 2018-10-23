@@ -3,25 +3,35 @@ const Promise = require('bluebird');
 const Bounce = require('bounce');
 const Boom = require('boom');
 const Joi = require('joi');
+const Util = require('../libs/util');
+
 const seneca = require('seneca')()
     .use('basic')
     .use('entity')
     .client(Config.auth.port);
-var act = Promise.promisify(seneca.act, {context: seneca});
+const act = Promise.promisify(seneca.act, {context: seneca});
 
 
 module.exports = [
     {
         method: 'POST',
-        path: '/api/v1/signIn',
+        path: '/signIn',
         handler: async (request, h) => {
             try {
-                return await act({
+                const res = await act({
                     role: 'auth',
-                    cmd: 'signIn',
+                    cmd: 'query',
                     username: request.payload.username,
                     password: request.payload.password
                 });
+
+                if (res.error) {
+                    return Util.generateBoom(res);
+                } else {
+                    res.profile.token = Util.generateJWT(res.auth);
+                    return res.profile;
+                }
+
             } catch (err) {
                 if (!Boom.isBoom(err))
                     throw Boom.badRequest("登录失败,请重试");
@@ -53,16 +63,21 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/api/v1/signUp',
+        path: '/signUp',
         handler: async (request, h) => {
             try {
-                return await act({
+                const res = await act({
                     role: 'auth',
-                    cmd: 'signUp',
+                    cmd: 'add',
                     username: request.payload.username,
-                    password: request.payload.password,
-                    email: request.payload.email
-                })
+                    password: request.payload.password
+                });
+                if (res.error) {
+                    return Util.generateBoom(res);
+                } else {
+                    res.profile.token = Util.generateJWT(res.auth);
+                    return res.profile;
+                }
             } catch (e) {
                 if (!Boom.isBoom(e))
                     throw Boom.badRequest("注册失败,请重试");
@@ -74,25 +89,62 @@ module.exports = [
             validate: {
                 payload: {
                     username: Joi.string().required(),
-                    password: Joi.string().required(),
-                    email: Joi.string().required()
+                    password: Joi.string().required()
                 }
             }
         }
     },
     {
         method: 'GET',
-        path: '/api/v1/profile/{id}',
+        path: '/profile/{id}',
         handler: async (request, h) => {
             try {
-                return await act({
+                const res = await act({
                     role: 'profile',
                     cmd: 'query',
                     id: request.params.id
-                })
+                });
+
+                if (res.error) {
+                    return Util.generateBoom(res);
+                } else {
+                    return res;
+                }
             } catch (e) {
                 if (!Boom.isBoom(e))
                     throw Boom.badRequest("获取用户信息失败");
+                throw e;
+            }
+        },
+        config: {
+            auth: false,
+            validate: {
+                params: {
+                    id: Joi.string().required()
+                }
+            }
+        }
+    },
+    {
+        method: 'POST',
+        path: '/profile/{id}',
+        handler: async (request, h) => {
+            try {
+                const res = await act({
+                    role: 'profile',
+                    cmd: 'update',
+                    id: request.params.id,
+                    profile:request.payload
+                });
+
+                if (res.error) {
+                    return Util.generateBoom(res);
+                } else {
+                    return res;
+                }
+            } catch (e) {
+                if (!Boom.isBoom(e))
+                    throw Boom.badRequest("更新用户信息失败");
                 throw e;
             }
         },

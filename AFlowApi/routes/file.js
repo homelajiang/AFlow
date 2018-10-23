@@ -6,10 +6,9 @@ const Joi = require('joi');
 const Path = require('path');
 const fs = require('fs');
 const UUID = require('uuid/v1');
-const DatetimeUtil = require('../utils/datetime_util');
 const IMAGE_ROOT = Path.resolve(__dirname, '../public');
 
-const ServiceUtil = require('../services/util');
+const Util = require('../libs/util');
 
 const seneca = require('seneca')()
     .use("basic")
@@ -43,7 +42,7 @@ module.exports = [
                     id: request.params.id
                 });
                 if (res.error)
-                    return ServiceUtil.generateBoom(res);
+                    return Util.generateBoom(res);
                 return res;
             } catch (err) {
                 if (!Boom.isBoom(Boom))
@@ -64,7 +63,7 @@ module.exports = [
                     file: request.payload
                 });
                 if (res.error)
-                    return ServiceUtil.generateBoom(res);
+                    return Util.generateBoom(res);
                 return res;
             } catch (err) {
                 // Bounce.ignore(err, { name: 'ValidationError' });       // rethrow any non validation errors, or
@@ -117,7 +116,7 @@ module.exports = [
                 const fileName = Path.basename(request.payload.file.hapi.filename);
                 const fileFormat = (fileName).split(".");
 
-                const datetimeDir = DatetimeUtil.datetimePathFormat(Date.now());
+                const datetimeDir = Util.datetimePathFormat(Date.now());
 
                 const targetDir = Path.join(IMAGE_ROOT, "uploads/" + datetimeDir + "/");
 
@@ -141,7 +140,7 @@ module.exports = [
                     });
 
                 if (res.error)
-                    return ServiceUtil.generateBoom(res);
+                    return Util.generateBoom(res);
                 return res;
             } catch (err) {
                 if (!Boom.isBoom(err))
@@ -157,7 +156,7 @@ module.exports = [
             try {
                 const res = await act({role: "file", cmd: "remove", id: request.params.id});
                 if (res.error)
-                    return ServiceUtil.generateBoom(res);
+                    return Util.generateBoom(res);
                 return h.response('created').code(204);
             } catch (err) {
                 // Bounce.rethrow(err, {name: 'ValidationError'});

@@ -15,11 +15,15 @@ const authSchema = new Schema({
 authSchema.virtual('model')
     .get(function () {
         return {
-            id:this._id,
-            username: this.username,
-            status: this.status,
-            role: this.role,
-            profile: this.profile.model
+            auth: {
+                id: this._id,
+                username: this.username,
+                status: this.status,
+                role: this.role
+            },
+            profile: {
+                profile: this.profile.model
+            }
         };
     });
 

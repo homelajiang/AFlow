@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const DateTimeUtil = require('../utils/datetime_util');
+const Util = require('../libs/util');
 
 
 const CommentSchema = new Schema({
@@ -24,12 +24,12 @@ CommentSchema.virtual('model')
             name: this.name,
             email: this.email,
             content: this.content,
-            create_date: DateTimeUtil(this.create_date),
-            modify_date: DateTimeUtil(this.modify_date),
+            create_date: Util(this.create_date),
+            modify_date: Util(this.modify_date),
             ref_id: this.ref_id,
             status: this.status,
             delete_reason: this.delete_reason,
-            delete_date: DateTimeUtil(this.delete_date)
+            delete_date: Util(this.delete_date)
         }
     });
 

@@ -1,5 +1,6 @@
 const Profile = require('../../../models/profile');
 const Boom = require('boom');
+const Util = require('../../util');
 
 
 module.exports = function profile(options) {
@@ -7,12 +8,10 @@ module.exports = function profile(options) {
         try {
             const profile = await Profile.findOne({_id: args.id});
             if (!profile)
-                throw Boom.notFound("用户不存在");
-            respond(null, profile);
+                return respond(Util.generateErr("用户不存在", 404));
+            respond(profile.model);
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("获取用户信息失败");
-            respond(e, null);
+            respond(Util.generateErr("获取用户信息失败"));
         }
     });
 
@@ -22,12 +21,11 @@ module.exports = function profile(options) {
             const profile = await Profile.findOne({_id: args.id});
 
             if (!profile)
-                throw Boom.notFound("用户不存在");
-            respond(null, profile);
+                return respond(Util.generateErr("用户不存在", 404));
+            respond(profile.model);
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("获取用户信息失败");
-            respond(e, null);
+            respond(Util.generateErr("更新用户信息失败"));
+
         }
     });
 
