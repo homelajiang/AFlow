@@ -63,7 +63,7 @@ module.exports = function (options) {
         try {
             const res = await File.findOneAndDelete({_id: args.id});
             if (res) {
-                respond(res);
+                respond(res.model);
             } else {
                 respond(Util.generateErr("文件不存在", 404));
             }

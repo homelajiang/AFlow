@@ -8,27 +8,26 @@ module.exports = function (options) {
     //添加categories
     this.add('role:categories,cmd:add', async (args, respond) => {
         try {
-            const categories = args.categories;
-            if (await Categories.findOne({name: categories.name}))
-                throw Boom.badRequest("该分类已存在");
-
-            respond(null, await new Categories(categories).save());
+            if (await Categories.findOne({name: args.categories.name}))
+                return respond(Util.generateErr("该分类已存在"));
+            const categories = await new Categories(Categories.getInsertModel(args.categories)).save();
+            respond(categories.model);
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("保存失败");
-            respond(e);
+            respond(Util.generateErr("创建分类失败"))
         }
     });
 
     //删除categories
     this.add('role:categories,cmd:remove', async (args, respond) => {
         try {
-            await Categories.findOneAndDelete({_id: args.id});
-            respond(null);
+            const res = await Categories.findOneAndDelete({_id: args.id});
+            if (res) {
+                respond(res.model);
+            } else {
+                respond(Util.generateErr("该分类不存在"));
+            }
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("删除失败");
-            respond(e);
+            respond(Util.generateErr("删除失败"));
         }
     });
 
@@ -37,11 +36,9 @@ module.exports = function (options) {
         try {
             await Categories.updateOne({_id: args.id}, Categories.getUpdateModel(args.categories));
             const categories = Categories.findOne({_id: args.id});
-            respond(null, categories);
+            respond(categories.model);
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("修改失败");
-            respond(e);
+            respond(Util.generateErr('更新失败'));
         }
     });
 
@@ -50,14 +47,12 @@ module.exports = function (options) {
         try {
             const categories = await Categories.findById(args.id);
             if (categories) {
-                respond(null, categories);
+                respond(categories.model);
             } else {
-                respond(Boom.notFound("分类不存在"));
+                respond(Util.generateErr("该分类不存在",404));
             }
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("查询失败");
-            respond(e);
+            respond(Util.generateErr("查询失败"));
         }
     });
 
@@ -91,9 +86,13 @@ module.exports = function (options) {
                     .limit(pageSize)
                     .sort({create_date: -1});
             }
-            respond(null, Util.generatePageModel(pageSize, pageNum, count, categories));
+            const tempList = [];
+            categories.forEach((element) => {
+                tempList.push(element.model);
+            });
+            respond(Util.generatePageModel(pageSize, pageNum, count, tempList));
         } catch (e) {
-            respond(e);
+            respond(Util.generateErr("获取分类列表失败"));
         }
     });
 

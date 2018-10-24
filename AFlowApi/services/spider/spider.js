@@ -4,7 +4,7 @@ const seneca = require('seneca')();
 
 mongoose.connect(config.spider.db_connection, {}, (err) => {
     if (err)
-        return console.log("数据库链接失败。");
+        return console.log("数据库连接失败。");
 
     seneca.use(require('./plugins/spider_plugin'))
         .listen(config.spider.port);

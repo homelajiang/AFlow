@@ -4,7 +4,7 @@ const seneca = require('seneca')();
 
 mongoose.connect(config.feed.db_connection, {useNewUrlParser: true}, err => {
     if (err)
-        return console.log("数据库链接失败");
+        return console.log("数据库连接失败");
     seneca.use(require('./plugins/feed_plugin'))
         .listen(config.feed.port);
 });

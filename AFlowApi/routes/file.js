@@ -45,7 +45,7 @@ module.exports = [
                     return Util.generateBoom(res);
                 return res;
             } catch (err) {
-                if (!Boom.isBoom(Boom))
+                if (!Boom.isBoom(err))
                     err = Boom.badRequest();
                 return err;
             }

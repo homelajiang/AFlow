@@ -29,9 +29,12 @@ categoriesSchema.static({
         model.description ? temp.description = model.description : '';
         return temp;
     },
-    getCategories: function (callback) {
-        Categories.find()
-            .exec(callback);
+    getInsertModel: (model) => {
+        const temp = {};
+        model.alias ? temp.alias = model.alias : '';
+        model.image ? temp.image = model.image : '';
+        model.description ? temp.description = model.description : '';
+        return temp;
     }
 });
 

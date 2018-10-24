@@ -115,15 +115,18 @@ module.exports = [
         path: '/post',
         handler: async (request, h) => {
             try {
-                return await act({
+                const res = await act({
                     role: 'blog',
                     cmd: 'add',
-                    title: request.params.title,
-                    content: request.params.content,
-                    description: request.params.description
-                })
+                    blog: request.payload
+                });
+                if (res.error)
+                    return Util.generateBoom(res);
+                return res;
             } catch (err) {
-                throw Boom.badGateway();
+                if (!Boom.isBoom(err))
+                    err = Boom.badRequest();
+                return err;
             }
         },
         config: {

@@ -68,11 +68,10 @@ module.exports = function (options) {
     this.add('role:post,cmd:add', async (args, respond) => {
         try {
             const post = await new Post(Post.getInsertModel(args.post)).save();
-
-            respond(null, );
+            respond(post.model);
         }
         catch (e) {
-            Util.generateErr("创建文章失败");
+            respond(Util.generateErr("创建文章失败"));
         }
     });
 
@@ -84,14 +83,12 @@ module.exports = function (options) {
                 .populate('creator')
                 .populate('tags');
             if (post) {
-                respond(null, post);
+                respond(post.model);
             } else {
-                respond(Boom.notFound("文章不存在"));
+                respond(Util.generateErr("文章不存在", 404));
             }
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("查询失败");
-            respond(e);
+            respond(Util.generateErr("查询失败"));
         }
     });
 
@@ -135,12 +132,13 @@ module.exports = function (options) {
                     .limit(pageSize)
                     .sort({create_date: -1});
             }
-
-            respond(null, Util.generatePageModel(pageSize, pageNum, count, posts));
+            const tempList = [];
+            posts.forEach((element) => {
+                tempList.push(element.model);
+            });
+            respond(null, Util.generatePageModel(pageSize, pageNum, count, tempList));
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("查询失败");
-            respond(e);
+            respond(Util.generateErr("查询失败"));
         }
     });
 
@@ -148,28 +146,32 @@ module.exports = function (options) {
     this.add('role:post,cmd:remove', async (args, respond) => {
         // Post.remove({_id: {$in: JSON.parse(msg.ids)}}, respond);
         try {
-            await Post.findOneAndDelete({_id: args.id});
-            respond(null)
+            const res = await Post.findOneAndDelete({_id: args.id});
+            if (res) {
+                respond(res.model);
+            } else {
+                respond(Util.generateErr("该文章不存在", 404))
+            }
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("删除失败");
-            respond(e);
+            respond(Util.generateErr("删除失败"));
         }
     });
 
     //标记删除post
     this.add('role:post,cmd:delete', async (args, respond) => {
         try {
-            await Post.updateOne({_id: args.id}, {
+            const res = await Post.updateOne({_id: args.id}, {
                 status: -1,
                 delete_date: Date.now(),
                 delete_reason: args.delete_reason
             });
-            respond(null)
+            if (res) {
+                respond(res.model);
+            } else {
+                respond(Util.generateErr("该文章不存在", 404))
+            }
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("删除失败");
-            respond(e);
+            respond(Util.generateErr("删除失败"));
         }
     });
 
@@ -178,11 +180,13 @@ module.exports = function (options) {
         try {
             await Post.updateOne({_id: args.id}, Post.getUpdateModel(args.post));
             const post = await Post.findOne({_id: args.id});
-            respond(null, post);
+            if (post) {
+                respond(post.model);
+            } else {
+                respond(Util.generateErr("该文章不存在", 404))
+            }
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("修改失败");
-            respond(e);
+            respond(Util.generateErr("更新失败"));
         }
     });
 

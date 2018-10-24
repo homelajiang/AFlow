@@ -12,21 +12,19 @@ module.exports = function (options) {
             const temp = await Post.findOne({_id: args.id});
 
             if (!temp.open_comment)
-                throw Boom.badRequest('未开放评论');
+                return respond(Util.generateErr("暂不开放评论", 404));
 
             const comment = Comment.getInsertModel(args.comment);
-
             comment.ref_id = args.id;
 
             if (temp.need_review)
                 comment.status = 1;//评论待审核
 
-            respond(null, await new Comment(comment).save());
+            const res = await new Comment(comment).save();
+            respond(res.model);
 
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("评论失败");
-            respond(e);
+            respond(Util.generateErr("评论失败"));
         }
 
     });
@@ -36,14 +34,12 @@ module.exports = function (options) {
         try {
             const comment = await Comment.findById(args.id);
             if (comment) {
-                respond(null, comment);
+                respond(comment.model);
             } else {
-                respond(Boom.notFound("评论不存在"));
+                respond(Util.generateErr("评论不存在", 404));
             }
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("查询失败");
-            respond(e);
+            respond(Util.generateErr("查询失败"));
         }
     });
 
@@ -59,23 +55,28 @@ module.exports = function (options) {
                 .limit(pageSize)
                 .sort({create_date: -1});
 
-            respond(null, Util.generatePageModel(pageSize, pageNum, count, comments));
+            const tempList = [];
+            comments.forEach((element) => {
+                tempList.push(element.model);
+            });
+
+            respond(Util.generatePageModel(pageSize, pageNum, count, tempList));
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("查询失败");
-            respond(e);
+            respond(Util.generateErr("查询失败"));
         }
     });
 
     //删除comment
     this.add('role:comment,cmd:remove', async (args, respond) => {
         try {
-            await Comment.findOneAndDelete({_id: args.id});
-            respond(null);
+            const res = await Comment.findOneAndDelete({_id: args.id});
+            if (res) {
+                respond(res.model);
+            } else {
+                respond(Util.generateErr("该评论不存在"), 404);
+            }
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("删除失败");
-            respond(e);
+            respond(Util.generateErr("删除失败"));
         }
     });
 
@@ -84,11 +85,9 @@ module.exports = function (options) {
         try {
             await Comment.updateOne({_id: args.id}, Comment.getUpdateModel(args.comment));
             const comment = Comment.findOne({_id: args.id});
-            respond(null, comment);
+            respond(comment.model);
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("修改失败");
-            respond(e);
+            respond(Util.generateErr("修改失败"));
         }
     });
 

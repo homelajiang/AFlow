@@ -8,27 +8,26 @@ module.exports = function (options) {
     //添加tag
     this.add('role:tag,cmd:add', async (args, respond) => {
         try {
-            const tag = args.tag;
-            if (await Tag.findOne({name: tag.name}))
-                throw Boom.badRequest("标签已存在");
-
-            respond(null, await new Tag(tag).save());
+            if (await Tag.findOne({name: args.tag.name}))
+                return respond(Util.generateErr("标签已存在"));
+            const tag = await new Tag(Tag.getInsertModel(args.tag)).save();
+            respond(tag.model);
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("保存失败");
-            respond(e);
+            respond(Util.generateErr("保存失败"))
         }
     });
 
     //删除tag
     this.add('role:tag,cmd:remove', async (args, respond) => {
         try {
-            await Tag.findOneAndDelete({_id: args.id});
-            respond(null);
+            const res = await Tag.findOneAndDelete({_id: args.id});
+            if (res) {
+                respond(res.model);
+            } else {
+                respond(Util.generateErr("标签不存在", 404));
+            }
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("删除失败");
-            respond(e);
+            respond(Util.generateErr("删除失败"));
         }
     });
 
@@ -37,11 +36,9 @@ module.exports = function (options) {
         try {
             await Tag.updateOne({_id: args.id}, Tag.getUpdateModel(args.tag));
             const tag = await Tag.findOne({_id: args.id});
-            respond(null, tag);
+            respond(tag.model);
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("修改失败");
-            respond(e);
+            respond(Util.generateErr('更新失败'));
         }
     });
 
@@ -50,14 +47,12 @@ module.exports = function (options) {
         try {
             const tag = await Tag.findById(args.id);
             if (tag) {
-                respond(null, tag);
+                respond(tag.model);
             } else {
-                respond(Boom.notFound("tag不存在"));
+                respond(Util.generateErr("该标签不存在", 404));
             }
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("查询失败");
-            respond(e);
+            respond(Util.generateErr("查询失败"));
         }
     });
 
@@ -92,11 +87,14 @@ module.exports = function (options) {
                     .limit(pageSize)
                     .sort({create_date: -1});
             }
-            respond(null, Util.generatePageModel(pageSize, pageNum, count, tags));
+
+            const tempList = [];
+            tags.forEach((element) => {
+                tempList.push(element.model);
+            });
+            respond(Util.generatePageModel(pageSize, pageNum, count, tempList));
         } catch (e) {
-            if (!Boom.isBoom(e))
-                e = Boom.badRequest("查询失败");
-            respond(e);
+            respond(Util.generateErr("获取标签列表失败"));
         }
     });
 

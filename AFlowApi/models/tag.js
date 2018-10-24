@@ -22,6 +22,14 @@ tagSchema.virtual('model')
     });
 
 tagSchema.static({
+    getInsertModel: (model) => {
+        const temp = {};
+        model.name ? temp.name = model.name : '';
+        model.alias ? temp.alias = model.alias : '';
+        model.image ? temp.image = model.image : '';
+        model.description ? temp.description = model.description : '';
+        return temp;
+    },
     getUpdateModel: (model) => {
         const temp = {};
         model.alias ? temp.alias = model.alias : '';
