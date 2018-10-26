@@ -157,29 +157,14 @@ module.exports = function (options) {
         }
     });
 
-    //标记删除post
-    this.add('role:post,cmd:delete', async (args, respond) => {
-        try {
-            const res = await Post.updateOne({_id: args.id}, {
-                status: -1,
-                delete_date: Date.now(),
-                delete_reason: args.delete_reason
-            });
-            if (res) {
-                respond(res.model);
-            } else {
-                respond(Util.generateErr("该文章不存在", 404))
-            }
-        } catch (e) {
-            respond(Util.generateErr("删除失败"));
-        }
-    });
-
     //更新post
     this.add('role:post,cmd:update', async (args, respond) => {
         try {
             await Post.updateOne({_id: args.id}, Post.getUpdateModel(args.post));
-            const post = await Post.findOne({_id: args.id});
+            const post = await Post.findOne({_id: args.id})
+                .populate('categories')
+                .populate('creator')
+                .populate('tags');
             if (post) {
                 respond(post.model);
             } else {

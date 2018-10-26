@@ -17,6 +17,22 @@ module.exports = {
     generateBoom: function (res) {
         return Boom.boomify(new Error(res.message), {statusCode: res.code});
     },
+    ifErrorBoom: function (res, code, h) {
+        if (code) {
+            if (res.error)
+                return this.generateBoom(res);
+            return h.response("").code(204);
+        } else {
+            if (res.error)
+                return this.generateBoom(res);
+            return res;
+        }
+    },
+    errorToBoom: function (err) {
+        if (!Boom.isBoom(err))
+            return Boom.badRequest();
+        return err;
+    },
     defaultFormat: (date) => {
         return moment(date).format(default_format);
     },

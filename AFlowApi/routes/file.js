@@ -157,7 +157,7 @@ module.exports = [
                 const res = await act({role: "file", cmd: "remove", id: request.params.id});
                 if (res.error)
                     return Util.generateBoom(res);
-                return h.response('created').code(204);
+                return h.response('deleted').code(204);
             } catch (err) {
                 // Bounce.rethrow(err, {name: 'ValidationError'});
                 if (!Boom.isBoom(err))

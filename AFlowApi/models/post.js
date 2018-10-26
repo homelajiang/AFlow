@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const Categories = require('./categories');
 const Tag = require('./tag');
 const Profile = require('./profile');
+const Util = require('../libs/util');
 
 const DRAFT = 0;
 const PENDING = 1;
@@ -12,8 +13,8 @@ const DELETED = -1;
 
 const PostSchema = new Schema({
     title: {type: String, default: "未命名"},
-    description: {type: String},
-    content: {type: String},
+    description: {type: String, default: ""},
+    content: {type: String, default: ""},
     create_date: {type: Date, default: Date.now()},
     modify_date: {type: Date, default: Date.now()},
     open: {type: Number, default: 0},//公开性 0 公开  1 密码保护 2 私密
@@ -24,19 +25,35 @@ const PostSchema = new Schema({
     categories: {type: Schema.Types.ObjectId, ref: 'Categories'},
     creator: {type: Schema.Types.ObjectId, ref: 'Profile'},
     status: {type: Number, default: DRAFT},//0 草稿，1 待审核 -1 已删除 2 已发布
-    delete_date: {type: Date, default: Date.now()},
-    delete_reason: {type: String, default: ""}
 }, {
     versionKey: false // You should be aware of the outcome after set to false
 });
 
 PostSchema.virtual('model')
     .get(function () {
-        return {}
-    });
-PostSchema.virtual('simple_model')
-    .get(function () {
-
+        const temp = {
+            id: this.id,
+            title: this.title,
+            description: this.description,
+            content: this.content,
+            create_date: Util.defaultFormat(this.create_date),
+            modify_date: Util.defaultFormat(this.modify_date),
+            open: this.open,
+            password: this.password,
+            open_comment: this.open_comment,
+            need_review: this.need_review,
+            creator: this.creator.model,
+            status: this.status
+        };
+        temp.categories = this.categories ? this.categories.model : null;
+        const t = [];
+        if (this.tags) {
+            this.tags.forEach((tag) => {
+                t.push(tag.model);
+            });
+        }
+        temp.tags = t;
+        return temp;
     });
 
 PostSchema.static({
@@ -49,9 +66,9 @@ PostSchema.static({
         model.password ? temp.password = model.password : '';
         model.open_comment ? temp.open_comment = model.open_comment : '';
         model.need_review ? temp.need_review = model.need_review : '';
-        model.password ? temp.password = model.password : '';
         model.tags ? temp.tags = model.tags : '';
         model.categories ? temp.categories = model.categories : '';
+        model.creator ? temp.creator = model.creator : '';
         return temp;
     },
     getUpdateModel: function (model) {
@@ -65,7 +82,6 @@ PostSchema.static({
         model.password ? temp.password = model.password : '';
         model.open_comment ? temp.open_comment = model.open_comment : '';
         model.need_review ? temp.need_review = model.need_review : '';
-        model.password ? temp.password = model.password : '';
         model.tags ? temp.tags = model.tags : '';
         model.categories ? temp.categories = model.categories : '';
         model.status ? temp.status = model.status : '';

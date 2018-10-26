@@ -7,6 +7,8 @@ mongoose.connect(config.blog.db_connection, { useNewUrlParser: true }, (err) => 
     require('seneca')()
         .use(require('./plugins/post'))
         .use(require('./plugins/tag'))
+        .use(require('./plugins/categories'))
+        .use(require('./plugins/comment'))
         .listen(config.blog.port);
 });
 mongoose.Promise = global.Promise;
