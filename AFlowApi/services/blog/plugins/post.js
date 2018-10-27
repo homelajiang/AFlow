@@ -104,16 +104,14 @@ module.exports = function (options) {
             if (args.key) {
                 count = await Post.find()
                     .or([
-                        {name: {$regex: new RegExp(args.key, 'i')}},
-                        {alias: {$regex: new RegExp(args.key, 'i')}},
+                        {title: {$regex: new RegExp(args.key, 'i')}},
                         {description: {$regex: new RegExp(args.key, 'i')}}
                     ])
                     .countDocuments();
 
                 posts = await Post.find()
                     .or([
-                        {name: {$regex: new RegExp(args.key, 'i')}},
-                        {alias: {$regex: new RegExp(args.key, 'i')}},
+                        {title: {$regex: new RegExp(args.key, 'i')}},
                         {description: {$regex: new RegExp(args.key, 'i')}}
                     ])
                     .populate('categories')

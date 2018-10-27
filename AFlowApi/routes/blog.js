@@ -270,6 +270,7 @@ module.exports = [
         handler: async (request, h) => {
             //todo 添加creator
             try {
+                request.payload.creator = "5bceea05a7ebdd1938a6fa9d";
                 const res = await act({
                     role: 'post',
                     cmd: 'add',
@@ -284,9 +285,9 @@ module.exports = [
             validate: {
                 payload: {
                     title: Joi.string().required(),
-                    content: Joi.string().default(""),
-                    description: Joi.string().default(""),
-                    open: Joi.number().default(0),
+                    content: Joi.string(),
+                    description: Joi.string(),
+                    open: Joi.number(),
                     password: Joi.string(),
                     open_comment: Joi.boolean(),
                     need_review: Joi.boolean(),
@@ -314,7 +315,7 @@ module.exports = [
         config: {
             validate: {
                 params: {
-                    id: Joi.array().required()
+                    id: Joi.string().required()
                 }
             }
         }
@@ -362,7 +363,8 @@ module.exports = [
             try {
                 const res = await act({
                     role: 'post',
-                    cmd: 'query'
+                    cmd: 'query',
+                    id: request.params.id
                 });
                 return Util.ifErrorBoom(res);
             } catch (err) {
@@ -403,5 +405,158 @@ module.exports = [
                 }
             }
         }
-    }
+    },
+    //===========================================================================
+    {
+        method: "POST",
+        path: '/post/{id}/comment',
+        handler: async (request, h) => {
+            //todo 添加creator
+            try {
+                request.payload.creator = "5bceea05a7ebdd1938a6fa9d";
+                const res = await act({
+                    role: 'comment',
+                    cmd: 'add',
+                    id: request.params.id,
+                    comment: request.payload
+                });
+                return Util.ifErrorBoom(res);
+            } catch (err) {
+                return Util.errorToBoom(err);
+            }
+        },
+        config: {
+            validate: {
+                payload: {
+                    content: Joi.string().required()
+                }
+            }
+        }
+    },
+    {
+        method: 'DELETE',
+        path: '/comment/{id}',
+        handler: async (request, h) => {
+            try {
+                const res = await act({
+                    role: 'comment',
+                    cmd: 'remove',
+                    id: request.params.id
+                });
+                return Util.ifErrorBoom(res, 204, h);
+            } catch (err) {
+                return Util.errorToBoom(err);
+            }
+        },
+        config: {
+            validate: {
+                params: {
+                    id: Joi.string().required()
+                }
+            }
+        }
+    },
+    {//审核
+        method: "POST",
+        path: '/comment/{id}/{status}',
+        handler: async (request, h) => {
+            try {
+                const res = await act({
+                    role: 'comment',
+                    cmd: 'update',
+                    id: request.params.id,
+                    comment: {
+                        status: request.params.status
+                    }
+                });
+                return Util.ifErrorBoom(res);
+            } catch (err) {
+                return Util.errorToBoom(err);
+            }
+        },
+        config: {
+            validate: {
+                params: {
+                    id: Joi.string().required(),
+                    status: Joi.number().integer().min(-1).max(1).required()
+                }
+            }
+        }
+    },
+    {
+        method: "POST",
+        path: '/comment/{id}',
+        handler: async (request, h) => {
+            try {
+                const res = await act({
+                    role: 'comment',
+                    cmd: 'update',
+                    id: request.params.id,
+                    comment: request.payload
+                });
+                return Util.ifErrorBoom(res);
+            } catch (err) {
+                return Util.errorToBoom(err);
+            }
+        },
+        config: {
+            validate: {
+                payload: {
+                    content: Joi.string().required(),
+                }
+            }
+        }
+    },
+    {
+        method: "GET",
+        path: '/comment/{id}',
+        handler: async (request, h) => {
+            try {
+                const res = await act({
+                    role: 'comment',
+                    cmd: 'query',
+                    id: request.params.id
+                });
+                return Util.ifErrorBoom(res);
+            } catch (err) {
+                return Util.errorToBoom(err);
+            }
+        },
+        config: {
+            validate: {
+                params: {
+                    id: Joi.string().required()
+                }
+            }
+        }
+    },
+    {
+        method: "GET",
+        path: '/comment',
+        handler: async (request, h) => {
+            try {
+                const res = await act({
+                    role: 'comment',
+                    cmd: 'list',
+                    pageSize: request.query.pageSize,
+                    pageNum: request.query.pageNum,
+                    id: request.query.post_id,
+                    key: request.query.key,
+                });
+                return Util.ifErrorBoom(res);
+            } catch (err) {
+                return Util.errorToBoom(err);
+            }
+        },
+        config: {
+            validate: {
+                query: {
+                    pageSize: Joi.number().default(10),
+                    pageNum: Joi.number().default(1),
+                    key: Joi.string(),
+                    post_id: Joi.string()
+                }
+            }
+        }
+    },
 ];

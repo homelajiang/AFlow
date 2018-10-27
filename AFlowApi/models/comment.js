@@ -4,8 +4,7 @@ const Util = require('../libs/util');
 
 
 const CommentSchema = new Schema({
-    name: {type: String},
-    email: {type: String},
+    creator: {type: Schema.Types.ObjectId, ref: 'Profile'},
     content: {type: String},
     create_date: {type: Date, default: Date.now()},
     modify_date: {type: Date, default: Date.now()},
@@ -21,24 +20,22 @@ CommentSchema.virtual('model')
     .get(function () {
         return {
             id: this._id,
-            name: this.name,
-            email: this.email,
             content: this.content,
-            create_date: Util(this.create_date),
-            modify_date: Util(this.modify_date),
+            create_date: Util.defaultFormat(this.create_date),
+            modify_date: Util.defaultFormat(this.modify_date),
             ref_id: this.ref_id,
             status: this.status,
             delete_reason: this.delete_reason,
-            delete_date: Util(this.delete_date)
+            delete_date: Util.defaultFormat(this.delete_date),
+            creator: this.creator.model
         }
     });
 
 CommentSchema.static({
     getInsertModel: function (model) {
         let temp = {};
-        model.name ? temp.name = model.name : '';
-        model.email ? temp.email = model.email : '';
         model.content ? temp.content = model.content : '';
+        temp.creator = model.creator;
         return temp;
     },
     getUpdateModel: function (model) {
@@ -47,6 +44,8 @@ CommentSchema.static({
         };
         if (model.status || model.status === 0)
             temp.status = model.status;
+        if (model.content)
+            temp.content = model.content;
         return temp;
     }
 });
