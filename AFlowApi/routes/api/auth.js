@@ -1,9 +1,10 @@
-const Config = require('../services/config');
+const Config = require('../../services/config');
 const Promise = require('bluebird');
 const Bounce = require('bounce');
 const Boom = require('boom');
 const Joi = require('joi');
-const Util = require('../libs/util');
+const Util = require('../../libs/util');
+const UtilApi = require('../../config_api');
 
 const seneca = require('seneca')()
     .use('basic')
@@ -15,7 +16,7 @@ const act = Promise.promisify(seneca.act, {context: seneca});
 module.exports = [
     {
         method: 'POST',
-        path: '/signIn',
+        path: UtilApi.api_v1 + '/signIn',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -63,7 +64,7 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/signUp',
+        path: UtilApi.api_v1 + '/signUp',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -96,7 +97,7 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/profile/{id}',
+        path: UtilApi.api_v1 + '/profile/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -127,14 +128,14 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/profile/{id}',
+        path: UtilApi.api_v1 + '/profile/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
                     role: 'profile',
                     cmd: 'update',
                     id: request.params.id,
-                    profile:request.payload
+                    profile: request.payload
                 });
 
                 if (res.error) {

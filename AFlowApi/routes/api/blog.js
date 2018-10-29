@@ -1,12 +1,14 @@
 const Promise = require('bluebird');
-const Config = require('../services/config');
+const Config = require('../../services/config');
 const Bounce = require('bounce');
 const Boom = require('boom');
 const Joi = require('joi');
 const Path = require('path');
 const fs = require('fs');
 const UUID = require('uuid/v1');
-const Util = require('../libs/util');
+const Util = require('../../libs/util');
+const UtilApi = require('../../config_api');
+
 
 const seneca = require('seneca')()
     .use("basic")
@@ -67,7 +69,7 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/tag/{id}',
+        path: UtilApi.api_v1 + '/tag/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -91,7 +93,7 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/tag/{id}',
+        path: UtilApi.api_v1 + '/tag/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -114,7 +116,7 @@ module.exports = [
     },
     {
         method: "GET",
-        path: '/tag',
+        path: UtilApi.api_v1 + '/tag',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -142,7 +144,7 @@ module.exports = [
     // ==========================================================================
     {
         method: 'POST',
-        path: '/categories',
+        path: UtilApi.api_v1 + '/categories',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -168,7 +170,7 @@ module.exports = [
     },
     {
         method: 'DELETE',
-        path: '/categories/{id}',
+        path: UtilApi.api_v1 + '/categories/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -191,7 +193,7 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/categories/{id}',
+        path: UtilApi.api_v1 + '/categories/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -215,7 +217,7 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/categories/{id}',
+        path: UtilApi.api_v1 + '/categories/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -238,7 +240,7 @@ module.exports = [
     },
     {
         method: "GET",
-        path: '/categories',
+        path: UtilApi.api_v1 + '/categories',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -266,7 +268,7 @@ module.exports = [
     //===========================================================================
     {
         method: "POST",
-        path: '/post',
+        path: UtilApi.api_v1 + '/post',
         handler: async (request, h) => {
             //todo 添加creator
             try {
@@ -299,7 +301,7 @@ module.exports = [
     },
     {
         method: 'DELETE',
-        path: '/post/{id}',
+        path: UtilApi.api_v1 + '/post/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -322,7 +324,7 @@ module.exports = [
     },
     {
         method: "POST",
-        path: '/post/{id}',
+        path: UtilApi.api_v1 + '/post/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -358,7 +360,7 @@ module.exports = [
     },
     {
         method: "GET",
-        path: '/post/{id}',
+        path: UtilApi.api_v1 + '/post/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -381,7 +383,7 @@ module.exports = [
     },
     {
         method: "GET",
-        path: '/post',
+        path: UtilApi.api_v1 + '/post',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -409,7 +411,7 @@ module.exports = [
     //===========================================================================
     {
         method: "POST",
-        path: '/post/{id}/comment',
+        path: UtilApi.api_v1 + '/post/{id}/comment',
         handler: async (request, h) => {
             //todo 添加creator
             try {
@@ -435,7 +437,7 @@ module.exports = [
     },
     {
         method: 'DELETE',
-        path: '/comment/{id}',
+        path: UtilApi.api_v1 + '/comment/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -458,7 +460,7 @@ module.exports = [
     },
     {//审核
         method: "POST",
-        path: '/comment/{id}/{status}',
+        path: UtilApi.api_v1 + '/comment/{id}/{status}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -485,7 +487,7 @@ module.exports = [
     },
     {
         method: "POST",
-        path: '/comment/{id}',
+        path: UtilApi.api_v1 + '/comment/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -509,7 +511,7 @@ module.exports = [
     },
     {
         method: "GET",
-        path: '/comment/{id}',
+        path: UtilApi.api_v1 + '/comment/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -532,7 +534,7 @@ module.exports = [
     },
     {
         method: "GET",
-        path: '/comment',
+        path: UtilApi.api_v1 + '/comment',
         handler: async (request, h) => {
             try {
                 const res = await act({

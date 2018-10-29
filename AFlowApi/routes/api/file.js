@@ -1,14 +1,15 @@
 const Promise = require('bluebird');
-const Config = require('../services/config');
+const Config = require('../../services/config');
 const Bounce = require('bounce');
 const Boom = require('boom');
 const Joi = require('joi');
 const Path = require('path');
 const fs = require('fs');
 const UUID = require('uuid/v1');
-const IMAGE_ROOT = Path.resolve(__dirname, '../public');
+const IMAGE_ROOT = Path.resolve(__dirname, '../../public');
 
-const Util = require('../libs/util');
+const Util = require('../../libs/util');
+const UtilApi = require('../../config_api');
 
 const seneca = require('seneca')()
     .use("basic")
@@ -33,7 +34,7 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/file/{id}',
+        path: UtilApi.api_v1 + '/file/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -53,7 +54,7 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/file/{id}',
+        path: UtilApi.api_v1 + '/file/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -75,7 +76,7 @@ module.exports = [
     },
     {
         method: 'GET',
-        path: '/file',
+        path: UtilApi.api_v1 + '/file',
         handler: async function (request, h) {
             try {
                 return await act({
@@ -102,7 +103,7 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/file',
+        path: UtilApi.api_v1 + '/file',
         config: {
             payload: {
                 output: 'stream',
@@ -151,7 +152,7 @@ module.exports = [
     },
     {
         method: 'DELETE',
-        path: '/file/{id}',
+        path: UtilApi.api_v1 + '/file/{id}',
         handler: async function (request, h) {
             try {
                 const res = await act({role: "file", cmd: "remove", id: request.params.id});

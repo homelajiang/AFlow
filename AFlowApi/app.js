@@ -2,7 +2,7 @@
 const Path = require('path');
 const Hapi = require('hapi');
 const Inert = require('inert');
-const routes = require('./routes/index');
+const routes = require('./routes/api/index');
 const hapiAuthJWT = require('hapi-auth-jwt2');
 
 
