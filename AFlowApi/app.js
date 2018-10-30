@@ -63,16 +63,37 @@ const init = async () => {
     });
     await server.register(Inert);
 
-/*    await server.register(hapiAuthJWT);
-    server.auth.strategy('jwt', 'jwt', {
-        key: jwtSecret,
-        validate,
-        verifyOptions: {
-            ignoreExpiration: false,    // do not reject expired tokens
-            // algorithms: ['HS256']    // specify your secure algorithm}
-        }
-    });
-    server.auth.default('jwt');*/
+    try {
+        await server.register({
+            plugin: require('yar'),
+            options: {
+                name: 'JSESSION',
+                storeBlank: false,
+                cookieOptions: {
+                    password: 'the-password-must-be-at-least-32-characters-long',
+                    isSecure: false
+                }
+            }
+        });
+    } catch (err) {
+        console.error(err);
+    }
+
+    await server.register(require('./plugin/hapi-auth-session'));
+    server.auth.strategy('simple', 'session', {});
+    server.auth.default('simple');
+
+    /*    await server.register(hapiAuthJWT);
+        server.auth.strategy('jwt', 'jwt', {
+            key: jwtSecret,
+            validate,
+            verifyOptions: {
+                ignoreExpiration: false,    // do not reject expired tokens
+                // algorithms: ['HS256']    // specify your secure algorithm}
+            }
+        });
+        server.auth.default('jwt');*/
+    server.route(require('./routes/index'));
 
     routes.forEach(function (r) {
         server.route(r);

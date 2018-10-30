@@ -20,6 +20,7 @@
     "good-squeeze": "^5.0.2",
     "hapi": "^17.2.0",
     "hapi-auth-jwt2": "^8.1.0",
+    "hapi-server-session": "^4.3.0",
     "inert": "^5.1.0",
     "joi": "^13.1.2",
     "jsonwebtoken": "^8.2.1",
@@ -31,7 +32,8 @@
     "seneca": "^3.7.0",
     "seneca-basic": "^0.5.1",
     "seneca-entity": "^2.0.2",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "yar": "^9.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
