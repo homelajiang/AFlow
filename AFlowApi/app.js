@@ -83,7 +83,7 @@ const init = async () => {
     server.auth.strategy('simple', 'session', {});
     server.auth.default('simple');
 
-    /*    await server.register(hapiAuthJWT);
+/*        await server.register(hapiAuthJWT);
         server.auth.strategy('jwt', 'jwt', {
             key: jwtSecret,
             validate,

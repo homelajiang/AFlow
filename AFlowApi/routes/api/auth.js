@@ -29,7 +29,10 @@ module.exports = [
                 if (res.error) {
                     return Util.generateBoom(res);
                 } else {
-                    res.profile.token = Util.generateJWT(res.auth);
+                    // res.profile.token = Util.generateJWT(res.auth);
+                    res.profile.status = res.auth.status;
+                    res.profile.role = res.auth.role;
+                    request.yar.set('user', res.profile);
                     return res.profile;
                 }
 
@@ -76,7 +79,9 @@ module.exports = [
                 if (res.error) {
                     return Util.generateBoom(res);
                 } else {
-                    res.profile.token = Util.generateJWT(res.auth);
+                    // res.profile.token = Util.generateJWT(res.auth);
+                    res.profile.status = res.auth.status;
+                    res.profile.role = res.auth.role;
                     return res.profile;
                 }
             } catch (e) {

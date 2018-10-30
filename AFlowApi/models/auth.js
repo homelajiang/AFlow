@@ -16,14 +16,11 @@ authSchema.virtual('model')
     .get(function () {
         return {
             auth: {
-                id: this._id,
                 username: this.username,
                 status: this.status,
                 role: this.role
             },
-            profile: {
-                profile: this.profile.model
-            }
+            profile: this.profile.model
         };
     });
 
