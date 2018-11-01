@@ -81,7 +81,7 @@ const init = async () => {
 
     await server.register(require('./plugin/hapi-auth-session'));
     server.auth.strategy('simple', 'session', {});
-    server.auth.default('simple');
+    // server.auth.default('simple');
 
 /*        await server.register(hapiAuthJWT);
         server.auth.strategy('jwt', 'jwt', {

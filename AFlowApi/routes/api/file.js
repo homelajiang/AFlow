@@ -30,6 +30,9 @@ module.exports = [
                 redirectToSlash: true,
                 index: true,
             }
+        },
+        config: {
+            auth: false
         }
     },
     {
