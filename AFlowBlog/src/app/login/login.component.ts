@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../auth/auth.service';
+import {Profile} from '../app.component';
 
 @Component({
   selector: 'app-login',
@@ -10,13 +11,26 @@ import {AuthService} from '../auth/auth.service';
 export class LoginComponent implements OnInit {
 
   validateForm: FormGroup;
+  isSpinning = false;
+  errorMsg;
+
 
   submitForm(): void {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-    this.authService.login()
+    if (this.validateForm.invalid) {
+      return;
+    }
+    this.isSpinning = true;
+    this.authService.login(this.validateForm.value.userName, this.validateForm.value.password)
+      .subscribe((profile: Profile) => {
+        console.log(profile);
+      }, (error) => {
+        this.errorMsg = error;
+        this.isSpinning = false;
+      });
   }
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
@@ -28,6 +42,9 @@ export class LoginComponent implements OnInit {
       password: [null, [Validators.required]],
       remember: [true]
     });
+  }
+
+  afterClose(): void {
   }
 
 }

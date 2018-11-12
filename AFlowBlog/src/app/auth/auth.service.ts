@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {Profile} from '../app.component';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {catchError} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,7 @@ export class AuthService {
   login(username: string, password: string): Observable<Profile> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'my-auth-token'
+        'Content-Type': 'application/json'
       })
     };
     return this.http
@@ -27,7 +27,20 @@ export class AuthService {
         {
           username: username,
           password: password
-        }, httpOptions);
+        }, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMsg;
+    if (error.error instanceof ErrorEvent) {
+      errorMsg = `错误：${error.error.message}`;
+    } else {
+      errorMsg = error.error.message ? error.error.message : error.error;
+    }
+    return throwError(errorMsg);
   }
 
 
