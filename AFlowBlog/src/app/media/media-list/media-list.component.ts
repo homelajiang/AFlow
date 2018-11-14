@@ -1,4 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {MediaService} from '../media.service';
+import {Media, PageModel} from '../../app.component';
+import {NzMessageService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-media-list',
@@ -7,57 +10,48 @@ import {Component, OnInit} from '@angular/core';
 })
 export class MediaListComponent implements OnInit {
 
-  data = [
-    {
-      title: 'Title 1',
-      src: 'https://via.placeholder.com/300*x200'
-    },
-    {
-      title: 'Title 2',
-      src: 'https://via.placeholder.com/300*x200'
-    },
-    {
-      title: 'Title 3',
-      src: 'https://via.placeholder.com/300*x200'
-    },
-    {
-      title: 'Title 4',
-      src: 'https://via.placeholder.com/300*x200'
-    },
-    {
-      title: 'Title 5',
-      src: 'https://via.placeholder.com/300*x200'
-    },
-    {
-      title: 'Title 6',
-      src: 'https://via.placeholder.com/300*x200'
-    },
-    {
-      title: 'Title 7',
-      src: 'https://via.placeholder.com/300*x200'
-    },
-    {
-      title: 'Title 8',
-      src: 'https://via.placeholder.com/300*x200'
-    },
-    {
-      title: 'Title 9',
-      src: 'https://via.placeholder.com/300*x200'
-    },
-    {
-      title: 'Title 10',
-      src: 'https://via.placeholder.com/300*x200'
-    },
-    {
-      title: 'Title 11',
-      src: 'https://via.placeholder.com/300*x200'
-    }
-  ];
+  private page = 1;
+  uploadVisible;
 
-  constructor() {
+  medias: Media[] = [];
+
+  constructor(private mediaService: MediaService,
+              private message: NzMessageService,
+              private msg: NzMessageService) {
+  }
+
+  // tslint:disable-next-line:typedef
+  handleChange({file, fileList}): void {
+    const status = file.status;
+    if (status !== 'uploading') {
+      console.log(file, fileList);
+    }
+    if (status === 'done') {
+      this.msg.success(`${file.name} file uploaded successfully.`);
+    } else if (status === 'error') {
+      this.msg.error(`${file.name} file upload failed.`);
+    }
   }
 
   ngOnInit() {
+    console.log('onInit');
+    this.mediaService.getMedias(this.page)
+      .subscribe((pageMedias: PageModel<Media>) => {
+          this.medias = this.medias.concat(pageMedias.list);
+        },
+        (err) => {
+          this.message.create('error', err);
+        }
+      );
+
+  }
+
+  showUpload() {
+    this.uploadVisible = true;
+  }
+
+  closeUpload() {
+    this.uploadVisible = false;
   }
 
 }

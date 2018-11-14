@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../auth/auth.service';
 import {Profile} from '../app.component';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -26,14 +27,16 @@ export class LoginComponent implements OnInit {
     this.isSpinning = true;
     this.authService.login(this.validateForm.value.userName, this.validateForm.value.password)
       .subscribe((profile: Profile) => {
-        console.log(profile);
+        this.isSpinning = false;
+        this.router.navigate(['/dashboard']);
       }, (error) => {
         this.errorMsg = error;
         this.isSpinning = false;
       });
   }
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -42,9 +45,6 @@ export class LoginComponent implements OnInit {
       password: [null, [Validators.required]],
       remember: [true]
     });
-  }
-
-  afterClose(): void {
   }
 
 }

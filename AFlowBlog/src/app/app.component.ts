@@ -24,7 +24,7 @@ export interface PageModel<T> {
   list: Array<T>;
 }
 
-export class File {
+export class Media {
   id: string;
   name: string;
   path: string;

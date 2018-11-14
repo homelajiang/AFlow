@@ -4,30 +4,25 @@
     </div>
 
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'">
-      <li nz-menu-item><span><i class="anticon anticon-file"></i><span class="nav-text">Dashboard</span></span></li>
-      <li nz-menu-item><span><i class="anticon anticon-video-camera"></i><span class="nav-text">Posts</span></span></li>
-      <li nz-menu-item><span><i class="anticon anticon-upload"></i><span class="nav-text">Comments</span></span></li>
-      <li nz-menu-item><span><i class="anticon anticon-cloud-o"></i><span class="nav-text">Medias</span></span></li>
-      <li nz-menu-item><span><i class="anticon anticon-bar-chart"></i><span
-        class="nav-text">Categories/Tags</span></span>
+      <li nz-menu-item routerLink="/dashboard"><span><i class="anticon anticon-file"></i><span class="nav-text">Dashboard</span></span>
       </li>
-      <li nz-menu-item><span><i class="anticon anticon-appstore-o"></i><span class="nav-text">Setting</span></span></li>
+      <li nz-menu-item routerLink="/posts"><span><i class="anticon anticon-video-camera"></i><span class="nav-text">Posts</span></span>
+      </li>
+      <li nz-menu-item routerLink="/comments"><span><i class="anticon anticon-upload"></i><span class="nav-text">Comments</span></span>
+      </li>
+      <li nz-menu-item routerLink="/medias"><span><i class="anticon anticon-cloud-o"></i><span
+        class="nav-text">Medias</span></span></li>
+      <li nz-menu-item routerLink="/categories"><span><i class="anticon anticon-bar-chart"></i><span class="nav-text">Categories</span></span>
+      </li>
+      <li nz-menu-item routerLink="/tags"><span><i class="anticon anticon-bar-chart"></i><span
+        class="nav-text">Tags</span></span></li>
+      <li nz-menu-item [routerLink]="['/setting']"><span><i class="anticon anticon-appstore-o"></i><span
+        class="nav-text">Setting</span></span></li>
     </ul>
   </nz-sider>
   <nz-layout style="margin-left:200px;background-color: #f2f2f2;">
     <nz-header style="background: #f2f2f2; padding:0 30px;;">
-      <h1 style="display: inline-block;
-    font-size: 30px;
-    line-height: 64px;
-    margin: 0;">Dashboard</h1>
-
-      <!--  <a [routerLink]="['/']">主页</a>
-        <a [routerLink]="['/dashboard']">Dashboard</a>
-        <a [routerLink]="['/posts']">Posts</a>
-        <a [routerLink]="['/comments']">Comments</a>
-        <a [routerLink]="['/categories']">Categories</a>
-        <a [routerLink]="['/tags']">Tags</a>-->
-
+      <h1 style="display: inline-block;font-size: 30px;line-height: 64px;margin: 0;">{{title}}</h1>
       <div style="float: right;">
         <nz-badge nzDot style="margin: 20px;">
           <i class="anticon anticon-message" style="font-size: 14px;"></i>

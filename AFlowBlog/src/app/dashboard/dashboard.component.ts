@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
+import {Profile} from '../app.component';
+import {AuthService} from '../auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,6 +9,7 @@ import {NzMessageService} from 'ng-zorro-antd';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  private profile: Profile;
 
   cardNoPadding = {
     padding: 0
@@ -42,10 +45,11 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  constructor(private msg: NzMessageService) {
+  constructor(private msg: NzMessageService, private authService: AuthService) {
   }
 
   ngOnInit() {
+    this.profile = this.authService.profile;
   }
 
 }

@@ -10,7 +10,6 @@ import {registerLocaleData} from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
-import {DrawerComponent} from './drawer/drawer.component';
 import {LoginComponent} from './login/login.component';
 import {MediaListComponent} from './media/media-list/media-list.component';
 import {PostEditComponent} from './post/post-edit/post-edit.component';
@@ -25,6 +24,7 @@ import {CommentDashboardComponent} from './comment/comment-dashboard/comment-das
 import {MarkdownComponent} from './markdown/markdown.component';
 import {Code404Component} from './code404/code404.component';
 import { MainComponent } from './main/main.component';
+import { SettingComponent } from './setting/setting.component';
 
 registerLocaleData(zh);
 
@@ -33,7 +33,6 @@ registerLocaleData(zh);
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    DrawerComponent,
     LoginComponent,
     MediaListComponent,
     PostEditComponent,
@@ -46,7 +45,8 @@ registerLocaleData(zh);
     CommentDashboardComponent,
     MarkdownComponent,
     Code404Component,
-    MainComponent
+    MainComponent,
+    SettingComponent
   ],
   imports: [
     BrowserModule,
