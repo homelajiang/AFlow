@@ -8,8 +8,8 @@ const fileSchema = new Schema({
     path: {type: String, require: true},
     description: String,
     mimetype: String,
-    create_date: {type: Date, default: Date.now()},
-    modify_date: {type: Date, default: Date.now()}
+    create_date: {type: Date},
+    modify_date: {type: Date}
 
 }, {
     versionKey: false // You should be aware of the outcome after set to false
@@ -35,6 +35,8 @@ fileSchema.static({
         model.path ? temp.path = model.path : '';
         model.description ? temp.description = model.description : '';
         model.mimetype ? temp.mimetype = model.mimetype : '';
+        temp.create_date = Date.now();
+        temp.modify_date = Date.now();
         return temp;
     },
     getUpdateModel: function (model) {
@@ -42,7 +44,8 @@ fileSchema.static({
             modify_date: Date.now()
         };
         model.name ? temp.name = model.name : '';
-        model.description ? temp.description = model.description : '';
+        if(model.description!==undefined)
+        model.description!==undefined ? temp.description = model.description : '';
         return temp;
     }
 });
