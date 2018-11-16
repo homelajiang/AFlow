@@ -18,6 +18,7 @@ export class AppComponent {
 }
 
 export interface PageModel<T> {
+  hasNextPage: boolean;
   pageSize: number;
   pageNum: number;
   count: number;

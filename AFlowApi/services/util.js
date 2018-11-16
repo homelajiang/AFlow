@@ -3,7 +3,12 @@ const Boom = require('boom');
 module.exports = {
     //生成分页格式
     generatePageModel: function (pageSize, pageNum, count, list) {
+        let hasNextPage;
+        if (list.length === pageSize && pageSize * pageNum < count) {
+            hasNextPage = true;
+        }
         return {
+            hasNextPage: hasNextPage,
             pageSize: pageSize,
             pageNum: pageNum,
             count: count,

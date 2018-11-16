@@ -20,13 +20,14 @@ export class MediaService {
   }
 
   getMedias(page: number, keyword?: string): Observable<PageModel<Media>> {
-    const params: HttpParams = new HttpParams();
-    params.set('pageSize', '20');
-    params.set('pageNum', page + '');
+    console.log(keyword);
+    let p: HttpParams = new HttpParams()
+      .set('pageSize', '20')
+      .set('pageNum', page.toString());
     if (keyword && keyword.trim()) {
-      params.set('keyword', keyword.trim());
+      p = p.set('keyword', keyword.trim());
     }
-    return this.http.get<PageModel<Media>>('api/v1/file', {params: params})
+    return this.http.get<PageModel<Media>>('api/v1/file', {params: p})
       .pipe(
         catchError(Utils.handleError)
       );
@@ -48,11 +49,15 @@ export class MediaService {
     }
 
     return this.http
-      .post<Media>('api/v1/file/' + id,
+      .post<Media>(`api/v1/file/${id}`,
         reqBody, httpOptions)
       .pipe(
         catchError(Utils.handleError)
       );
+  }
+
+  deleteMedia(id: string): Observable<{}> {
+    return this.http.delete(`api/v1/file/${id}`);
   }
 
 

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MediaService} from '../media.service';
 import {Media, PageModel} from '../../app.component';
-import {NzMessageService} from 'ng-zorro-antd';
+import {NzMessageService, NzModalService} from 'ng-zorro-antd';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 
@@ -22,8 +22,16 @@ export class MediaListComponent implements OnInit {
   mediaUpdate$: Observable<Media>;
   private descriptionText$ = new Subject<string>();
 
+  loadingStatus: number;
+  private STATUS_INVISIBLE = 0;
+  private STATUS_CAN_LOAD_MORE = 1;
+  private STATUS_LOADING = 2;
+  private STATUS_NO_MORE = 3;
+  private searchText = '';
+
   constructor(private mediaService: MediaService,
-              private toast: NzMessageService) {
+              private toast: NzMessageService,
+              private modelService: NzModalService) {
   }
 
   ngOnInit() {
@@ -42,7 +50,7 @@ export class MediaListComponent implements OnInit {
       this.medias.forEach((m: Media, index: number) => {
         if (m.id === res.id) {
           this.medias[index] = res;
-          console.log(`index:${index}`);
+          // console.log(`index:${index}`);
           return;
         }
       });
@@ -50,14 +58,7 @@ export class MediaListComponent implements OnInit {
       this.toast.error(`更新失败：${err}`);
     });
 
-    this.mediaService.getMedias(this.page)
-      .subscribe((pageMedias: PageModel<Media>) => {
-          this.medias = this.medias.concat(pageMedias.list);
-        },
-        (err) => {
-          this.toast.error(err);
-        }
-      );
+    this.getMedias(true);
 
   }
 
@@ -72,6 +73,60 @@ export class MediaListComponent implements OnInit {
     } else if (status === 'error') {
       this.toast.error(`${file.name} 上传失败`);
     }
+  }
+
+  getMedias(refresh: boolean) {
+    this.loadingStatus = this.STATUS_LOADING;
+    if (refresh) {
+      this.page = 1;
+    }
+    this.mediaService.getMedias(this.page, this.searchText)
+      .subscribe((pageMedias: PageModel<Media>) => {
+        this.page++;
+        if (refresh) {
+          this.medias = pageMedias.list;
+        } else {
+          this.medias = this.medias.concat(pageMedias.list);
+        }
+        pageMedias.hasNextPage ? this.loadingStatus = this.STATUS_CAN_LOAD_MORE
+          : this.loadingStatus = this.STATUS_NO_MORE;
+
+      }, (err) => {
+        this.toast.error(err);
+        this.loadingStatus = this.STATUS_CAN_LOAD_MORE;
+      });
+  }
+
+  searchMedia(searchText: string) {
+    this.searchText = searchText;
+    this.getMedias(true);
+  }
+
+  deleteMedia() {
+    this.modelService.confirm({
+      nzTitle: `确定删除该文件？`,
+      nzContent: `即将删除文件 ${this.showingMedia.name} ,删除后将不可恢复。`,
+      nzOnOk: () => {
+        this.mediaShowing = false;
+        this.mediaService.deleteMedia(this.showingMedia.id)
+          .subscribe(() => {
+            this.toast.success('删除成功');
+            this.medias.forEach((m: Media, index: number) => {
+              if (m.id === this.showingMedia.id) {
+                this.medias.splice(index, 1);
+                console.log(`index:${index}`);
+                return;
+              }
+            });
+          }, (err) => {
+            this.toast.error(err);
+          });
+      }
+    });
+  }
+
+  loadMore() {
+    this.getMedias(false);
   }
 
 
@@ -100,6 +155,11 @@ export class MediaListComponent implements OnInit {
 
   closeUpload() {
     this.uploadVisible = false;
+  }
+
+
+  copyResult(res: boolean) {
+    res ? this.toast.success('复制成功') : this.toast.error('复制失败，请手动复制');
   }
 
 }

@@ -1,6 +1,6 @@
 <div style="padding: 30px;">
   <div style="display: flex;justify-content: space-between;margin-bottom: 30px;">
-    <button nz-button nzType="primary" (click)="showUpload()"><i class="anticon anticon-file-add"></i>Upload Media
+    <button nz-button nzType="primary" (click)="showUpload()"><i nz-icon type="upload" theme="outline"></i>Upload Media
     </button>
     <nz-drawer [nzClosable]="false" [nzVisible]="uploadVisible" [nzWidth]="400"
                nzPlacement="right" nzTitle="文件上传" (nzOnClose)="closeUpload()">
@@ -47,11 +47,11 @@
           <div style="color:rgba(0,0,0,0.54);font-size: 14px;">{{showingMedia.mimetype}}</div>
         </div>
 
-        <div style="font-size: 24px;flex-shrink:0;margin-left: 10px;">
-          <button nz-button nzType="primary" [nzSize]="size" nzShape="circle">
-            <i nz-icon type="edit" theme="outline"></i>
-          </button>
-        </div>
+        <!--        <div style="font-size: 24px;flex-shrink:0;margin-left: 10px;">
+                  <button nz-button nzType="primary" [nzSize]="size" nzShape="circle">
+                    <i nz-icon type="edit" theme="outline"></i>
+                  </button>
+                </div>-->
       </div>
 
       <div style="display: flex; align-items:center;padding-top: 10px;padding-bottom: 10px;">
@@ -74,14 +74,16 @@
         </div>
 
         <div style="font-size: 24px;flex-shrink:0;margin-left: 10px;">
-          <button nz-button nzType="primary" [nzSize]="size" nzShape="circle">
+          <button ngxClipboard nz-button nzType="primary" (cbOnSuccess)="copyResult(true)"
+                  (cbOnError)="copyResult(false)" [cbContent]="showingMedia?.path" [nzSize]="size"
+                  nzShape="circle">
             <i nz-icon type="copy" theme="outline"></i>
           </button>
         </div>
       </div>
 
       <div style="margin-top: 40px;">
-        <button nz-button nzType="danger" nzBlock>删除</button>
+        <button nz-button nzType="danger" nzBlock (click)="deleteMedia()">删除</button>
       </div>
 
     </nz-drawer>
@@ -94,7 +96,8 @@
       </nz-radio-group>
 
       <nz-input-group nzSuffixIcon="anticon anticon-search" style="width: 250px;">
-        <input type="text" nz-input placeholder="input search text">
+        <input #searchInput type="text" nz-input placeholder="input search text"
+               (keyup.enter)="searchMedia(searchInput.value)">
       </nz-input-group>
     </div>
   </div>
@@ -117,6 +120,20 @@
       <div style="padding: 5px 10px;font-weight: 600;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
         {{media.name}}
       </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 30px;" *ngIf="loadingStatus>0">
+    <button *ngIf="loadingStatus===1" nz-button nzType="primary" nzBlock (click)="loadMore()">加载更多</button>
+
+    <div *ngIf="loadingStatus===2" style="text-align: center;line-height: 32px;">
+      <i nz-icon [type]="'loading'"></i>
+      <span style="margin-left: 10px;">加载中...</span>
+    </div>
+
+    <div *ngIf="loadingStatus===3" style="text-align: center;line-height: 32px;">
+      <span>没有更多了</span>
     </div>
 
   </div>

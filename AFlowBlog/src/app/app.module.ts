@@ -25,6 +25,7 @@ import {MarkdownComponent} from './markdown/markdown.component';
 import {Code404Component} from './code404/code404.component';
 import { MainComponent } from './main/main.component';
 import { SettingComponent } from './setting/setting.component';
+import {ClipboardModule} from 'ngx-clipboard';
 
 registerLocaleData(zh);
 
@@ -55,7 +56,8 @@ registerLocaleData(zh);
     ReactiveFormsModule,
     HttpClientModule,
     NgZorroAntdModule,
-    appRouting
+    appRouting,
+    ClipboardModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
