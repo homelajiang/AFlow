@@ -31,7 +31,7 @@ export class MediaListComponent implements OnInit {
 
   constructor(private mediaService: MediaService,
               private toast: NzMessageService,
-              private modelService: NzModalService) {
+              private modalService: NzModalService) {
   }
 
   ngOnInit() {
@@ -103,7 +103,7 @@ export class MediaListComponent implements OnInit {
   }
 
   deleteMedia() {
-    this.modelService.confirm({
+    this.modalService.confirm({
       nzTitle: `确定删除该文件？`,
       nzContent: `即将删除文件 ${this.showingMedia.name} ,删除后将不可恢复。`,
       nzOnOk: () => {

@@ -20,7 +20,7 @@ const act = Promise.promisify(seneca.act, {context: seneca});
 module.exports = [
     {
         method: 'POST',
-        path: '/tag',
+        path: UtilApi.api_v1 + '/tag',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -37,16 +37,16 @@ module.exports = [
             validate: {
                 payload: {
                     name: Joi.string().required(),
-                    alias: Joi.string(),
-                    image: Joi.string(),
-                    description: Joi.string()
+                    alias: Joi.string().allow(null),
+                    image: Joi.string().allow(null),
+                    description: Joi.string().allow(null)
                 }
             }
         }
     },
     {
         method: 'DELETE',
-        path: '/tag/{id}',
+        path: UtilApi.api_v1 + '/tag/{id}',
         handler: async (request, h) => {
             try {
                 const res = await act({
@@ -161,9 +161,9 @@ module.exports = [
             validate: {
                 payload: {
                     name: Joi.string().required(),
-                    alias: Joi.string(),
-                    image: Joi.string(),
-                    description: Joi.string()
+                    alias: Joi.string().allow(null),
+                    image: Joi.string().allow(null),
+                    description: Joi.string().allow(null)
                 }
             }
         }

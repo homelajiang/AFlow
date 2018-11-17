@@ -20,7 +20,6 @@ export class MediaService {
   }
 
   getMedias(page: number, keyword?: string): Observable<PageModel<Media>> {
-    console.log(keyword);
     let p: HttpParams = new HttpParams()
       .set('pageSize', '20')
       .set('pageNum', page.toString());
@@ -57,7 +56,10 @@ export class MediaService {
   }
 
   deleteMedia(id: string): Observable<{}> {
-    return this.http.delete(`api/v1/file/${id}`);
+    return this.http.delete(`api/v1/file/${id}`)
+      .pipe(
+        catchError(Utils.handleError)
+      );
   }
 
 
