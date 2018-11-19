@@ -1,9 +1,9 @@
 <div style="padding: 30px;">
 
-  <nz-drawer [nzClosable]="false" [nzVisible]="editMode" [nzWidth]="400"
+  <nz-drawer [nzClosable]="false" [nzVisible]="editMode" [nzWidth]="400" (nzOnClose)="closeEditDrawer()"
              nzPlacement="right" [nzTitle]="editCategoriesModel?.name">
 
-    <form nz-form [formGroup]="editForm" (ngSubmit)="submitForm()">
+    <form nz-form [formGroup]="editForm" (ngSubmit)="updateCategories()">
 
       <nz-form-item>
         <nz-form-label>别名</nz-form-label>
@@ -39,9 +39,9 @@
   <div nz-row [nzGutter]="24">
     <div nz-col [nzSpan]="8">
       <nz-spin [nzSpinning]="isSpinning">
-        <nz-card [nzBordered]="false" nzTitle="Add Categories " nzLayout="vertical">
+        <nz-card [nzBordered]="false" nzTitle="添加分类" nzLayout="vertical">
 
-          <form nz-form [formGroup]="categoriesForm" (ngSubmit)="submitForm()">
+          <form nz-form [formGroup]="categoriesForm" (ngSubmit)="createCategories()">
 
             <nz-form-item>
               <nz-form-label>名称</nz-form-label>
@@ -60,10 +60,10 @@
             </nz-form-item>
 
             <nz-form-item>
-              <nz-form-label>图片连接</nz-form-label>
+              <nz-form-label>图片地址</nz-form-label>
               <nz-form-control>
           <textarea nz-input formControlName="image"
-                    [nzAutosize]="{ minRows: 3, maxRows: 3 }"></textarea>
+                    [nzAutosize]="{ minRows: 2, maxRows: 2 }"></textarea>
               </nz-form-control>
             </nz-form-item>
 
@@ -85,7 +85,7 @@
     </div>
 
     <div nz-col [nzSpan]="16">
-      <nz-card [nzBordered]="false" nzTitle="Categories List" [nzExtra]="extraTemplate">
+      <nz-card [nzBordered]="false" nzTitle="分类列表" [nzExtra]="extraTemplate">
         <nz-list
           [nzDataSource]="categories"
           [nzItemLayout]="'horizontal'"

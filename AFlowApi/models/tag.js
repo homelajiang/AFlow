@@ -34,9 +34,9 @@ tagSchema.static({
     },
     getUpdateModel: (model) => {
         const temp = {};
-        model.alias ? temp.alias = model.alias : '';
+        model.alias !== undefined ? temp.alias = model.alias : '';
         model.image ? temp.image = model.image : '';
-        model.description ? temp.description = model.description : '';
+        model.description !== undefined ? temp.description = model.description : '';
         return temp;
     },
     /**

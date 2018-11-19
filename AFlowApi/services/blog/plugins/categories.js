@@ -35,7 +35,7 @@ module.exports = function (options) {
     this.add('role:categories,cmd:update', async (args, respond) => {//修改不检查重复
         try {
             await Categories.updateOne({_id: args.id}, Categories.getUpdateModel(args.categories));
-            const categories = Categories.findOne({_id: args.id});
+            const categories = await Categories.findOne({_id: args.id});
             respond(categories.model);
         } catch (e) {
             respond(Util.generateErr('更新失败'));

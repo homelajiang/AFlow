@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {BlogService} from '../blog/blog.service';
 import {Categories, PageModel} from '../app.component';
@@ -46,7 +46,7 @@ export class CategoriesComponent implements OnInit {
     this.getCategories();
   }
 
-  submitForm() {
+  createCategories() {
     for (const i in this.categoriesForm.controls) {
       this.categoriesForm.controls[i].markAsDirty();
       this.categoriesForm.controls[i].updateValueAndValidity();
@@ -67,6 +67,31 @@ export class CategoriesComponent implements OnInit {
         this.toast.error(`创建失败：${err}`);
       });
 
+  }
+
+
+  updateCategories() {
+    for (const i in this.editForm.controls) {
+      this.editForm.controls[i].markAsDirty();
+      this.editForm.controls[i].updateValueAndValidity();
+    }
+    if (this.editForm.invalid) {
+      return;
+    }
+    this.blogService.updateCategories(this.editCategoriesModel.id, this.editForm.value)
+      .subscribe((categories: Categories) => {
+        this.editCategoriesModel = categories;
+        this.toast.success(`修改成功`);
+        this.categories.forEach((c, index) => {
+          if (c.id === categories.id) {
+            this.categories[index] = categories;
+            this.categories = this.categories.concat([]); // 只能重新赋值
+            return;
+          }
+        });
+      }, (err) => {
+        this.toast.error(`修改失败：${err}`);
+      });
   }
 
   editCategories(categories: Categories) {
@@ -104,6 +129,10 @@ export class CategoriesComponent implements OnInit {
     this.searchText = searchText;
     this.page = 1;
     this.getCategories();
+  }
+
+  closeEditDrawer() {
+    this.editMode = false;
   }
 
   getCategories() {
