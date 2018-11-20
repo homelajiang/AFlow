@@ -4,19 +4,21 @@
     <button nz-button nzType="primary"><i class="anticon anticon-file-add"></i>New Post</button>
     <div>
       <nz-radio-group>
-        <label nz-radio-button nzValue="A">All</label>
-        <label nz-radio-button nzValue="B">Published</label>
-        <label nz-radio-button nzValue="C">draft</label>
+        <label nz-radio-button nzValue="A">所有</label>
+        <label nz-radio-button nzValue="B">已发布</label>
+        <label nz-radio-button nzValue="C">草稿</label>
+        <label nz-radio-button nzValue="C">已删除</label>
+        <!--0 草稿，1 待审核 -1 已删除 2 已发布-->
       </nz-radio-group>
 
-      <nz-input-group nzSuffixIcon="anticon anticon-search" style="width: 250px;">
-        <input type="text" nz-input placeholder="input search text">
+      <nz-input-group slot="" nzSuffixIcon="anticon anticon-search" style="width: 250px;margin-left: 16px;">
+        <input type="text" nz-input placeholder="请输入关键字">
       </nz-input-group>
     </div>
   </div>
 
   <nz-list
-    [nzDataSource]="data"
+    [nzDataSource]="posts"
     [nzItemLayout]="'horizontal'"
     [nzPagination]="pagination"
     [nzRenderItem]="item">
@@ -35,9 +37,7 @@
                     <strong style="font-size: 16px;">{{item.title}}</strong>
                   </div>
                   <div style="flex-grow: 1;overflow: hidden;font-size: 12px;">
-                    欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！
-                    欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！
-                    欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！
+                    {{item.description}}
                   </div>
 
                   <div style="flex-shrink: 0;margin-top: 5px;font-size: 13px;display: flex;">
@@ -50,7 +50,7 @@
                     <div style="flex-shrink: 0;">
                       <a href="#">Android</a>
                       <nz-divider nzType="vertical"></nz-divider>
-                      <span style="color: rgba(0,0,0,.45);font-size: 12px;">3小时前</span>
+                      <span style="color: rgba(0,0,0,.45);font-size: 12px;">{{item.publish_date}}</span>
                     </div>
                   </div>
 

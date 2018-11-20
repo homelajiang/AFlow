@@ -69,8 +69,7 @@ module.exports = function (options) {
         try {
             const post = await new Post(Post.getInsertModel(args.post)).save();
             respond(post.model);
-        }
-        catch (e) {
+        } catch (e) {
             respond(Util.generateErr("创建文章失败"));
         }
     });
@@ -80,7 +79,6 @@ module.exports = function (options) {
         try {
             const post = await Post.findById(args.id)
                 .populate('categories')
-                .populate('creator')
                 .populate('tags');
             if (post) {
                 respond(post.model);
@@ -98,6 +96,8 @@ module.exports = function (options) {
             const pageSize = parseInt(args.pageSize);
             const pageNum = parseInt(args.pageNum);
 
+            const type = parseInt(args.type);
+
             let count;
             let posts;
 
@@ -109,30 +109,68 @@ module.exports = function (options) {
                     ])
                     .countDocuments();
 
-                posts = await Post.find()
-                    .or([
-                        {title: {$regex: new RegExp(args.key, 'i')}},
-                        {description: {$regex: new RegExp(args.key, 'i')}}
-                    ])
-                    .populate('categories')
-                    .populate('creator')
-                    .populate('tags')
-                    .skip((pageNum - 1) * pageSize)
-                    .limit(pageSize)
-                    .sort({create_date: -1});
+                if (isNaN(type)) {//没有type
+                    posts = await Post.find()
+                        .or([
+                            {title: {$regex: new RegExp(args.key, 'i')}},
+                            {description: {$regex: new RegExp(args.key, 'i')}}
+                        ])
+                        .populate('categories')
+                        .populate('tags')
+                        .skip((pageNum - 1) * pageSize)
+                        .limit(pageSize)
+                        .sort({create_date: -1});
+                } else if (type === 1) {
+                    posts = await Post.find({status: type})
+                        .or([
+                            {title: {$regex: new RegExp(args.key, 'i')}},
+                            {description: {$regex: new RegExp(args.key, 'i')}}
+                        ])
+                        .populate('categories')
+                        .populate('tags')
+                        .skip((pageNum - 1) * pageSize)
+                        .limit(pageSize)
+                        .sort({publish_date: -1});
+                } else {
+                    posts = await Post.find({status: type})
+                        .or([
+                            {title: {$regex: new RegExp(args.key, 'i')}},
+                            {description: {$regex: new RegExp(args.key, 'i')}}
+                        ])
+                        .populate('categories')
+                        .populate('tags')
+                        .skip((pageNum - 1) * pageSize)
+                        .limit(pageSize)
+                        .sort({create_date: -1});
+                }
             } else {
                 count = await Post.find().countDocuments();
-                posts = await Post.find()
-                    .populate('categories')
-                    .populate('creator')
-                    .populate('tags')
-                    .skip((pageNum - 1) * pageSize)
-                    .limit(pageSize)
-                    .sort({create_date: -1});
+                if (isNaN(type)) {//没有type
+                    posts = await Post.find()
+                        .populate('categories')
+                        .populate('tags')
+                        .skip((pageNum - 1) * pageSize)
+                        .limit(pageSize)
+                        .sort({create_date: -1});
+                } else if (type === 1) {
+                    posts = await Post.find({status: type})
+                        .populate('categories')
+                        .populate('tags')
+                        .skip((pageNum - 1) * pageSize)
+                        .limit(pageSize)
+                        .sort({publish_date: -1});
+                } else {
+                    posts = await Post.find({status: type})
+                        .populate('categories')
+                        .populate('tags')
+                        .skip((pageNum - 1) * pageSize)
+                        .limit(pageSize)
+                        .sort({create_date: -1});
+                }
             }
             const tempList = [];
             posts.forEach((element) => {
-                tempList.push(element.model);
+                tempList.push(element.list_model);
             });
             respond(null, Util.generatePageModel(pageSize, pageNum, count, tempList));
         } catch (e) {
@@ -161,7 +199,6 @@ module.exports = function (options) {
             await Post.updateOne({_id: args.id}, Post.getUpdateModel(args.post));
             const post = await Post.findOne({_id: args.id})
                 .populate('categories')
-                .populate('creator')
                 .populate('tags');
             if (post) {
                 respond(post.model);

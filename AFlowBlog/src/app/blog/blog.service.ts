@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Categories, Media, PageModel, Tag} from '../app.component';
+import {Categories, Media, PageModel, Post, Tag} from '../app.component';
 import {Observable} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Utils} from '../utils';
@@ -101,4 +101,52 @@ export class BlogService {
         catchError(Utils.handleError)
       );
   }
+
+  createPost(post: Post): Observable<Post> {
+    return this.http.post<Post>('api/v1/post', post, this.commentHttpOptions)
+      .pipe(
+        catchError(Utils.handleError)
+      );
+  }
+
+  removePost(id: string): Observable<{}> {
+    return this.http.delete(`api/v1/post${id}`)
+      .pipe(
+        catchError(Utils.handleError)
+      );
+  }
+
+  updatePost(id: string, post: Post): Observable<Post> {
+    return this.http.post<Post>(`api/v1/post/${id}`, post, this.commentHttpOptions)
+      .pipe(
+        catchError(Utils.handleError)
+      );
+  }
+
+  getPosts(page: number, pageSize: number, type?: number, keyword?: string): Observable<PageModel<Post>> {
+    let p: HttpParams = new HttpParams()
+      .set('pageSize', pageSize.toString())
+      .set('pageNum', page.toString());
+
+    if (keyword && keyword.trim()) {
+      p = p.set('key', keyword);
+    }
+
+    if (type !== undefined) {
+      p = p.set('status', type.toString());
+    }
+
+    return this.http.get<PageModel<Post>>('api/v1/post', {params: p})
+      .pipe(
+        catchError(Utils.handleError)
+      );
+  }
+
+  getPostInfo(id: string): Observable<Post> {
+    return this.http.get<Post>(`api/v1/post/${id}`)
+      .pipe(
+        catchError(Utils.handleError)
+      );
+  }
+
 }

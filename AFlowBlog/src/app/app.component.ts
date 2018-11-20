@@ -74,12 +74,12 @@ export class Post {
   content: string;
   create_date: string;
   modify_date: string;
+  cover: string;
   open: number;
   password: string;
   open_comment: boolean;
   need_review: boolean;
   status: boolean;
-  creator: Profile;
   categories: Categories;
   tags: Array<Tag>;
 }

@@ -403,162 +403,192 @@ module.exports = [
                 query: {
                     pageSize: Joi.number().default(10),
                     pageNum: Joi.number().default(1),
-                    key: Joi.string()
+                    key: Joi.string(),
+                    type: Joi.number.integer().min(-1).max(1)
                 }
             }
         }
     },
-    //===========================================================================
+//===========================================================================
     {
         method: "POST",
-        path: UtilApi.api_v1 + '/post/{id}/comment',
-        handler: async (request, h) => {
-            //todo 添加creator
-            try {
-                request.payload.creator = "5bceea05a7ebdd1938a6fa9d";
-                const res = await act({
-                    role: 'comment',
-                    cmd: 'add',
-                    id: request.params.id,
-                    comment: request.payload
-                });
-                return Util.ifErrorBoom(res);
-            } catch (err) {
-                return Util.errorToBoom(err);
-            }
-        },
-        config: {
-            validate: {
-                payload: {
-                    content: Joi.string().required()
+        path:
+            UtilApi.api_v1 + '/post/{id}/comment',
+        handler:
+            async (request, h) => {
+                //todo 添加creator
+                try {
+                    request.payload.creator = "5bceea05a7ebdd1938a6fa9d";
+                    const res = await act({
+                        role: 'comment',
+                        cmd: 'add',
+                        id: request.params.id,
+                        comment: request.payload
+                    });
+                    return Util.ifErrorBoom(res);
+                } catch (err) {
+                    return Util.errorToBoom(err);
+                }
+            },
+        config:
+            {
+                validate: {
+                    payload: {
+                        content: Joi.string().required()
+                    }
                 }
             }
-        }
-    },
+    }
+    ,
     {
         method: 'DELETE',
-        path: UtilApi.api_v1 + '/comment/{id}',
-        handler: async (request, h) => {
-            try {
-                const res = await act({
-                    role: 'comment',
-                    cmd: 'remove',
-                    id: request.params.id
-                });
-                return Util.ifErrorBoom(res, 204, h);
-            } catch (err) {
-                return Util.errorToBoom(err);
-            }
-        },
-        config: {
-            validate: {
-                params: {
-                    id: Joi.string().required()
+        path:
+            UtilApi.api_v1 + '/comment/{id}',
+        handler:
+            async (request, h) => {
+                try {
+                    const res = await act({
+                        role: 'comment',
+                        cmd: 'remove',
+                        id: request.params.id
+                    });
+                    return Util.ifErrorBoom(res, 204, h);
+                } catch (err) {
+                    return Util.errorToBoom(err);
+                }
+            },
+        config:
+            {
+                validate: {
+                    params: {
+                        id: Joi.string().required()
+                    }
                 }
             }
-        }
-    },
+    }
+    ,
     {//审核
         method: "POST",
-        path: UtilApi.api_v1 + '/comment/{id}/{status}',
-        handler: async (request, h) => {
-            try {
-                const res = await act({
-                    role: 'comment',
-                    cmd: 'update',
-                    id: request.params.id,
-                    comment: {
-                        status: request.params.status
+        path:
+            UtilApi.api_v1 + '/comment/{id}/{status}',
+        handler:
+            async (request, h) => {
+                try {
+                    const res = await act({
+                        role: 'comment',
+                        cmd: 'update',
+                        id: request.params.id,
+                        comment: {
+                            status: request.params.status
+                        }
+                    });
+                    return Util.ifErrorBoom(res);
+                } catch (err) {
+                    return Util.errorToBoom(err);
+                }
+            },
+        config:
+            {
+                validate: {
+                    params: {
+                        id: Joi.string().required(),
+                        status:
+                            Joi.number().integer().min(-1).max(1).required()
                     }
-                });
-                return Util.ifErrorBoom(res);
-            } catch (err) {
-                return Util.errorToBoom(err);
-            }
-        },
-        config: {
-            validate: {
-                params: {
-                    id: Joi.string().required(),
-                    status: Joi.number().integer().min(-1).max(1).required()
                 }
             }
-        }
-    },
+    }
+    ,
     {
         method: "POST",
-        path: UtilApi.api_v1 + '/comment/{id}',
-        handler: async (request, h) => {
-            try {
-                const res = await act({
-                    role: 'comment',
-                    cmd: 'update',
-                    id: request.params.id,
-                    comment: request.payload
-                });
-                return Util.ifErrorBoom(res);
-            } catch (err) {
-                return Util.errorToBoom(err);
-            }
-        },
-        config: {
-            validate: {
-                payload: {
-                    content: Joi.string().required(),
+        path:
+            UtilApi.api_v1 + '/comment/{id}',
+        handler:
+            async (request, h) => {
+                try {
+                    const res = await act({
+                        role: 'comment',
+                        cmd: 'update',
+                        id: request.params.id,
+                        comment: request.payload
+                    });
+                    return Util.ifErrorBoom(res);
+                } catch (err) {
+                    return Util.errorToBoom(err);
+                }
+            },
+        config:
+            {
+                validate: {
+                    payload: {
+                        content: Joi.string().required(),
+                    }
                 }
             }
-        }
-    },
+    }
+    ,
     {
         method: "GET",
-        path: UtilApi.api_v1 + '/comment/{id}',
-        handler: async (request, h) => {
-            try {
-                const res = await act({
-                    role: 'comment',
-                    cmd: 'query',
-                    id: request.params.id
-                });
-                return Util.ifErrorBoom(res);
-            } catch (err) {
-                return Util.errorToBoom(err);
-            }
-        },
-        config: {
-            validate: {
-                params: {
-                    id: Joi.string().required()
+        path:
+            UtilApi.api_v1 + '/comment/{id}',
+        handler:
+            async (request, h) => {
+                try {
+                    const res = await act({
+                        role: 'comment',
+                        cmd: 'query',
+                        id: request.params.id
+                    });
+                    return Util.ifErrorBoom(res);
+                } catch (err) {
+                    return Util.errorToBoom(err);
+                }
+            },
+        config:
+            {
+                validate: {
+                    params: {
+                        id: Joi.string().required()
+                    }
                 }
             }
-        }
-    },
+    }
+    ,
     {
         method: "GET",
-        path: UtilApi.api_v1 + '/comment',
-        handler: async (request, h) => {
-            try {
-                const res = await act({
-                    role: 'comment',
-                    cmd: 'list',
-                    pageSize: request.query.pageSize,
-                    pageNum: request.query.pageNum,
-                    id: request.query.post_id,
-                    key: request.query.key,
-                });
-                return Util.ifErrorBoom(res);
-            } catch (err) {
-                return Util.errorToBoom(err);
-            }
-        },
-        config: {
-            validate: {
-                query: {
-                    pageSize: Joi.number().default(10),
-                    pageNum: Joi.number().default(1),
-                    key: Joi.string(),
-                    post_id: Joi.string()
+        path:
+            UtilApi.api_v1 + '/comment',
+        handler:
+            async (request, h) => {
+                try {
+                    const res = await act({
+                        role: 'comment',
+                        cmd: 'list',
+                        pageSize: request.query.pageSize,
+                        pageNum: request.query.pageNum,
+                        id: request.query.post_id,
+                        key: request.query.key,
+                    });
+                    return Util.ifErrorBoom(res);
+                } catch (err) {
+                    return Util.errorToBoom(err);
+                }
+            },
+        config:
+            {
+                validate: {
+                    query: {
+                        pageSize: Joi.number().default(10),
+                        pageNum:
+                            Joi.number().default(1),
+                        key:
+                            Joi.string(),
+                        post_id:
+                            Joi.string()
+                    }
                 }
             }
-        }
-    },
-];
+    }
+    ,
+]
+;

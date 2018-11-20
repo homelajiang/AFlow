@@ -89,14 +89,8 @@
     </nz-drawer>
 
     <div>
-      <nz-radio-group>
-        <label nz-radio-button nzValue="A">All</label>
-        <label nz-radio-button nzValue="B">Published</label>
-        <label nz-radio-button nzValue="C">draft</label>
-      </nz-radio-group>
-
       <nz-input-group nzSuffixIcon="anticon anticon-search" style="width: 250px;">
-        <input #searchInput type="text" nz-input placeholder="input search text"
+        <input #searchInput type="text" nz-input placeholder="请输入关键字"
                (keyup.enter)="searchMedia(searchInput.value)">
       </nz-input-group>
     </div>

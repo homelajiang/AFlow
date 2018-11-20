@@ -1,4 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {BlogService} from '../../blog/blog.service';
+import {NzMessageService, NzModalService} from 'ng-zorro-antd';
+import {PageModel, Post} from '../../app.component';
 
 @Component({
   selector: 'app-post-list',
@@ -18,29 +21,28 @@ export class PostListComponent implements OnInit {
     padding: 0
   };
 
-  data = [
-    {
-      title: 'Ant Design Title 1'
-    },
-    {
-      title: 'Ant Design Title 2'
-    },
-    {
-      title: 'Ant Design Title 3'
-    },
-    {
-      title: 'Ant Design Title 4'
-    }
-    ,
-    {
-      title: 'Ant Design Title 5'
-    }
-  ];
+  page = 1;
+  pageSize = 10;
+  searchText: string;
+  searchType: number = undefined;
+  posts = [];
+  postCount: number;
 
-  constructor() {
+  constructor(private blogService: BlogService,
+              private toast: NzMessageService, private modalService: NzModalService) {
   }
 
   ngOnInit() {
+    this.getPosts();
+  }
+
+  getPosts() {
+    this.blogService.getPosts(this.page, this.pageSize, this.searchType, this.searchText)
+      .subscribe((postPage: PageModel<Post>) => {
+        this.posts = postPage.list;
+      }, (err) => {
+        this.toast.error(err);
+      });
   }
 
 }
