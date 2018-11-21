@@ -391,7 +391,8 @@ module.exports = [
                     cmd: 'list',
                     pageSize: request.query.pageSize,
                     pageNum: request.query.pageNum,
-                    key: request.query.key
+                    key: request.query.key,
+                    type:request.query.type
                 });
                 return Util.ifErrorBoom(res);
             } catch (err) {
@@ -404,7 +405,7 @@ module.exports = [
                     pageSize: Joi.number().default(10),
                     pageNum: Joi.number().default(1),
                     key: Joi.string(),
-                    type: Joi.number.integer().min(-1).max(1)
+                    type: Joi.number().integer().min(-1).max(1)
                 }
             }
         }

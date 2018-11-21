@@ -57,6 +57,7 @@ export class Tag {
   alias: string;
   image: string;
   description: string;
+  color: string;
 }
 
 export class Categories {

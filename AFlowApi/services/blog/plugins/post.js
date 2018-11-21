@@ -102,14 +102,14 @@ module.exports = function (options) {
             let posts;
 
             if (args.key) {
-                count = await Post.find()
-                    .or([
-                        {title: {$regex: new RegExp(args.key, 'i')}},
-                        {description: {$regex: new RegExp(args.key, 'i')}}
-                    ])
-                    .countDocuments();
-
                 if (isNaN(type)) {//没有type
+                    count = await Post.find()
+                        .or([
+                            {title: {$regex: new RegExp(args.key, 'i')}},
+                            {description: {$regex: new RegExp(args.key, 'i')}}
+                        ])
+                        .countDocuments();
+
                     posts = await Post.find()
                         .or([
                             {title: {$regex: new RegExp(args.key, 'i')}},
@@ -121,6 +121,13 @@ module.exports = function (options) {
                         .limit(pageSize)
                         .sort({create_date: -1});
                 } else if (type === 1) {
+                    count = await Post.find({status: type})
+                        .or([
+                            {title: {$regex: new RegExp(args.key, 'i')}},
+                            {description: {$regex: new RegExp(args.key, 'i')}}
+                        ])
+                        .countDocuments();
+
                     posts = await Post.find({status: type})
                         .or([
                             {title: {$regex: new RegExp(args.key, 'i')}},
@@ -132,6 +139,13 @@ module.exports = function (options) {
                         .limit(pageSize)
                         .sort({publish_date: -1});
                 } else {
+                    count = await Post.find({status: type})
+                        .or([
+                            {title: {$regex: new RegExp(args.key, 'i')}},
+                            {description: {$regex: new RegExp(args.key, 'i')}}
+                        ])
+                        .countDocuments();
+
                     posts = await Post.find({status: type})
                         .or([
                             {title: {$regex: new RegExp(args.key, 'i')}},
@@ -144,8 +158,8 @@ module.exports = function (options) {
                         .sort({create_date: -1});
                 }
             } else {
-                count = await Post.find().countDocuments();
                 if (isNaN(type)) {//没有type
+                    count = await Post.find().countDocuments();
                     posts = await Post.find()
                         .populate('categories')
                         .populate('tags')
@@ -153,6 +167,7 @@ module.exports = function (options) {
                         .limit(pageSize)
                         .sort({create_date: -1});
                 } else if (type === 1) {
+                    count = await Post.find().countDocuments({status: type});
                     posts = await Post.find({status: type})
                         .populate('categories')
                         .populate('tags')
@@ -160,6 +175,7 @@ module.exports = function (options) {
                         .limit(pageSize)
                         .sort({publish_date: -1});
                 } else {
+                    count = await Post.find().countDocuments({status: type});
                     posts = await Post.find({status: type})
                         .populate('categories')
                         .populate('tags')

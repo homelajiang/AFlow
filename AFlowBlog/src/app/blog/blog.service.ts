@@ -110,7 +110,7 @@ export class BlogService {
   }
 
   removePost(id: string): Observable<{}> {
-    return this.http.delete(`api/v1/post${id}`)
+    return this.http.delete(`api/v1/post/${id}`)
       .pipe(
         catchError(Utils.handleError)
       );
@@ -123,7 +123,7 @@ export class BlogService {
       );
   }
 
-  getPosts(page: number, pageSize: number, type?: number, keyword?: string): Observable<PageModel<Post>> {
+  getPosts(page: number, pageSize: number, type: string, keyword?: string): Observable<PageModel<Post>> {
     let p: HttpParams = new HttpParams()
       .set('pageSize', pageSize.toString())
       .set('pageNum', page.toString());
@@ -132,8 +132,8 @@ export class BlogService {
       p = p.set('key', keyword);
     }
 
-    if (type !== undefined) {
-      p = p.set('status', type.toString());
+    if (type === '0' || type === '1' || type === '-1') {
+      p = p.set('type', type);
     }
 
     return this.http.get<PageModel<Post>>('api/v1/post', {params: p})
