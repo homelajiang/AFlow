@@ -14,14 +14,20 @@ export class PostEditComponent implements OnInit {
   tags = ['Unremovable', 'Tag 2', 'Tag 3'];
   inputVisible = false;
   inputValue = '';
+  @ViewChild('inputElement') inputElement: ElementRef;
+
+  radioValue = 'A';
+  radioStyle = {
+    display   : 'block',
+    height    : '30px',
+    lineHeight: '30px'
+  };
 
   constructor() {
   }
 
   ngOnInit() {
   }
-
-  @ViewChild('inputElement') inputElement: ElementRef;
 
   handleClose(removedTag: {}): void {
     this.tags = this.tags.filter(tag => tag !== removedTag);

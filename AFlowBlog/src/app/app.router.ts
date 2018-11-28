@@ -20,7 +20,6 @@ const router: Routes = [
       {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
       {path: 'dashboard', component: DashboardComponent, data: {title: 'Dashboard'}},
       {path: 'posts', component: PostListComponent, data: {title: 'Posts'}},
-      {path: 'post/new', component: PostEditComponent, data: {title: 'Create Post'}},
       {path: 'post/edit', component: PostEditComponent, data: {title: 'Edit Post'}},
       {path: 'medias', component: MediaListComponent, data: {title: 'Medias'}},
       {path: 'comments', component: CommentComponent, data: {title: 'Comments'}},

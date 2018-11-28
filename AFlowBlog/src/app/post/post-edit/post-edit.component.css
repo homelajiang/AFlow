@@ -2,3 +2,13 @@
   background: rgb(255, 255, 255);
   border-style: dashed;
 }
+
+.ant-tag{
+  margin-bottom: 8px;
+}
+
+
+[nz-radio] {
+  display: block;
+}
+

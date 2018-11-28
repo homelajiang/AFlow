@@ -1,92 +1,120 @@
 <div style="padding: 30px;">
 
   <div style="display: flex;justify-content: space-between;margin-bottom: 30px;">
-    <button nz-button nzType="primary"><i class="anticon anticon-file-add"></i>New Post</button>
+    <button nz-button nzType="primary"><i nz-icon type="save" theme="outline"></i>保存</button>
     <div>
-      <button nz-button nzType="primary"><i class="anticon anticon-file-add"></i>New Post
+      <button nz-button nzType="primary"><i nz-icon type="eye" theme="outline"></i>预览
       </button>
-      <button nz-button nzType="primary" style="margin-left: 24px;"><i class="anticon anticon-file-add"></i>New Post
+      <button nz-button nzType="primary" style="margin-left: 24px;"><i nz-icon type="check-circle" theme="outline"></i>发布
       </button>
     </div>
   </div>
 
   <div style="display: flex;align-items: flex-start;">
-    <div style="flex: 1;background-color: aquamarine;">
+    <div style="flex: 1;">
       <app-markdown></app-markdown>
     </div>
 
     <div style="width: 300px;background-color: antiquewhite;margin-left: 30px;">
-      <nz-card [nzBordered]="false" nzTitle="Post Setting" [nzExtra]="extraTemplate">
-        <p>
-          <i class="anticon anticon-info-circle-o"></i>
+      <nz-card [nzBordered]="false" [nzTitle]="postSettingTitle">
+
+        <ng-template #postSettingTitle>
+          <div style="text-align: center;width: 100%;">
+            <i nz-icon type="setting" theme="twotone"></i>
+            &nbsp;&nbsp;设置
+          </div>
+        </ng-template>
+
+        <div>
+          <i nz-icon type="info-circle" theme="outline"></i>
           状态：
-          <nz-dropdown>
-            <a nz-dropdown>
-              <b>已发布</b>
-              <i class="anticon anticon-down"></i>
-            </a>
-            <ul nz-menu nzSelectable>
-              <li nz-menu-item>
-                <a>1st menu item</a>
-              </li>
-              <li nz-menu-item>
-                <a>2nd menu item</a>
-              </li>
-              <li nz-menu-item>
-                <a>3rd menu item</a>
-              </li>
-            </ul>
-          </nz-dropdown>
-        </p>
+          <strong>发布</strong>
+          <a>编辑</a>
+        </div>
+        <nz-dropdown>
+          <button nz-button nz-dropdown><span>草稿</span> <i nz-icon type="down"></i></button>
+          <ul nz-menu>
+            <li nz-menu-item>
+              <a>草稿</a>
+            </li>
+            <li nz-menu-item>
+              <a>已发布</a>
+            </li>
+          </ul>
+        </nz-dropdown>
+        <button nz-button nzType="primary">确定</button>
+        <button nz-button nzType="default">取消</button>
+        <div>
 
-        <p>
-          <i class="anticon anticon-eye-o"></i>
+        </div>
+
+        <div>
+          <i nz-icon type="lock" theme="outline"></i>
           公开度：
-          <nz-dropdown>
-            <a nz-dropdown>
-              <b>公开</b>
-              <i class="anticon anticon-down"></i>
-            </a>
-            <ul nz-menu nzSelectable>
-              <li nz-menu-item>
-                <a>1st menu item</a>
-              </li>
-              <li nz-menu-item>
-                <a>2nd menu item</a>
-              </li>
-              <li nz-menu-item>
-                <a>3rd menu item</a>
-              </li>
-            </ul>
-          </nz-dropdown>
-        </p>
+          <strong>公开</strong>
+          <a>编辑</a>
+        </div>
 
-        <p>
-          <i class="anticon anticon-pushpin-o"></i>
-          置顶：
-          <nz-switch [(ngModel)]="switchValue"></nz-switch>
-        </p>
+        <div>
+          <nz-radio-group [(ngModel)]="radioValue">
+            <label nz-radio [ngStyle]="radioStyle" nzValue="A">公开
+              <div>
+                <label *ngIf="radioValue=='A'" nz-checkbox [(ngModel)]="checked">文章置顶</label>
+              </div>
+            </label>
+            <label nz-radio [ngStyle]="radioStyle" nzValue="B">密码保护</label>
+            <label nz-radio [ngStyle]="radioStyle" nzValue="C">私密</label>
+            <label nz-radio [ngStyle]="radioStyle" nzValue="M">
+              More...
+              <input type="text" nz-input *ngIf="radioValue=='M'" style="width: 100px; margin-left: 10px;">
+            </label>
+          </nz-radio-group>
+        </div>
+
+        <div>
+          <i nz-icon type="message" theme="outline"></i>
+          评论：
+          <strong>允许评论</strong>
+          <a>编辑</a>
+        </div>
         <nz-divider></nz-divider>
-        <p><strong>Categories: </strong></p>
-        <nz-tag *ngFor="let tag of hotTags" nzMode="checkable"
-                [nzChecked]="selectedTags.indexOf(tag) > -1" (nzCheckedChange)="handleChange($event, tag)">
-          {{ tag }}
-        </nz-tag>
+
+        <div><strong>分类 </strong></div>
+
+        <nz-radio-group [(ngModel)]="radioValue">
+          <label nz-radio [ngStyle]="radioStyle" nzValue="A">未分类</label>
+          <label nz-radio [ngStyle]="radioStyle" nzValue="B">Option B</label>
+          <label nz-radio [ngStyle]="radioStyle" nzValue="C">Option C</label>
+          <label nz-radio [ngStyle]="radioStyle" nzValue="M">
+            More...
+            <input type="text" nz-input *ngIf="radioValue=='M'" style="width: 100px; margin-left: 10px;">
+          </label>
+        </nz-radio-group>
+
+        <div>
+          <a><i nz-icon type="plus"></i> 新建分类</a>
+        </div>
+
 
         <nz-divider></nz-divider>
-        <p><strong>Tags: </strong></p>
-        <nz-tag style="margin-top: 10px;"
-                *ngFor="let tag of tags; let i = index;"
-                [nzMode]="i === 0 ? 'default' : 'closeable'"
-                (nzAfterClose)="handleClose(tag)">
-          {{ sliceTagName(tag) }}
-        </nz-tag>
-        <nz-tag style="margin-top: 10px;"
-                *ngIf="!inputVisible"
-                class="editable-tag"
-                (click)="showInput()">
-          <i class="anticon anticon-plus"></i> New Tag
-        </nz-tag>
+
+        <div><strong>标签</strong></div>
+        <div>
+          <nz-tag
+            *ngFor="let tag of tags; let i = index;"
+            [nzMode]="i === 0 ? 'default' : 'closeable'"
+            (nzAfterClose)="handleClose(tag)">
+            {{ sliceTagName(tag) }}
+          </nz-tag>
+          <nz-tag
+            *ngIf="!inputVisible"
+            class="editable-tag"
+            (click)="showInput()">
+            <i nz-icon type="plus"></i> 新建标签
+          </nz-tag>
+        </div>
+
+
         <input
           #inputElement
           nz-input
@@ -97,10 +125,14 @@
           (blur)="handleInputConfirm()"
           (keydown.enter)="handleInputConfirm()">
 
+        <div>
+          <a> 选择已有标签</a>
+        </div>
+
         <nz-divider></nz-divider>
         <div style="display: flex;margin-bottom: 14px;">
-          <strong style="flex-grow: 1;">Cover: </strong>
-          <a class="ng-star-inserted">Select Cover</a>
+          <strong style="flex-grow: 1;">封面</strong>
+          <a class="ng-star-inserted">选择封面</a>
         </div>
         <img style="width: 100%;" src="http://subhd.com/sub/poster/l/p2533370401.jpg"/>
       </nz-card>
