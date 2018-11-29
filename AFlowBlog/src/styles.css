@@ -5,3 +5,7 @@
 .CodeMirror-scroll{
   height: 100%;
 }
+
+.ant-tag {
+  margin-bottom: 8px;
+}

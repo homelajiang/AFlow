@@ -11,7 +11,7 @@ export class PostEditComponent implements OnInit {
   hotTags = tagsFromServer;
   selectedTags = [];
 
-  tags = ['Unremovable', 'Tag 2', 'Tag 3'];
+  tags = ['Tag 1', 'Tag 2', 'Tag 3'];
   inputVisible = false;
   inputValue = '';
   @ViewChild('inputElement') inputElement: ElementRef;
