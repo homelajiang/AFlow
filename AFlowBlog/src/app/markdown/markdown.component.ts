@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import * as CodeMirror from 'codemirror';
 
 import 'codemirror/mode/markdown/markdown';
@@ -40,7 +40,8 @@ import 'codemirror/addon/selection/active-line';
 export class MarkdownComponent implements OnInit, AfterViewInit {
   private editor: CodeMirror.EditorFromTextArea;
 
-  // 编辑模式、预览模式
+  @Input()
+  content: string;
 
   constructor() {
   }
@@ -84,16 +85,15 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
 
     this.editor.focus();
 
-    const temp_post = localStorage.getItem('temp_post');
-    if (temp_post !== null) {
-      this.editor.setValue(temp_post);
+    // const temp_post = localStorage.getItem('temp_post');
+    // if (temp_post !== null) {
+    //   this.editor.setValue(temp_post);
+    // }
+
+    if (this.content) {
+      this.editor.setValue(this.content);
     }
 
-    this.editor.setValue('## 回复可见的是\n' +
-      '>引用\n\n* 元\--啦啦--n\n**哇呕**\n```javascript\nfunction(){\nalert("yuan");\n}\n' +
-      'module.exports = require(\'./lib/marked\');\n' +
-      'import "com.android.utils.*"' + '\n' +
-      '```\n' + '$$E=mc^2$$');
     // this.editor.setValue('1111$$E=mc^2$$');
 
     this.editor.on('change', (e, obj) => {

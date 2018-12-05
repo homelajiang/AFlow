@@ -18,14 +18,14 @@ const router: Routes = [
     path: '', component: MainComponent, canActivate: [AuthGuard],
     children: [
       {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
-      {path: 'dashboard', component: DashboardComponent, data: {title: 'Dashboard'}},
-      {path: 'posts', component: PostListComponent, data: {title: 'Posts'}},
-      {path: 'post/edit', component: PostEditComponent, data: {title: 'Edit Post'}},
-      {path: 'medias', component: MediaListComponent, data: {title: 'Medias'}},
-      {path: 'comments', component: CommentComponent, data: {title: 'Comments'}},
-      {path: 'categories', component: CategoriesComponent, data: {title: 'Categories'}},
-      {path: 'tags', component: TagComponent, data: {title: 'Tags'}},
-      {path: 'setting', component: SettingComponent, data: {title: 'Setting'}}
+      {path: 'dashboard', component: DashboardComponent, data: {title: '工作台'}},
+      {path: 'posts', component: PostListComponent, data: {title: '文章'}},
+      {path: 'post/edit', component: PostEditComponent, data: {title: '编辑'}},
+      {path: 'medias', component: MediaListComponent, data: {title: '多媒体'}},
+      {path: 'comments', component: CommentComponent, data: {title: '评论'}},
+      {path: 'categories', component: CategoriesComponent, data: {title: '分类'}},
+      {path: 'tags', component: TagComponent, data: {title: '标签'}},
+      {path: 'setting', component: SettingComponent, data: {title: '设置'}}
     ]
   },
   {path: '**', component: Code404Component}

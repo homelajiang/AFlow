@@ -17,6 +17,8 @@ const PostSchema = new Schema({
     create_date: {type: Date},
     modify_date: {type: Date},
     publish_date: {type: Date},
+    cover: String,
+    stick: Boolean,
     open: {type: Number, default: 0},//公开性 0 公开  1 密码保护 2 私密
     password: {type: String, default: '000000'},//保护密码
     open_comment: {type: Boolean, default: true},//是否开放评论
