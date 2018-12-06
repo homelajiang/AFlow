@@ -69,20 +69,20 @@ export class Categories {
 }
 
 export class Post {
-  id: string;
-  title: string;
-  description: string;
-  content: string;
-  create_date: string;
-  modify_date: string;
-  publish_date: string;
-  cover: string;
-  stick: boolean;
-  open: number;
-  password: string;
-  open_comment: boolean;
-  need_review: boolean;
-  status: number;
+  id = '';
+  title = '';
+  description = '';
+  content = '';
+  create_date = '';
+  modify_date = '';
+  publish_date = '';
+  cover = '';
+  stick = false;
+  open = 0;
+  password = '';
+  open_comment = false;
+  need_review = false;
+  status = 0;
   categories: Categories;
-  tags: Array<Tag>;
+  tags: Tag[] = [];
 }

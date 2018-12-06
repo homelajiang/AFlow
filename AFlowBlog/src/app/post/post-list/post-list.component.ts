@@ -3,7 +3,7 @@ import {BlogService} from '../../blog/blog.service';
 import {NzMessageService, NzModalService} from 'ng-zorro-antd';
 import {PageModel, Post} from '../../app.component';
 import {el} from '@angular/platform-browser/testing/src/browser_util';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-post-list',
@@ -61,7 +61,7 @@ export class PostListComponent implements OnInit {
   }
 
   editPost(post: Post) {
-    this.router.navigate(['post/edit']);
+    this.router.navigate(['post/edit', post.id]);
   }
 
   viewPost(post: Post) {

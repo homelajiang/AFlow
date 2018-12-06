@@ -1,10 +1,12 @@
 <div style="padding: 30px;">
 
   <div style="display: flex;justify-content: space-between;margin-bottom: 30px;">
-    <button nz-button nzType="primary"><i nz-icon type="save" theme="outline"></i>保存</button>
+    <button nz-button nzType="primary" (click)="savePost()"><i nz-icon type="save" theme="outline"></i>保存</button>
     <div>
-      <button nz-button nzType="primary"><i nz-icon type="eye" theme="outline"></i>预览</button>
-      <button nz-button nzType="primary" style="margin-left: 24px;"><i nz-icon type="check-circle" theme="outline"></i>发布
+      <button nz-button nzType="primary" (click)="prePost()"><i nz-icon type="eye" theme="outline"></i>预览</button>
+      <button nz-button nzType="primary" style="margin-left: 24px;" (click)="savePost(true)"><i nz-icon
+                                                                                                type="check-circle"
+                                                                                                theme="outline"></i>发布
       </button>
     </div>
   </div>
@@ -13,9 +15,9 @@
     <div style="flex: 1;">
       <div style="margin-bottom: 20px;">
         <input nz-input placeholder="请输入标题" style="font-size: 22px;height: 50px;border-radius: 0px;"
-               [(ngModel)]="mdTitle">
+               [(ngModel)]="post.title">
       </div>
-      <app-markdown [content]="mdContent"></app-markdown>
+      <app-markdown [content]="post.content"></app-markdown>
     </div>
 
     <div style="width: 280px;background-color: antiquewhite;margin-left: 30px;">
@@ -31,14 +33,14 @@
         <div style="margin-top: 10px;margin-bottom: 10px;">
           <i nz-icon type="info-circle" theme="outline"></i>
           状态：
-          <strong>已发布</strong>
-          <a style="margin-left: 6px;" *ngIf="post.status===0">设为草稿</a>
+          <strong>{{showStatusText(post.status)}}</strong>
+          <a style="margin-left: 6px;" *ngIf="mdStatus!==0" (click)="setAsDraft()">设为草稿</a>
         </div>
 
         <div style="margin-top: 10px;margin-bottom: 10px;">
           <i nz-icon type="lock" theme="outline"></i>
           公开度：
-          <strong>公开</strong>
+          <strong>{{mdOpenText}}</strong>
           <a style="margin-left: 6px;" *ngIf="!openStatusEditing" (click)="toggleOpenMenu(true)">编辑</a>
           <div style="margin: 5px 18px 16px 18px " *ngIf="openStatusEditing">
             <nz-radio-group [(ngModel)]="openStatus">
@@ -64,7 +66,7 @@
         <div style="margin-top: 10px;margin-bottom: 10px;">
           <i nz-icon type="message" theme="outline"></i>
           评论：
-          <strong>允许评论</strong>
+          <strong>{{mdCommentText}}</strong>
           <a style="margin-left: 6px;" *ngIf="!commentStatusEditing" (click)="toggleCommentMenu(true)">编辑</a>
           <div style="margin: 5px 18px 16px 18px " *ngIf="commentStatusEditing">
             <nz-radio-group [(ngModel)]="commentStatus">
@@ -86,8 +88,9 @@
 
         <div style="padding-bottom: 5px;"><strong>分类 </strong></div>
 
-        <nz-radio-group [(ngModel)]="selectCategoriesId">
-          <label nz-radio [ngStyle]="radioStyle" [nzValue]="item.id"
+        <nz-radio-group [(ngModel)]="post.categories">
+          <label nz-radio [ngStyle]="radioStyle" [nzValue]="noCategories">{{noCategories.name}}</label>
+          <label nz-radio [ngStyle]="radioStyle" [nzValue]="item"
                  *ngFor="let item of categories">{{item.name}}</label>
         </nz-radio-group>
 
@@ -110,7 +113,7 @@
         <div style="padding-bottom: 10px;"><strong>标签</strong></div>
         <div>
           <nz-tag
-            *ngFor="let tag of tags; let i = index;"
+            *ngFor="let tag of selectTags; let i = index;"
             [nzMode]="'closeable'"
             (nzAfterClose)="handleTagClose(tag)">
             {{ sliceTagName(tag.name) }}
@@ -141,8 +144,8 @@
         <div style="border:1px solid #ddd;padding: 8px;margin-top: 5px;" *ngIf="showTagMenu">
           <nz-tag
             (click)="selectTag(tag)"
-            *ngFor="let tag of selectTags; let i = index;">
-            {{ sliceTagName(tag) }}
+            *ngFor="let tag of tags; let i = index;">
+            {{ sliceTagName(tag.name) }}
           </nz-tag>
         </div>
 
@@ -150,7 +153,7 @@
         <div style="display: flex;margin-bottom: 14px;">
           <strong style="flex-grow: 1;">封面</strong>
         </div>
-        <img *ngIf="coverSelected" style="width: 100%;" src="{{coverUrl}}"/>
+        <img *ngIf="coverSelected" style="width: 100%;" src="{{post.cover}}"/>
         <div style="margin-top: 10px;">
           <a class="ng-star-inserted" (click)="toggleCover();">{{coverSelected ? '取消封面图片' : '选择封面图片'}}</a>
         </div>
