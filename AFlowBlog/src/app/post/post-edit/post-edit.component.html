@@ -25,7 +25,7 @@
 
         <ng-template #postSettingTitle>
           <div style="text-align: center;width: 100%;">
-            <i nz-icon type="setting" theme="twotone"></i>
+            <i nz-icon type="setting" selectTagstheme="twotone"></i>
             &nbsp;&nbsp;设置
           </div>
         </ng-template>
@@ -33,14 +33,14 @@
         <div style="margin-top: 10px;margin-bottom: 10px;">
           <i nz-icon type="info-circle" theme="outline"></i>
           状态：
-          <strong>{{showStatusText(post.status)}}</strong>
-          <a style="margin-left: 6px;" *ngIf="mdStatus!==0" (click)="setAsDraft()">设为草稿</a>
+          <strong>{{showStatusText()}}</strong>
+          <a style="margin-left: 6px;" *ngIf="post.status!==0" (click)="setAsDraft()">设为草稿</a>
         </div>
 
         <div style="margin-top: 10px;margin-bottom: 10px;">
           <i nz-icon type="lock" theme="outline"></i>
           公开度：
-          <strong>{{mdOpenText}}</strong>
+          <strong>{{showOpenText()}}</strong>
           <a style="margin-left: 6px;" *ngIf="!openStatusEditing" (click)="toggleOpenMenu(true)">编辑</a>
           <div style="margin: 5px 18px 16px 18px " *ngIf="openStatusEditing">
             <nz-radio-group [(ngModel)]="openStatus">
@@ -66,7 +66,7 @@
         <div style="margin-top: 10px;margin-bottom: 10px;">
           <i nz-icon type="message" theme="outline"></i>
           评论：
-          <strong>{{mdCommentText}}</strong>
+          <strong>{{showCommentStatusText()}}</strong>
           <a style="margin-left: 6px;" *ngIf="!commentStatusEditing" (click)="toggleCommentMenu(true)">编辑</a>
           <div style="margin: 5px 18px 16px 18px " *ngIf="commentStatusEditing">
             <nz-radio-group [(ngModel)]="commentStatus">
@@ -113,7 +113,7 @@
         <div style="padding-bottom: 10px;"><strong>标签</strong></div>
         <div>
           <nz-tag
-            *ngFor="let tag of selectTags; let i = index;"
+            *ngFor="let tag of this.post.tags; let i = index;"
             [nzMode]="'closeable'"
             (nzAfterClose)="handleTagClose(tag)">
             {{ sliceTagName(tag.name) }}

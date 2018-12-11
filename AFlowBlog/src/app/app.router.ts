@@ -11,6 +11,7 @@ import {TagComponent} from './tag/tag.component';
 import {AuthGuard} from './auth/auth.guard';
 import {MainComponent} from './main/main.component';
 import {SettingComponent} from './setting/setting.component';
+import {PostDetailResolverService} from './blog/post-detail-resolver.service';
 
 const router: Routes = [
   {path: 'login', component: LoginComponent},
@@ -20,7 +21,7 @@ const router: Routes = [
       {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
       {path: 'dashboard', component: DashboardComponent, data: {title: '工作台'}},
       {path: 'posts', component: PostListComponent, data: {title: '文章'}},
-      {path: 'post/edit/:id', component: PostEditComponent, data: {title: '编辑'}},
+      {path: 'post/edit/:id', component: PostEditComponent, data: {title: '编辑'}, resolve: {post: PostDetailResolverService}},
       {path: 'post/edit', component: PostEditComponent, data: {title: '新建'}},
       {path: 'medias', component: MediaListComponent, data: {title: '多媒体'}},
       {path: 'comments', component: CommentComponent, data: {title: '评论'}},

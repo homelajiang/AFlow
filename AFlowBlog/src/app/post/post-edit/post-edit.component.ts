@@ -2,7 +2,6 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Categories, PageModel, Post, Tag} from '../../app.component';
 import {BlogService} from '../../blog/blog.service';
 import {NzMessageService, NzModalService} from 'ng-zorro-antd';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -34,13 +33,8 @@ export class PostEditComponent implements OnInit {
   newTagValue = '';
   tagInputVisible = false;
   tags: Tag[] = [];
-  selectTags: Tag[] = [];
   coverSelected: boolean;
-  mdStatus = 0;
   noCategories = new Categories();
-
-  mdOpenText = '公开';
-  mdCommentText = '允许评论';
 
   post: Post;
 
@@ -56,16 +50,23 @@ export class PostEditComponent implements OnInit {
     //   'import "com.android.utils.*"' + '\n' +
     //   '```\n' + '$$E=mc^2$$';
     // this.getPostInfo();
-    this.post.categories = this.noCategories;
 
-    this.getAllCategories();
-    this.getUsedTags();
-    const postId = this.routerInfo.snapshot.queryParams['id'];
+    const postId = this.routerInfo.snapshot.paramMap.get('id');
     if (postId) {
-      this.getPostInfo(postId);
+      this.routerInfo.data
+        .subscribe((data: { post: Post }) => {
+          this.post = data.post;
+        }, (err) => {
+          console.log(err);
+        });
     } else {
       this.post = new Post();
     }
+    if (!this.post.categories) {
+      this.post.categories = this.noCategories;
+    }
+    this.getAllCategories();
+    this.getUsedTags();
   }
 
 
@@ -141,7 +142,7 @@ export class PostEditComponent implements OnInit {
   }
 
   selectTag(tag: Tag) {
-    this.selectTags.push(tag);
+    this.post.tags.push(tag);
   }
 
   toggleCover() {
@@ -158,13 +159,40 @@ export class PostEditComponent implements OnInit {
 
   }
 
-  showStatusText(status: number) {
-    if (status === 0) {
+  showStatusText() {
+    if (this.post.status === 0) {
       return '草稿';
-    } else if (status > 0) {
+    } else if (this.post.status > 0) {
       return '已发布';
     } else {
       return '已删除';
+    }
+  }
+
+  showOpenText() {
+    if (this.post.open === 0) {
+      if (this.post.stick) {
+        return '开放、置顶';
+      }
+      return '开放';
+    } else if (this.post.open === 1) {
+      return '密码保护';
+    } else if (this.post.open === 2) {
+      return '私密';
+    } else {
+      return '未知状态';
+    }
+  }
+
+  showCommentStatusText() {
+    if (this.post.open_comment) {
+      if (this.post.need_review) {
+        return '评论需要审核';
+      } else {
+        return '开放评论';
+      }
+    } else {
+      return '禁止评论';
     }
   }
 
@@ -175,7 +203,6 @@ export class PostEditComponent implements OnInit {
       this.postPw = this.post.password;
       this.commentStatus = this.post.open ? '0' : '1';
       this.needReview = this.post.need_review;
-      this.selectTags = this.post.tags;
     }
   }
 
