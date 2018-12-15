@@ -62,7 +62,7 @@ export class Tag {
 
 export class Categories {
   id: string;
-  name: string;
+  name = '未分类';
   alias: string;
   image: string;
   description: string;
@@ -76,13 +76,13 @@ export class Post {
   create_date = '';
   modify_date = '';
   publish_date = '';
-  cover = '';
+  cover = null;
   stick = false;
   open = 0;
   password = '';
-  open_comment = false;
+  open_comment = true;
   need_review = false;
   status = 0;
-  categories: Categories;
+  categories = null;
   tags: Tag[] = [];
 }

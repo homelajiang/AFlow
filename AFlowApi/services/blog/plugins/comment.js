@@ -48,59 +48,96 @@ module.exports = function (options) {
     });
 
     this.add('role:comment,cmd:list', async (args, respond) => {
-        try {
-            const pageSize = parseInt(args.pageSize);
-            const pageNum = parseInt(args.pageNum);
+            try {
+                const pageSize = parseInt(args.pageSize);
+                const pageNum = parseInt(args.pageNum);
 
-            let countExec;
-            let listExec;
+                const type = parseInt(args.type);
 
-            if (args.key) {
-                if (args.id) {
-                    countExec = Comment.find({ref_id: args.id})
-                        .or([
-                            {content: {$regex: new RegExp(args.key, 'i')}}
-                        ]);
-                    listExec = Comment.find({ref_id: args.id})
-                        .or([
-                            {content: {$regex: new RegExp(args.key, 'i')}}
-                        ]);
+
+                let countExec;
+                let listExec;
+
+                if (args.key) {
+                    if (isNaN(type)) {
+                        if (args.id) {
+                            countExec = Comment.find({ref_id: args.id})
+                                .or([
+                                    {content: {$regex: new RegExp(args.key, 'i')}}
+                                ]);
+                            listExec = Comment.find({ref_id: args.id})
+                                .or([
+                                    {content: {$regex: new RegExp(args.key, 'i')}}
+                                ]);
+                        } else {
+                            countExec = Comment.find({})
+                                .or([
+                                    {content: {$regex: new RegExp(args.key, 'i')}}
+                                ]);
+                            listExec = Comment.find({})
+                                .or([
+                                    {content: {$regex: new RegExp(args.key, 'i')}}
+                                ]);
+                        }
+                    } else {
+                        if (args.id) {
+                            countExec = Comment.find({ref_id: args.id, status: type})
+                                .or([
+                                    {content: {$regex: new RegExp(args.key, 'i')}}
+                                ]);
+                            listExec = Comment.find({ref_id: args.id, status: type})
+                                .or([
+                                    {content: {$regex: new RegExp(args.key, 'i')}}
+                                ]);
+                        } else {
+                            countExec = Comment.find({status: type})
+                                .or([
+                                    {content: {$regex: new RegExp(args.key, 'i')}}
+                                ]);
+                            listExec = Comment.find({status: type})
+                                .or([
+                                    {content: {$regex: new RegExp(args.key, 'i')}}
+                                ]);
+                        }
+                    }
                 } else {
-                    countExec = Comment.find()
-                        .or([
-                            {content: {$regex: new RegExp(args.key, 'i')}}
-                        ]);
-                    listExec = Comment.find()
-                        .or([
-                            {content: {$regex: new RegExp(args.key, 'i')}}
-                        ]);
+                    if (isNaN(type)) {
+                        if (args.id) {
+                            countExec = Comment.find({ref_id: args.id});
+                            listExec = Comment.find({ref_id: args.id});
+                        } else {
+                            countExec = Comment.find({});
+                            listExec = Comment.find({});
+                        }
+                    } else {
+                        if (args.id) {
+                            countExec = Comment.find({ref_id: args.id, status: type});
+                            listExec = Comment.find({ref_id: args.id, status: type});
+                        } else {
+                            countExec = Comment.find({status: type});
+                            listExec = Comment.find({status: type});
+                        }
+                    }
                 }
-            } else {
-                if (args.id) {
-                    countExec = Comment.find({ref_id: args.id});
-                    listExec = Comment.find({ref_id: args.id});
-                } else {
-                    countExec = Comment.find();
-                    listExec = Comment.find();
-                }
+
+                const count = await countExec.countDocuments();
+                const comments = await listExec.populate("creator")
+                    .skip((pageNum - 1) * pageSize)
+                    .limit(pageSize)
+                    .sort({create_date: -1});
+
+                const tempList = [];
+                comments.forEach((element) => {
+                    tempList.push(element.model);
+                });
+
+                respond(Util.generatePageModel(pageSize, pageNum, count, tempList));
+            } catch
+                (e) {
+                respond(Util.generateErr("查询失败"));
             }
-
-            const count = await countExec.countDocuments();
-            const comments = await listExec.populate("creator")
-                .skip((pageNum - 1) * pageSize)
-                .limit(pageSize)
-                .sort({create_date: -1});
-
-            const tempList = [];
-            comments.forEach((element) => {
-                tempList.push(element.model);
-            });
-
-            respond(Util.generatePageModel(pageSize, pageNum, count, tempList));
-        } catch (e) {
-            respond(Util.generateErr("查询失败"));
         }
-    });
+    );
 
     //删除comment
     this.add('role:comment,cmd:remove', async (args, respond) => {

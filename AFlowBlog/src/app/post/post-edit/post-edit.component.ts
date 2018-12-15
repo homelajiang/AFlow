@@ -3,6 +3,7 @@ import {Categories, PageModel, Post, Tag} from '../../app.component';
 import {BlogService} from '../../blog/blog.service';
 import {NzMessageService, NzModalService} from 'ng-zorro-antd';
 import {ActivatedRoute} from '@angular/router';
+import {MarkdownComponent} from '../../markdown/markdown.component';
 
 @Component({
   selector: 'app-post-edit',
@@ -38,9 +39,11 @@ export class PostEditComponent implements OnInit {
 
   post: Post;
 
+  @ViewChild(MarkdownComponent)
+  private markdown: MarkdownComponent;
+
   constructor(private blogService: BlogService, private toast: NzMessageService,
               private routerInfo: ActivatedRoute) {
-    this.noCategories.name = '未分类';
   }
 
   ngOnInit() {
@@ -61,9 +64,6 @@ export class PostEditComponent implements OnInit {
         });
     } else {
       this.post = new Post();
-    }
-    if (!this.post.categories) {
-      this.post.categories = this.noCategories;
     }
     this.getAllCategories();
     this.getUsedTags();
@@ -109,7 +109,16 @@ export class PostEditComponent implements OnInit {
   }
 
   createCategories() {
-
+    const categories = new Categories();
+    categories.name = this.newCategoriesName;
+    this.blogService.createCategories(categories)
+      .subscribe((res: Categories) => {
+        this.toast.success('分类创建成功');
+        this.newCategoriesName = '';
+        this.categories.push(res);
+      }, (err) => {
+        this.toast.error(`分类创建失败:${err}`);
+      });
   }
 
   toggleTagMenu() {
@@ -117,16 +126,25 @@ export class PostEditComponent implements OnInit {
   }
 
   createTag() {
-    // if (this.newTagValue && this.tags.indexOf(this.newTagValue) === -1) {
-    //   this.tags.push(this.newTagValue);
-    //   // todo 网络添加tag
-    // }
-    // this.newTagValue = '';
-    // this.tagInputVisible = false;
+    const tag = new Tag();
+    tag.name = this.newTagValue;
+    this.blogService.createTags(tag)
+      .subscribe((res: Tag) => {
+        this.handleNewTag(res);
+      }, (err) => {
+        this.toast.error(`标签创建失败:${err}`);
+      });
+  }
+
+  handleNewTag(tag: Tag) {
+    this.tags.push(tag);
+    this.post.tags.push(tag);
+    this.newTagValue = '';
+    this.tagInputVisible = false;
   }
 
   handleTagClose(removedTag: Tag): void {
-    this.tags = this.tags.filter(tag => tag !== removedTag);
+    this.post.tags = this.post.tags.filter(tag => tag !== removedTag);
   }
 
   sliceTagName(tag: string): string {
@@ -142,7 +160,13 @@ export class PostEditComponent implements OnInit {
   }
 
   selectTag(tag: Tag) {
-    this.post.tags.push(tag);
+    let found = false;
+    this.post.tags.some((value: Tag) => {
+      return found = tag.id === value.id;
+    });
+    if (!found) {
+      this.post.tags.push(tag);
+    }
   }
 
   toggleCover() {
@@ -156,7 +180,7 @@ export class PostEditComponent implements OnInit {
   }
 
   setAsDraft() { // 设置为草稿
-
+    this.post.status = 0;
   }
 
   showStatusText() {
@@ -225,10 +249,64 @@ export class PostEditComponent implements OnInit {
   }
 
   savePost(publish?: boolean) {
+    const p = this.filterPost();
     if (publish) {
-      this.post.status = 1;
+      p['status'] = 1;
     }
-    console.log(this.post);
+    if (this.post.id) {
+      this.blogService.updatePost(this.post.id, p)
+        .subscribe((res) => {
+          this.post = res;
+          if (publish) {
+            this.toast.success('发布成功');
+          } else {
+            this.toast.success('保存成功');
+          }
+        }, (err) => {
+          this.toast.error(err);
+        });
+    } else {
+      this.blogService.createPost(p)
+        .subscribe((res) => {
+          this.post = res;
+          if (publish) {
+            this.toast.success('发布成功');
+          } else {
+            this.toast.success('保存成功');
+          }
+        }, (err) => {
+          this.toast.error(err);
+        });
+    }
+  }
+
+
+  filterPost() {
+    const data = {};
+    data['title'] = this.post.title;
+    data['description'] = this.post.description;
+    data['content'] = this.markdown.getMdContent();
+
+    if (!this.post.title && !this.post.description && !this.post.content) {
+      this.toast.error('写点东西再保存吧');
+      return;
+    }
+
+    data['cover'] = this.post.cover ? this.post.cover : null;
+    data['stick'] = !!this.post.stick;
+    data['open'] = this.post.open;
+    data['password'] = this.post.password;
+    data['open_comment'] = this.post.open_comment;
+    data['need_review'] = this.post.need_review;
+    data['status'] = this.post.status;
+    data['categories'] = this.post.categories ? this.post.categories.id : null;
+
+    data['tags'] = [];
+
+    this.post.tags.forEach((tag: Tag) => {
+      data['tags'].push(tag.id);
+    });
+    return data;
   }
 
 

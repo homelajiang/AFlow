@@ -77,7 +77,7 @@ export class PostListComponent implements OnInit {
             this.toast.success(`删除成功`);
             this.posts.forEach((p, index) => {
               if (post.id === p.id) {
-                this.posts = this.posts.splice(index, 1);
+                this.posts = this.posts.filter(tp => tp.id !== p.id);
                 return;
               }
             });

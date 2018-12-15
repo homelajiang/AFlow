@@ -270,9 +270,7 @@ module.exports = [
         method: "POST",
         path: UtilApi.api_v1 + '/post',
         handler: async (request, h) => {
-            //todo 添加creator
             try {
-                request.payload.creator = "5bceea05a7ebdd1938a6fa9d";
                 const res = await act({
                     role: 'post',
                     cmd: 'add',
@@ -286,15 +284,24 @@ module.exports = [
         config: {
             validate: {
                 payload: {
-                    title: Joi.string().required(),
-                    content: Joi.string(),
-                    description: Joi.string(),
-                    open: Joi.number(),
-                    password: Joi.string(),
-                    open_comment: Joi.boolean(),
-                    need_review: Joi.boolean(),
-                    tags: Joi.array(),
-                    categories: Joi.string()
+                    title: Joi.string().allow(""),
+                    content: Joi.string().allow(""),
+                    description: Joi.string().allow(""),
+                    open: Joi.number().default(0),
+                    status: Joi.number().default(0),
+                    password: Joi.string().default("").allow(""),
+                    open_comment: Joi.boolean().default(true),
+                    need_review: Joi.boolean().default(false),
+                    stick: Joi.boolean().default(false),
+                    tags: Joi.array().default([]),
+                    cover: Joi.string().default(null).allow(null),
+                    categories: Joi.string().default(null).allow(null)
+                },
+                failAction: async (request, h, err) => {
+                    if (err.isJoi) {
+                        console.log(err.message);
+                    }
+                    throw err;
                 }
             }
         }
@@ -344,16 +351,18 @@ module.exports = [
                     id: Joi.string().required()
                 },
                 payload: {
-                    title: Joi.string(),
-                    content: Joi.string(),
-                    description: Joi.string(),
-                    open: Joi.number(),
-                    status: Joi.number(),
-                    password: Joi.string(),
-                    open_comment: Joi.boolean(),
-                    need_review: Joi.boolean(),
-                    tags: Joi.array(),
-                    categories: Joi.string()
+                    title: Joi.string().allow(""),
+                    content: Joi.string().allow(""),
+                    description: Joi.string().allow(""),
+                    open: Joi.number().default(0),
+                    status: Joi.number().default(0),
+                    password: Joi.string().default("").allow(""),
+                    open_comment: Joi.boolean().default(true),
+                    need_review: Joi.boolean().default(false),
+                    stick: Joi.boolean().default(false),
+                    tags: Joi.array().default([]),
+                    cover: Joi.string().default(null).allow(null),
+                    categories: Joi.string().default(null).allow(null)
                 }
             }
         }
@@ -392,7 +401,7 @@ module.exports = [
                     pageSize: request.query.pageSize,
                     pageNum: request.query.pageNum,
                     key: request.query.key,
-                    type:request.query.type
+                    type: request.query.type
                 });
                 return Util.ifErrorBoom(res);
             } catch (err) {
@@ -569,6 +578,7 @@ module.exports = [
                         pageNum: request.query.pageNum,
                         id: request.query.post_id,
                         key: request.query.key,
+                        type: request.query.type
                     });
                     return Util.ifErrorBoom(res);
                 } catch (err) {
@@ -580,13 +590,12 @@ module.exports = [
                 validate: {
                     query: {
                         pageSize: Joi.number().default(10),
-                        pageNum:
-                            Joi.number().default(1),
-                        key:
-                            Joi.string(),
-                        post_id:
-                            Joi.string()
-                    }
+                        pageNum: Joi.number().default(1),
+                        key: Joi.string(),
+                        post_id: Joi.string(),
+                        type: Joi.number().integer().min(-1).max(1)
+                    },
+                    failAction: Util.validateErr
                 }
             }
     }

@@ -33,6 +33,11 @@ module.exports = {
             return Boom.badRequest();
         return err;
     },
+
+    validateErr: (request, h, err) => {
+        throw  err;
+    },
+
     defaultFormat: (date) => {
         return moment(date).format(default_format);
     },

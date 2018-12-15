@@ -11,14 +11,14 @@ const PUBLISHED = 1;
 const DELETED = -1;
 
 const PostSchema = new Schema({
-    title: {type: String, default: "未命名"},
+    title: {type: String, default: ""},
     description: {type: String, default: ""},
     content: {type: String, default: ""},
     create_date: {type: Date},
     modify_date: {type: Date},
     publish_date: {type: Date},
-    cover: String,
-    stick: Boolean,
+    cover: {type: String, default: null},
+    stick: {type: Boolean, default: false},
     open: {type: Number, default: 0},//公开性 0 公开  1 密码保护 2 私密
     password: {type: String, default: '000000'},//保护密码
     open_comment: {type: Boolean, default: true},//是否开放评论
@@ -40,7 +40,9 @@ PostSchema.virtual('model')
             create_date: Util.defaultFormat(this.create_date),
             modify_date: Util.defaultFormat(this.modify_date),
             publish_date: Util.defaultFormat(this.publish_date),
+            stick: this.stick,
             open: this.open,
+            cover: this.cover,
             password: this.password,
             open_comment: this.open_comment,
             need_review: this.need_review,
@@ -67,7 +69,9 @@ PostSchema.virtual('list_model')
             create_date: Util.defaultFormat(this.create_date),
             modify_date: Util.defaultFormat(this.modify_date),
             publish_date: Util.defaultFormat(this.publish_date),
+            stick: this.stick,
             open: this.open,
+            cover: this.cover,
             password: this.password,
             open_comment: this.open_comment,
             need_review: this.need_review,
@@ -87,15 +91,18 @@ PostSchema.virtual('list_model')
 PostSchema.static({
     getInsertModel: function (model) {
         let temp = {};
-        model.title ? temp.title = model.title : '';
-        model.description ? temp.description = model.description : '';
-        model.content ? temp.content = model.content : '';
-        model.open ? temp.open = model.open : '';
-        model.password ? temp.password = model.password : '';
-        model.open_comment ? temp.open_comment = model.open_comment : '';
-        model.need_review ? temp.need_review = model.need_review : '';
-        model.tags ? temp.tags = model.tags : '';
-        model.categories ? temp.categories = model.categories : '';
+        temp.title = model.title;
+        temp.description = model.description;
+        temp.content = model.content;
+        temp.open = model.open;
+        temp.password = model.password;
+        temp.open_comment = model.open_comment;
+        temp.need_review = model.need_review;
+        temp.stick = model.stick;
+        temp.cover = model.cover;
+        temp.tags = model.tags;
+        model.categories ? temp.categories = model.categories : temp.categories = null;
+
         let date = new Date();
         temp.create_date = date;
         temp.modify_date = date;
@@ -119,16 +126,19 @@ PostSchema.static({
             temp.publish_date = current_date;
         }
 
-        model.title ? temp.title = model.title : '';
-        model.description ? temp.description = model.description : '';
-        model.content ? temp.content = model.content : '';
-        model.open ? temp.open = model.open : '';
-        model.password ? temp.password = model.password : '';
-        model.open_comment ? temp.open_comment = model.open_comment : '';
-        model.need_review ? temp.need_review = model.need_review : '';
-        model.tags ? temp.tags = model.tags : '';
-        model.categories ? temp.categories = model.categories : '';
-        model.status ? temp.status = model.status : '';
+        temp.title = model.title;
+        temp.description = model.description;
+        temp.content = model.content;
+        temp.open = model.open;
+        temp.cover = model.cover;
+        temp.password = model.password;
+        temp.open_comment = model.open_comment;
+        temp.need_review = model.need_review;
+        temp.tags = model.tags;
+        temp.stick = model.stick;
+        model.categories ? temp.categories = model.categories : temp.categories = null;
+        temp.categories = model.categories;
+        temp.status = model.status;
         return temp;
     },
 

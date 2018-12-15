@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import * as CodeMirror from 'codemirror';
 
 import 'codemirror/mode/markdown/markdown';
@@ -103,6 +103,10 @@ export class MarkdownComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.updateAsync();
     }, 0);
+  }
+
+  getMdContent() {
+    return this.editor.getValue();
   }
 
   private updateAsync() {

@@ -95,6 +95,38 @@ export class BlogService {
       );
   }
 
+  removeComment(id: String): Observable<{}> {
+    return this.http.delete(`api/v1/comment/${id}`)
+      .pipe(
+        catchError(Utils.handleError)
+      );
+  }
+
+  updateComment(id: string, comment: Comment): Observable<Comment> {
+    return this.http.post<Comment>(`api/v1/comment/${id}`, comment, this.commentHttpOptions)
+      .pipe(
+        catchError(Utils.handleError)
+      );
+  }
+
+  getComments(page: number, pageSize: number, type: string, keyword?: string): Observable<PageModel<Comment>> {
+    let p: HttpParams = new HttpParams()
+      .set('pageSize', pageSize.toString())
+      .set('pageNum', page.toString());
+
+    if (keyword && keyword.trim()) {
+      p = p.set('key', keyword.trim());
+    }
+    if (type === '0' || type === '1' || type === '-1') {
+      p = p.set('type', type);
+    }
+
+    return this.http.get<PageModel<Comment>>('api/v1/comment', {params: p})
+      .pipe(
+        catchError(Utils.handleError)
+      );
+  }
+
   getTagInfo(id: string): Observable<Tag> {
     return this.http.get<Tag>(`api/v1/tag/${id}`)
       .pipe(
@@ -102,7 +134,7 @@ export class BlogService {
       );
   }
 
-  createPost(post: Post): Observable<Post> {
+  createPost(post): Observable<Post> {
     return this.http.post<Post>('api/v1/post', post, this.commentHttpOptions)
       .pipe(
         catchError(Utils.handleError)
@@ -116,7 +148,7 @@ export class BlogService {
       );
   }
 
-  updatePost(id: string, post: Post): Observable<Post> {
+  updatePost(id: string, post): Observable<Post> {
     return this.http.post<Post>(`api/v1/post/${id}`, post, this.commentHttpOptions)
       .pipe(
         catchError(Utils.handleError)

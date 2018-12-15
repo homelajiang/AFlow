@@ -89,7 +89,7 @@
         <div style="padding-bottom: 5px;"><strong>分类 </strong></div>
 
         <nz-radio-group [(ngModel)]="post.categories">
-          <label nz-radio [ngStyle]="radioStyle" [nzValue]="noCategories">{{noCategories.name}}</label>
+          <label nz-radio [ngStyle]="radioStyle" [nzValue]="null">未分类</label>
           <label nz-radio [ngStyle]="radioStyle" [nzValue]="item"
                  *ngFor="let item of categories">{{item.name}}</label>
         </nz-radio-group>
