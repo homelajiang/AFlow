@@ -477,38 +477,6 @@ module.exports = [
             }
     }
     ,
-    {//审核
-        method: "POST",
-        path:
-            UtilApi.api_v1 + '/comment/{id}/{status}',
-        handler:
-            async (request, h) => {
-                try {
-                    const res = await act({
-                        role: 'comment',
-                        cmd: 'update',
-                        id: request.params.id,
-                        comment: {
-                            status: request.params.status
-                        }
-                    });
-                    return Util.ifErrorBoom(res);
-                } catch (err) {
-                    return Util.errorToBoom(err);
-                }
-            },
-        config:
-            {
-                validate: {
-                    params: {
-                        id: Joi.string().required(),
-                        status:
-                            Joi.number().integer().min(-1).max(1).required()
-                    }
-                }
-            }
-    }
-    ,
     {
         method: "POST",
         path:
@@ -527,14 +495,18 @@ module.exports = [
                     return Util.errorToBoom(err);
                 }
             },
-        config:
-            {
-                validate: {
-                    payload: {
-                        content: Joi.string().required(),
-                    }
+        config: {
+            validate: {
+                params: {
+                    id: Joi.string().required()
+                },
+                payload: {
+                    delete_reason: Joi.string(),
+                    status:
+                        Joi.number().integer().min(-1).max(1).required()
                 }
             }
+        }
     }
     ,
     {

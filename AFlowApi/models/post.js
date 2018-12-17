@@ -88,6 +88,17 @@ PostSchema.virtual('list_model')
         return temp;
     });
 
+PostSchema.virtual('simple_model')
+    .get(function () {
+        return {
+            id: this.id,
+            title: this.title,
+            description: this.description,
+            cover: this.cover,
+            status: this.status
+        };
+    });
+
 PostSchema.static({
     getInsertModel: function (model) {
         let temp = {};

@@ -86,3 +86,23 @@ export class Post {
   categories = null;
   tags: Tag[] = [];
 }
+
+export class Comment {
+  id: string;
+  status: number;
+  content: string;
+  creator: Creator;
+  create_date: string;
+  modify_date: string;
+  post: Post;
+  delete_date: string;
+  delete_reason: string;
+
+}
+
+class Creator {
+  name: string;
+  email: string;
+  host: string;
+  img: string;
+}

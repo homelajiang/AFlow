@@ -18,7 +18,7 @@ module.exports = function (options) {
                 return respond(Util.generateErr("暂不开放评论", 403));
 
             const comment = Comment.getInsertModel(args.comment);
-            comment.ref_id = args.id;
+            comment.post = args.id;
 
             if (temp.need_review)
                 comment.status = 1;//评论待审核
@@ -36,7 +36,7 @@ module.exports = function (options) {
     this.add('role:comment,cmd:query', async (args, respond) => {
         try {
             const comment = await Comment.findById(args.id)
-                .populate("creator");
+                .populate("post");
             if (comment) {
                 respond(comment.model);
             } else {
@@ -61,11 +61,11 @@ module.exports = function (options) {
                 if (args.key) {
                     if (isNaN(type)) {
                         if (args.id) {
-                            countExec = Comment.find({ref_id: args.id})
+                            countExec = Comment.find({post: args.id})
                                 .or([
                                     {content: {$regex: new RegExp(args.key, 'i')}}
                                 ]);
-                            listExec = Comment.find({ref_id: args.id})
+                            listExec = Comment.find({post: args.id})
                                 .or([
                                     {content: {$regex: new RegExp(args.key, 'i')}}
                                 ]);
@@ -81,11 +81,11 @@ module.exports = function (options) {
                         }
                     } else {
                         if (args.id) {
-                            countExec = Comment.find({ref_id: args.id, status: type})
+                            countExec = Comment.find({post: args.id, status: type})
                                 .or([
                                     {content: {$regex: new RegExp(args.key, 'i')}}
                                 ]);
-                            listExec = Comment.find({ref_id: args.id, status: type})
+                            listExec = Comment.find({post: args.id, status: type})
                                 .or([
                                     {content: {$regex: new RegExp(args.key, 'i')}}
                                 ]);
@@ -103,16 +103,16 @@ module.exports = function (options) {
                 } else {
                     if (isNaN(type)) {
                         if (args.id) {
-                            countExec = Comment.find({ref_id: args.id});
-                            listExec = Comment.find({ref_id: args.id});
+                            countExec = Comment.find({post: args.id});
+                            listExec = Comment.find({post: args.id});
                         } else {
                             countExec = Comment.find({});
                             listExec = Comment.find({});
                         }
                     } else {
                         if (args.id) {
-                            countExec = Comment.find({ref_id: args.id, status: type});
-                            listExec = Comment.find({ref_id: args.id, status: type});
+                            countExec = Comment.find({post: args.id, status: type});
+                            listExec = Comment.find({post: args.id, status: type});
                         } else {
                             countExec = Comment.find({status: type});
                             listExec = Comment.find({status: type});
@@ -121,7 +121,7 @@ module.exports = function (options) {
                 }
 
                 const count = await countExec.countDocuments();
-                const comments = await listExec.populate("creator")
+                const comments = await listExec.populate("post")
                     .skip((pageNum - 1) * pageSize)
                     .limit(pageSize)
                     .sort({create_date: -1});
@@ -158,7 +158,7 @@ module.exports = function (options) {
         try {
             await Comment.updateOne({_id: args.id}, Comment.getUpdateModel(args.comment));
             const comment = await Comment.findOne({_id: args.id})
-                .populate("creator");
+                .populate("post");
             respond(comment.model);
         } catch (e) {
             respond(Util.generateErr("修改失败"));

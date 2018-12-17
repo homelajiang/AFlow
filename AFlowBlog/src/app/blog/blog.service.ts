@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Categories, Media, PageModel, Post, Tag} from '../app.component';
+import {Categories, Comment, PageModel, Post, Tag} from '../app.component';
 import {Observable} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Utils} from '../utils';
@@ -102,7 +102,7 @@ export class BlogService {
       );
   }
 
-  updateComment(id: string, comment: Comment): Observable<Comment> {
+  updateComment(id: string, comment: any): Observable<Comment> {
     return this.http.post<Comment>(`api/v1/comment/${id}`, comment, this.commentHttpOptions)
       .pipe(
         catchError(Utils.handleError)
@@ -118,7 +118,7 @@ export class BlogService {
       p = p.set('key', keyword.trim());
     }
     if (type === '0' || type === '1' || type === '-1') {
-      p = p.set('type', type);
+      p = p.set('type', type.toString());
     }
 
     return this.http.get<PageModel<Comment>>('api/v1/comment', {params: p})
