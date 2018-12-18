@@ -17,8 +17,14 @@
           <span style="font-size: 30px;line-height: 38px;color:rgba(0,0,0,.85)">33</span>
         </div>
 
-        <div style="height:46px;background-color: #28d573 ;">
-
+        <div style="height:46px;">
+          <div *ngIf="statistics_posts.length>0">
+            <v-chart [forceFit]="true" [height]="46" [data]="statistics_posts" [scale]="lineScale" padding="5">
+              <v-tooltip></v-tooltip>
+              <v-line position="year*value"></v-line>
+              <v-point position="year*value" shape="circle"></v-point>
+            </v-chart>
+          </div>
         </div>
         <nz-divider style="margin:12px 0 8px 0;"></nz-divider>
         <div>
@@ -43,8 +49,14 @@
           <span style="font-size: 30px;line-height: 38px;color:rgba(0,0,0,.85)">26,560</span>
         </div>
 
-        <div style="height:46px;background-color: #28d573 ;">
-
+        <div style="height:46px;">
+          <div *ngIf="statistics_views.length>0">
+            <v-chart [forceFit]='true' [height]="46" [data]="statistics_views" [scale]="scale" [padding]="0"
+                     renderer="svg">
+              <v-tooltip></v-tooltip>
+              <v-smooth-area position="year*value"></v-smooth-area>
+            </v-chart>
+          </div>
         </div>
         <nz-divider style="margin:12px 0 8px 0;"></nz-divider>
         <div>
@@ -69,8 +81,13 @@
           <span style="font-size: 30px;line-height: 38px;color:rgba(0,0,0,.85)">6,560</span>
         </div>
 
-        <div style="height:46px;background-color: #28d573 ;">
-
+        <div style="height:46px;">
+          <div *ngIf="statistics_comments.length>0">
+            <v-chart forceFit="true" [padding]="0" [height]="46" [data]="statistics_comments" renderer="svg">
+              <v-tooltip></v-tooltip>
+              <v-bar position="year*sales"></v-bar>
+            </v-chart>
+          </div>
         </div>
         <nz-divider style="margin:12px 0 8px 0;"></nz-divider>
         <div>
@@ -97,10 +114,8 @@
 
         <div style="height:46px;">
           <div nz-row>
-
             <div nz-col nzSpan="12">
             </div>
-
             <div nz-col nzSpan="12" style="text-align: end;">
               <b>7Gb</b>
               of
@@ -202,9 +217,9 @@
           <ng-template #popularPostsTemplate>
             <!--[(ngModel)]="searchType" (ngModelChange)="changeType($event)"-->
             <nz-radio-group>
+              <label nz-radio-button nzValue="0">所有</label>
               <label nz-radio-button nzValue="0">月</label>
               <label nz-radio-button nzValue="1">周</label>
-              <label nz-radio-button nzValue="-1">日</label>
             </nz-radio-group>
           </ng-template>
         </div>

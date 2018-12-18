@@ -26,6 +26,7 @@ import {Code404Component} from './code404/code404.component';
 import { MainComponent } from './main/main.component';
 import { SettingComponent } from './setting/setting.component';
 import {ClipboardModule} from 'ngx-clipboard';
+import {ViserModule} from 'viser-ng';
 
 registerLocaleData(zh);
 
@@ -57,7 +58,8 @@ registerLocaleData(zh);
     HttpClientModule,
     NgZorroAntdModule,
     appRouting,
-    ClipboardModule
+    ClipboardModule,
+    ViserModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]

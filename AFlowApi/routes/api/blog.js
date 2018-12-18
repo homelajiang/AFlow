@@ -570,8 +570,31 @@ module.exports = [
                     failAction: Util.validateErr
                 }
             }
-    }
+    },
     //获取博客数量统计
+    {
+        method: "GET",
+        path:
+            UtilApi.api_v1 + '/statistics',
+        handler:
+            async (request, h) => {
+                try {
+                    const res = await act({
+                        role: 'blog',
+                        cmd: 'statistics'
+                    });
+                    return Util.ifErrorBoom(res);
+                } catch (err) {
+                    return Util.errorToBoom(err);
+                }
+            },
+        config:
+            {
+                validate: {
+                    failAction: Util.validateErr
+                }
+            }
+    }
     //获取待处理事项（主要是审批回复）
     //获取热门文章排行
 ];

@@ -194,6 +194,11 @@ module.exports = function (options) {
         }
     });
 
+
+    // 获取热门post列表
+    this.add('role:post,cmd:popular', async (args, respond) => {
+    });
+
     //删除post
     this.add('role:post,cmd:remove', async (args, respond) => {
         // Post.remove({_id: {$in: JSON.parse(msg.ids)}}, respond);
