@@ -1,6 +1,6 @@
 <div style="padding: 30px;">
 
-  <nz-card [nzBordered]="false" [nzExtra]="extraTemplate">
+  <nz-card [nzBordered]="false" [nzTitle]="cardTitle" [nzExtra]="extraTemplate">
 
     <nz-list *ngIf="searchType==='-1'"
              [nzDataSource]="comments"
@@ -20,7 +20,7 @@
             </ng-template>
             <ng-template #nzContent>
               <div>
-                <a (click)="showPost(item.post.id)">《{{item.post.title}}》</a>
+                <a (click)="filterPost(item.post)">《{{item.post.title}}》</a>
               </div>
             </ng-template>
           </nz-list-item-meta>
@@ -51,7 +51,7 @@
             </ng-template>
             <ng-template #nzContent>
               <div>
-                <a (click)="showPost(item.post.id)">《{{item.post.title}}》</a>
+                <a (click)="filterPost(item.post.id)">《{{item.post.title}}》</a>
               </div>
             </ng-template>
           </nz-list-item-meta>
@@ -81,7 +81,7 @@
             </ng-template>
             <ng-template #nzContent>
               <div>
-                <a (click)="showPost(item.post.id)">《{{item.post.title}}》</a>
+                <a (click)="filterPost(item.post)">《{{item.post.title}}》</a>
               </div>
             </ng-template>
           </nz-list-item-meta>
@@ -93,7 +93,21 @@
       </ng-template>
     </nz-list>
 
+    <nz-skeleton [nzActive]="true"></nz-skeleton>
+
   </nz-card>
+
+  <ng-template #cardTitle>
+    <div *ngIf="filter_post"
+         style="border: 1px solid #91d5ff;background-color: #e6f7ff;padding: 8px 15px;border-radius: 4px;font-size: 12px;">
+      <span>
+        《{{filter_post.title}}》
+      </span>
+      <a style="margin-left: 8px;" (click)="closeFilterPost()">
+        <i nz-icon type="close-circle" theme="twotone"></i>
+      </a>
+    </div>
+  </ng-template>
 
   <ng-template #extraTemplate>
     <nz-radio-group [(ngModel)]="searchType" (ngModelChange)="changeType($event)">
@@ -115,7 +129,8 @@
       <label nz-radio [ngStyle]="style" nzValue="血腥暴力">血腥暴力</label>
       <label nz-radio [ngStyle]="style" nzValue="色情内容">色情内容</label>
       <label nz-radio [ngStyle]="style" nzValue="其他"> 其他...
-        <input type="text" nz-input *ngIf="delete_reason=='其他'" style="width: 200px; margin-left: 10px;" [(ngModel)]="other_reason">
+        <input type="text" nz-input *ngIf="delete_reason=='其他'" style="width: 200px; margin-left: 10px;"
+               [(ngModel)]="other_reason">
       </label>
     </nz-radio-group>
   </nz-modal>

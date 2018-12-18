@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BlogService} from '../blog/blog.service';
 import {NzMessageService} from 'ng-zorro-antd';
-import {Comment, PageModel} from '../app.component';
+import {Comment, PageModel, Post} from '../app.component';
 
 
 @Component({
@@ -28,6 +28,7 @@ export class CommentComponent implements OnInit {
   };
   other_reason = '';
   delete_id: string;
+  filter_post: Post;
 
   constructor(private blogService: BlogService, private toast: NzMessageService) {
   }
@@ -53,8 +54,14 @@ export class CommentComponent implements OnInit {
     this.getComments();
   }
 
-  showPost(post_id: string) {
-    this.toast.success('预览功能开发中');
+  filterPost(post: Post) {
+    this.filter_post = post;
+    this.getComments();
+  }
+
+  closeFilterPost() {
+    this.filter_post = null;
+    this.getComments();
   }
 
   deleteComment(id: string) {
@@ -112,7 +119,7 @@ export class CommentComponent implements OnInit {
   }
 
   getComments() {
-    this.blogService.getComments(this.page, this.pageSize, this.searchType, this.searchText)
+    this.blogService.getComments(this.page, this.pageSize, this.searchType, this.searchText, this.filter_post)
       .subscribe((commentPage: PageModel<Comment>) => {
         this.comments = commentPage.list;
         this.commentCount = commentPage.count;

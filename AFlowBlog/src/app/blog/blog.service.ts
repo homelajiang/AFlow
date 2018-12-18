@@ -109,13 +109,16 @@ export class BlogService {
       );
   }
 
-  getComments(page: number, pageSize: number, type: string, keyword?: string): Observable<PageModel<Comment>> {
+  getComments(page: number, pageSize: number, type: string, keyword: string, post: Post): Observable<PageModel<Comment>> {
     let p: HttpParams = new HttpParams()
       .set('pageSize', pageSize.toString())
       .set('pageNum', page.toString());
 
     if (keyword && keyword.trim()) {
       p = p.set('key', keyword.trim());
+    }
+    if (post && post.id) {
+      p = p.set('post_id', post.id);
     }
     if (type === '0' || type === '1' || type === '-1') {
       p = p.set('type', type.toString());
