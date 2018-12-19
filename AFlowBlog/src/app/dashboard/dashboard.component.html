@@ -133,40 +133,32 @@
     </div>
 
     <div nz-col [nzSpan]="16" style="margin-top: 24px;">
-      <nz-card nzTitle="Activity">
-        <nz-list [nzDataSource]="data"
+      <nz-card nzTitle="待办事项">
+        <nz-list [nzDataSource]="todoList"
                  [nzRenderItem]="item"
                  [nzItemLayout]="'horizontal'"
                  [nzPagination]="pagination">
           <ng-template #item let-item>
             <nz-list-item>
               <nz-list-item-meta
-                nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                nzAvatar="{{item.creator.img}}"
                 [nzDescription]="nzDescription">
                 <ng-template #nzDescription>
                   <nz-card>
                     <div style="display: flex;">
                       <div style="flex-grow: 1;">
-                        <strong>Ant</strong>
-                        评论了 《
-                        <a href="https://ng.ant.design">{{item.title}}</a>
-                        》
-                        <span style="color: rgba(0,0,0,.45);font-size: 12px;">3小时前</span>
+                        <strong>{{item.creator.name}}</strong>
+                        评论了 <a href="https://ng.ant.design">《{{item.post.title}}》</a>
+                        <span style="color: rgba(0,0,0,.45);font-size: 12px;">{{item.create_date}}</span>
                         <div style="margin-top: 6px;">
-                          <span>
-                            欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！
-                          欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！ 欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！
-                          欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！
-                          欢迎使用WordPress。这是您的第一篇文章。编辑或删除它，然后开始写作吧！
-                          </span>
+                          <span>{{item.content}}</span>
                         </div>
                       </div>
                       <div style="flex-shrink:0;margin-left: 30px;">
-                        <a>批准</a>
+                        <a (click)="acceptComment(item.id)">批准</a>
                         <nz-divider nzType="vertical"></nz-divider>
-                        <a>移除</a>
-                        <nz-divider nzType="vertical"></nz-divider>
-                        <a>回复</a></div>
+                        <a (click)="rejectComment(item.id)">删除</a>
+                      </div>
                     </div>
                   </nz-card>
                 </ng-template>
@@ -175,11 +167,26 @@
           </ng-template>
 
           <ng-template #pagination>
-            <nz-pagination [nzPageIndex]="1" [nzTotal]="50"></nz-pagination>
+            <nz-pagination [nzPageIndex]="todoPage" [nzTotal]="todoCount" [nzPageSize]=10 *ngIf="todoCount===0"
+                           (nzPageIndexChange)="getTodoList($event)"></nz-pagination>
           </ng-template>
 
         </nz-list>
       </nz-card>
+
+      <nz-modal [(nzVisible)]="showDelCommentDialog" nzTitle="请选择删除原因" (nzOnCancel)="onCancelDelCommentDialog()"
+                (nzOnOk)="onEnsureDelCommentDialog()">
+        <nz-radio-group [(ngModel)]="reject_reason">
+          <label nz-radio [ngStyle]="style" nzValue="广告推广">广告推广</label>
+          <label nz-radio [ngStyle]="style" nzValue="血腥暴力">血腥暴力</label>
+          <label nz-radio [ngStyle]="style" nzValue="色情内容">色情内容</label>
+          <label nz-radio [ngStyle]="style" nzValue="其他"> 其他...
+            <input type="text" nz-input *ngIf="reject_reason=='其他'" style="width: 200px; margin-left: 10px;"
+                   [(ngModel)]="reject_other_reason">
+          </label>
+        </nz-radio-group>
+      </nz-modal>
+
     </div>
 
     <div nz-col [nzSpan]="8">

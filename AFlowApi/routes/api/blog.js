@@ -580,8 +580,8 @@ module.exports = [
             async (request, h) => {
                 try {
                     const res = await act({
-                        role: 'blog',
-                        cmd: 'statistics'
+                        role: 'statistics',
+                        cmd: 'blog'
                     });
                     return Util.ifErrorBoom(res);
                 } catch (err) {
@@ -594,7 +594,37 @@ module.exports = [
                     failAction: Util.validateErr
                 }
             }
-    }
+    },
     //获取待处理事项（主要是审批回复）
+    {
+        method: "GET",
+        path:
+            UtilApi.api_v1 + '/todos',
+        handler:
+            async (request, h) => {
+                try {
+                    const res = await act({
+                        role: 'comment',
+                        cmd: 'list',
+                        pageSize: request.query.pageSize,
+                        pageNum: request.query.pageNum,
+                        type: 1
+                    });
+                    return Util.ifErrorBoom(res);
+                } catch (err) {
+                    return Util.errorToBoom(err);
+                }
+            },
+        config:
+            {
+                validate: {
+                    query: {
+                        pageSize: Joi.number().default(10),
+                        pageNum: Joi.number().default(1)
+                    },
+                    failAction: Util.validateErr
+                }
+            }
+    }
     //获取热门文章排行
 ];

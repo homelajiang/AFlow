@@ -93,7 +93,6 @@ export class Comment {
   content: string;
   creator: Creator;
   create_date: string;
-  modify_date: string;
   post: Post;
   delete_date: string;
   delete_reason: string;

@@ -184,4 +184,9 @@ export class BlogService {
       );
   }
 
+  getTodos(page: number): Observable<PageModel<any>> {
+    return this.http.get<PageModel<any>>(`api/v1/todos`)
+      .pipe(catchError(Utils.handleError));
+  }
+
 }

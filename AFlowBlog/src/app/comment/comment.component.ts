@@ -103,6 +103,8 @@ export class CommentComponent implements OnInit {
 
   cancel(): void {
     this.isVisible = false;
+    this.delete_reason = '';
+    this.other_reason = '';
   }
 
   acceptComment(id: string) {
@@ -114,7 +116,7 @@ export class CommentComponent implements OnInit {
         this.toast.success('审核通过');
         this.comments = this.comments.filter(comment => comment.id !== res.id);
       }, err => {
-        this.toast.success(`审核失败，请重试：\n${err}`);
+        this.toast.error(`审核失败，请重试：\n${err}`);
       });
   }
 

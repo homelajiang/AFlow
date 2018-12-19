@@ -1,7 +1,8 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
-import {Profile} from '../app.component';
+import {PageModel, Profile} from '../app.component';
 import {AuthService} from '../auth/auth.service';
+import {BlogService} from '../blog/blog.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +10,7 @@ import {AuthService} from '../auth/auth.service';
   styleUrls: ['./dashboard.component.css']
 })
 
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit {
   private profile: Profile;
 
   cardNoPadding = {
@@ -52,6 +53,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     max: 1,
   }];
 
+  style = {
+    display: 'block',
+    height: '30px',
+    lineHeight: '30px'
+  };
+
+  todoPage = 1;
+  todoCount: number;
+  todoList = [];
+  showDelCommentDialog = false;
+  rejectCommentId: string;
+  reject_reason: string;
+  reject_other_reason: string;
+
 
   handleChange({file, fileList}): void {
     const status = file.status;
@@ -65,7 +80,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  constructor(private toast: NzMessageService, private authService: AuthService) {
+  constructor(private toast: NzMessageService, private authService: AuthService, private blogService: BlogService) {
   }
 
   ngOnInit() {
@@ -107,10 +122,77 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       ];
     }, 0);
 
+    this.getTodoList(this.todoPage);
+
   }
 
-  ngAfterViewInit(): void {
 
+  acceptComment(id: string) {
+    const temp = {
+      status: 0
+    };
+    this.blogService.updateComment(id, temp)
+      .subscribe(res => {
+        this.toast.success('审核通过');
+        this.todoList = this.todoList.filter(todo => todo.id !== res.id);
+      }, err => {
+        this.toast.error(`审核失败，请重试：\n${err}`);
+      });
+  }
+
+  rejectComment(id: string) {
+    this.showDelCommentDialog = true;
+    this.rejectCommentId = id;
+  }
+
+  onCancelDelCommentDialog() {
+    this.showDelCommentDialog = false;
+    this.reject_reason = '';
+    this.reject_other_reason = '';
+  }
+
+  onEnsureDelCommentDialog() {
+    if (!this.reject_reason) {
+      this.toast.error('请选择拒绝原因');
+      return;
+    }
+    if ('其他' === this.reject_reason && !this.reject_other_reason) {
+      this.toast.error('请填写其他的拒绝原因');
+      return;
+    }
+    this.showDelCommentDialog = false;
+    let reason = this.reject_reason;
+    if (reason === '其他') {
+      reason = this.reject_other_reason;
+    }
+
+    const temp = {
+      status: -1,
+      delete_reason: reason
+    };
+
+    this.blogService.updateComment(this.rejectCommentId, temp)
+      .subscribe(res => {
+        this.reject_reason = '';
+        this.reject_other_reason = '';
+        this.toast.success('已处理');
+        this.todoList = this.todoList.filter(todo => todo.id !== res.id);
+      }, err => {
+        this.toast.error(`拒绝失败：\n${err}`);
+      });
+
+  }
+
+  getTodoList(page: number) {
+    this.todoPage = page;
+    this.blogService.getTodos(this.todoPage)
+      .subscribe((res: PageModel<any>) => {
+        this.todoList = res.list;
+        this.todoPage = res.pageNum;
+        this.todoCount = res.count;
+      }, (err) => {
+        this.toast.error(`获取待办事项失败：\n${err}`);
+      });
   }
 
 

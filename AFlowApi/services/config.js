@@ -23,5 +23,10 @@ module.exports = {
         port: 5205,
         db_connection: 'mongodb://localhost:27017/aflow',
         base_url: 'http://localhost:8000/'
-    }
+    },
+    statistics: {
+        port: 5206,
+        db_connection: "mongodb://localhost:27017/aflow",
+        base_url: 'http://localhost:8000/'
+    },
 };

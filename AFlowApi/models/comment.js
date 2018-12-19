@@ -12,7 +12,6 @@ const CommentSchema = new Schema({
     },
     content: {type: String},
     create_date: {type: Date, default: Date.now()},
-    modify_date: {type: Date, default: Date.now()},
     post: {type: Schema.Types.ObjectId, ref: 'Post'},
     status: {type: Number, default: 0},//0 发布 1 待审核 -1 删除
     delete_reason: {type: String, default: ''},
@@ -27,7 +26,6 @@ CommentSchema.virtual('model')
             id: this._id,
             content: this.content,
             create_date: Util.defaultFormat(this.create_date),
-            modify_date: Util.defaultFormat(this.modify_date),
             post: this.post.simple_model,
             status: this.status,
             delete_reason: this.delete_reason,

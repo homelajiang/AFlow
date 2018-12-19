@@ -24,7 +24,7 @@ const router: Routes = [
       {path: 'post/edit/:id', component: PostEditComponent, data: {title: '编辑'}, resolve: {post: PostDetailResolverService}},
       {path: 'post/edit', component: PostEditComponent, data: {title: '新建'}},
       {path: 'medias', component: MediaListComponent, data: {title: '多媒体'}},
-      {path: 'statistics_comments', component: CommentComponent, data: {title: '评论'}},
+      {path: 'comments', component: CommentComponent, data: {title: '评论'}},
       {path: 'categories', component: CategoriesComponent, data: {title: '分类'}},
       {path: 'tags', component: TagComponent, data: {title: '标签'}},
       {path: 'setting', component: SettingComponent, data: {title: '设置'}}
