@@ -2,15 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const viewRecordSchema = new Schema({
-    identifier: String,
+    user: String,
     ip: String,
     refer: String,
-    url: String,
+    target: String,
+    target_type: String,
     os: String,
     client: String,
     language: String,
     browser: String,
-    visit_date: Date
+    date: Date
 }, {
     versionKey: false // You should be aware of the outcome after set to false
 });
