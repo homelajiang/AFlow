@@ -1,6 +1,6 @@
 const Util = require('../../util');
 const Boom = require('boom');
-const ViewRecord = require('../../../models/view_record');
+const ViewRecord = require('../../../models/view_log');
 
 module.exports = function (options) {
 
