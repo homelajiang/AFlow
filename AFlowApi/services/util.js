@@ -21,6 +21,18 @@ module.exports = {
             error: true,
             message: msg ? msg : "请求错误"
         }
+    },
+    //获取一周的开始时间和结束时间
+    getWeekRange: function (year, month, nowDay, dayOfWeek, index, sundayFirst) {
+        if (sundayFirst) {
+            const start = new Date(year, month, 7 * (index) + nowDay - dayOfWeek);
+            const end = new Date(year, month, 7 * (index + 1) + nowDay - dayOfWeek);
+            return [start, end];
+        } else {
+            const start = new Date(year, month, 7 * (index) + nowDay - dayOfWeek + 1);
+            const end = new Date(year, month, 7 * (index + 1) + nowDay - dayOfWeek + 1);
+            return [start, end];
+        }
     }
 };
 
