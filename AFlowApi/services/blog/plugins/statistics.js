@@ -9,7 +9,7 @@ const moment = require('moment');
 
 module.exports = function (options) {
 
-    this.add('role:statistics,cmd:add', async (args, respond) => {//异步
+    this.add('role:statistics,cmd:all', async (args, respond) => {//异步
         // 添加记录
 
         const dateString = moment().format("YYYYMMDD");
@@ -28,7 +28,7 @@ module.exports = function (options) {
     });
 
     //获取统计结果
-    this.add('role:statistics,cmd:statistics', async (args, respond) => {
+    this.add('role:statistics,cmd:all', async (args, respond) => {
 
         const result = {
             blog: {
@@ -39,6 +39,10 @@ module.exports = function (options) {
             },
             comment: {
                 statistics: []
+            },
+            storage: {
+                used: 70,
+                total: 100
             }
         };
         const nowDate = new Date();
@@ -53,10 +57,10 @@ module.exports = function (options) {
             const weekRange = Util.getWeekRange(nowYear, nowMonth, nowDay, nowDayOfWeek, i, false);
             const res = await Post.find({
                 create_date: {$gte: weekRange[0], $lt: weekRange[1]}
-            }).exec();
+            });
 
             if (i === 0) {
-                result.blog.count = res.length;
+                result.blog.current = res.length;
             } else {
                 const key = moment(weekRange[0]).format("YYYYMMDD") + "-" + moment(weekRange[1]).format("YYYYMMDD");
                 const d = {};
@@ -64,14 +68,75 @@ module.exports = function (options) {
                 result.blog.statistics.unshift(d);
             }
         }
-        //获取总数量
-
-
 
         //最近10天访问量
-        //最近10天评论量
+        for (let i = 0; i > -11; i--) {
+            const dateString = moment(new Date(nowDate.getTime() + i * 24 * 3600 * 1000)).format('YYYYMMDD');
+            const res = await StatisticsView.find({date: dateString});
+            if (i === 0) {
+                result.view.current = res.length;
+            } else {
+                const d = {};
+                d[dateString] = res.length;
+                result.view.statistics.unshift(d);
+            }
+        }
 
-        respond(null);
+        //最近10天评论量
+        for (let i = 0; i > -11; i--) {
+            const dateString = moment(new Date(nowDate.getTime() + i * 24 * 3600 * 1000)).format('YYYYMMDD');
+            const res = await StatisticsComment.find({date: dateString});
+            if (i === 0) {
+                result.comment.current = res.length;
+            } else {
+                const d = {};
+                d[dateString] = res.length;
+                result.comment.statistics.unshift(d);
+            }
+        }
+
+        //获取总数量
+        result.blog.count = await Post.find().countDocuments();//只查询count字段
+
+        const views = await StatisticsView.find({}, 'count');
+        let viewCount = 0;
+        views.forEach((value) => {
+            viewCount += value.count;
+        });
+        result.view.count = viewCount;
+
+        const comments = await StatisticsComment.find({}, 'count');
+        let commentCount = 0;
+        comments.forEach((value) => {
+            commentCount += value.count;
+        });
+        result.comment.count = commentCount;
+
+        respond(result);
+    });
+
+    //获取文章总浏览数
+    this.add('role:statistics,cmd:views', async (args, respond) => {
+        const views = await StatisticsPost.find({
+            post: args.id,
+            count: {$gt: 0}
+        }, 'count');
+
+        let viewCount = 0;
+        views.forEach((view) => {
+            viewCount += view.count;
+        });
+        respond(viewCount);
+    });
+
+    //获取文章（评论数）排行  当前 近3天 近一周 近一个月 所有
+    this.add('role:statistics,cmd:sort,by:comment', async (args, respond) => {
+
+    });
+
+    //获取文章（浏览数）排行
+    this.add('role:statistics,cmd:sort,by:view', async (args, respond) => {
+
     });
 
     return 'statistics';

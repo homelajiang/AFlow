@@ -9,6 +9,6 @@ const statisticsPostSchema = new Schema({
     versionKey: false
 });
 
-const StatisticsPost = mongoose.model('StatisticsComment', statisticsPostSchema);
+const StatisticsPost = mongoose.model('StatisticsPost', statisticsPostSchema);
 
 module.exports = StatisticsPost;

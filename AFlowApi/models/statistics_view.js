@@ -8,6 +8,6 @@ const statisticsViewSchema = new Schema({
     versionKey: false
 });
 
-const StatisticsView = mongoose.model('StatisticsComment', statisticsViewSchema);
+const StatisticsView = mongoose.model('StatisticsView', statisticsViewSchema);
 
 module.exports = StatisticsView;

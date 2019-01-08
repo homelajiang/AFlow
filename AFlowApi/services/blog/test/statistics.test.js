@@ -1,0 +1,31 @@
+const Seneca = require('seneca');
+const mongoose = require('mongoose');
+const config = require("../../config");
+const async = require('async');
+const should = require('should');
+
+describe('statistics_test', () => {
+
+    before(function (done) {
+        mongoose.connect(config.blog.db_connection, {useNewUrlParser: true}, (err) => {
+            done(err);
+        })
+    });
+
+    it('Get Statistics', (done) => {
+        const seneca = test_seneca(done);
+        seneca.act({
+            role: 'statistics',
+            cmd: 'all'
+        }, (err, res) => {
+            console.log(res);
+            done();
+        });
+    })
+});
+
+function test_seneca(cb) {
+    return Seneca({log: 'test'})
+        .test(cb, 'print')
+        .use(require('../plugins/statistics'))
+}
