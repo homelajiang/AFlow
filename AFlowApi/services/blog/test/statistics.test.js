@@ -21,7 +21,20 @@ describe('statistics_test', () => {
             console.log(res);
             done();
         });
-    })
+    });
+
+    it('查询文章排行（按评论）', (done) => {
+        const seneca = test_seneca(done);
+        seneca.act({
+            role: 'statistics',
+            cmd: 'sort',
+            by: 'comment',
+            date_range: 'year'
+        }, (err, res) => {
+            console.log(res);
+            done();
+        })
+    });
 });
 
 function test_seneca(cb) {

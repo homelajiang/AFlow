@@ -6,6 +6,8 @@ const StatisticsPost = require('../../../models/statistics_post');
 const StatisticsView = require('../../../models/statistics_view');
 const Post = require('../../../models/post');
 const moment = require('moment');
+const Comment = require('../../../models/comment');
+
 
 module.exports = function (options) {
 
@@ -40,9 +42,10 @@ module.exports = function (options) {
             comment: {
                 statistics: []
             },
-            storage: {
+            storage: { // todo 多媒体统计
                 used: 70,
-                total: 100
+                total: 100,
+                mediaCount: 4000
             }
         };
         const nowDate = new Date();
@@ -115,7 +118,7 @@ module.exports = function (options) {
         respond(result);
     });
 
-    //获取文章总浏览数
+    //获取文章浏览数
     this.add('role:statistics,cmd:views', async (args, respond) => {
         const views = await StatisticsPost.find({
             post: args.id,
@@ -129,14 +132,114 @@ module.exports = function (options) {
         respond(viewCount);
     });
 
-    //获取文章（评论数）排行  当前 近3天 近一周 近一个月 所有
+    //获取文章（评论数）排行  今天 近3天 近7天 近30天 近一年 所有
     this.add('role:statistics,cmd:sort,by:comment', async (args, respond) => {
+        let startDate;
+        const nowDate = new Date();
+        nowDate.setHours(0);
+        nowDate.setMinutes(0);
+        nowDate.setSeconds(0)
+        nowDate.setMilliseconds(0);
+
+        switch (args.date_range) {
+            case 'day':
+                startDate = nowDate;
+                break;
+            case 'three day':
+                startDate = new Date(nowDate.getTime() - 2 * 24 * 3600 * 1000);
+                break;
+            case 'week':
+                startDate = new Date(nowDate.getTime() - 6 * 24 * 3600 * 1000);
+                break;
+            case 'month':
+                startDate = new Date(nowDate.getTime() - 29 * 24 * 3600 * 1000);
+                break;
+            case 'year':
+                nowDate.setFullYear(nowDate.getFullYear() - 1);
+                startDate = nowDate;
+                break;
+        }
+
+        let posts;
+        if (startDate) {
+            posts = await Comment.aggregate([
+                {
+                    $match: {create_date: {$gte: startDate}}
+                },
+                {
+                    $group: {
+                        _id: '$post',
+                        commentCount: {$sum: 1}
+                    }
+                },
+                // { //可对获取到的数据进行排序
+                //     $match: {commentCount: {$gte: 2}}
+                // },
+                {
+                    $sort: {
+                        commentCount: -1
+                    }
+                },
+                {
+                    $limit: 5
+                }
+            ]);
+            posts = await Post.populate(posts, {
+                path: '_id'
+            });
+
+            // .populate('_id','post','post')
+            // .populate({
+            //     path: '_id',
+            //     select: 'post',
+            //     model: 'post'
+            // })
+        } else {//查询所有的
+            posts = await StatisticsPost.find()
+                .populate('post')
+                .sort({count: 1}).limit(5);
+
+        }
+        respond(posts);
 
     });
 
-    //获取文章（浏览数）排行
+    //获取文章（浏览数）排行 今天 近3天 近7天 近30天 近一年 所有
     this.add('role:statistics,cmd:sort,by:view', async (args, respond) => {
+        let startDate;
+        const nowDate = new Date();
 
+        switch (args.date_range) {
+            case 'day':
+                startDate = moment(nowDate).format("YYYYMMDD");
+                break;
+            case 'three day':
+                startDate = moment(new Date(nowDate.getTime() - 2 * 24 * 3600 * 1000)).format('YYYYMMDD');
+                break;
+            case 'week':
+                startDate = moment(new Date(nowDate.getTime() - 6 * 24 * 3600 * 1000)).format('YYYYMMDD');
+                break;
+            case 'month':
+                startDate = moment(new Date(nowDate.getTime() - 29 * 24 * 3600 * 1000)).format('YYYYMMDD');
+                break;
+            case 'year':
+                startDate = moment(nowDate.setFullYear(nowDate.getFullYear() - 1)).format('YYYYMMDD');
+                break;
+        }
+        let posts;
+        if (nowDate) {
+            posts = await StatisticsPost.find({
+                date: {$gte: startDate}
+            })
+                .populate('post')//todo tag categories
+                .sort({count: 1}).limit(5);
+        } else {//查询所有的
+            posts = await StatisticsPost.find()
+                .populate('post')
+                .sort({count: 1}).limit(5);
+
+        }
+        respond(posts);
     });
 
     return 'statistics';
