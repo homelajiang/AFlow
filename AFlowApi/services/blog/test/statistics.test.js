@@ -12,29 +12,53 @@ describe('statistics_test', () => {
         })
     });
 
-    it('Get Statistics', (done) => {
+    it('Add record', (done) => {
         const seneca = test_seneca(done);
-        seneca.act({
-            role: 'statistics',
-            cmd: 'all'
-        }, (err, res) => {
-            console.log(res);
-            done();
-        });
+        for (let i = 0; i < 10; i++) {
+            seneca.act({
+                role: 'statistics',
+                cmd: 'add',
+                type: 'comment',
+                id: '5bd3fbd5909a780d548f8c17'
+            });
+
+            // seneca.act({
+            //     role: 'statistics',
+            //     cmd: 'add',
+            //     type: 'post',
+            //     id: '5bd3fbd5909a780d548f8c17'
+            // });
+            // seneca.act({
+            //     role: 'statistics',
+            //     cmd: 'add'
+            // });
+        }
+        done();
     });
 
-    it('查询文章排行（按评论）', (done) => {
-        const seneca = test_seneca(done);
-        seneca.act({
-            role: 'statistics',
-            cmd: 'sort',
-            by: 'comment',
-            date_range: 'year'
-        }, (err, res) => {
-            console.log(res);
-            done();
-        })
-    });
+    // it('Get Statistics', (done) => {
+    //     const seneca = test_seneca(done);
+    //     seneca.act({
+    //         role: 'statistics',
+    //         cmd: 'all'
+    //     }, (err, res) => {
+    //         console.log(res);
+    //         done();
+    //     });
+    // });
+
+    // it('查询文章排行（按评论）', (done) => {
+    //     const seneca = test_seneca(done);
+    //     seneca.act({
+    //         role: 'statistics',
+    //         cmd: 'sort',
+    //         by: 'comment',
+    //         date_range: 'year'
+    //     }, (err, res) => {
+    //         console.log(res);
+    //         done();
+    //     })
+    // });
 });
 
 function test_seneca(cb) {

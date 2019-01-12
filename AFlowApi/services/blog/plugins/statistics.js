@@ -1,31 +1,22 @@
 const Util = require('../../util');
 const Boom = require('boom');
-const ViewRecord = require('../../../models/view_record');
 const StatisticsComment = require('../../../models/statistics_comment');
 const StatisticsPost = require('../../../models/statistics_post');
 const StatisticsView = require('../../../models/statistics_view');
+const ViewRecord = require('../../../models/view_record');
 const Post = require('../../../models/post');
 const moment = require('moment');
 const Comment = require('../../../models/comment');
+const Statistics = require('../../../models/statistics');
+
+const schedule = require('node-schedule');
 
 
 module.exports = function (options) {
 
-    this.add('role:statistics,cmd:all', async (args, respond) => {//异步
+    this.add('role:statistics,cmd:add', async (args, respond) => {//异步
         // 添加记录
-
-        const dateString = moment().format("YYYYMMDD");
-
-        if (args.type === 'post' && args.id) {
-            await viewPost(dateString, args.id);
-            await viewWebsite(dateString);
-        } else if (args.type === 'comment' && args.id) {
-            await viewComment(dateString, args.id);
-            await viewWebsite(dateString);
-        } else {
-            await viewWebsite(dateString);
-        }
-
+        ViewRecord.save(args.record);
         respond(null);//返回一个参数则为结果，两个参数第一个是错误信息
     });
 
@@ -136,40 +127,38 @@ module.exports = function (options) {
     this.add('role:statistics,cmd:sort,by:comment', async (args, respond) => {
         let startDate;
         const nowDate = new Date();
-        nowDate.setHours(0);
-        nowDate.setMinutes(0);
-        nowDate.setSeconds(0)
-        nowDate.setMilliseconds(0);
 
         switch (args.date_range) {
             case 'day':
-                startDate = nowDate;
+                startDate = moment(nowDate).format("YYYYMMDD");
                 break;
             case 'three day':
-                startDate = new Date(nowDate.getTime() - 2 * 24 * 3600 * 1000);
+                startDate = moment(new Date(nowDate.getTime() - 2 * 24 * 3600 * 1000)).format('YYYYMMDD');
                 break;
             case 'week':
-                startDate = new Date(nowDate.getTime() - 6 * 24 * 3600 * 1000);
+                startDate = moment(new Date(nowDate.getTime() - 6 * 24 * 3600 * 1000)).format('YYYYMMDD');
                 break;
             case 'month':
-                startDate = new Date(nowDate.getTime() - 29 * 24 * 3600 * 1000);
+                startDate = moment(new Date(nowDate.getTime() - 29 * 24 * 3600 * 1000)).format('YYYYMMDD');
                 break;
             case 'year':
-                nowDate.setFullYear(nowDate.getFullYear() - 1);
-                startDate = nowDate;
+                startDate = moment(nowDate.setFullYear(nowDate.getFullYear() - 1)).format('YYYYMMDD');
                 break;
         }
 
         let posts;
         if (startDate) {
-            posts = await Comment.aggregate([
+            posts = await StatisticsComment.aggregate([
                 {
-                    $match: {create_date: {$gte: startDate}}
+                    $match: {
+                        date: {$gte: startDate}
+                    }
                 },
                 {
                     $group: {
                         _id: '$post',
-                        commentCount: {$sum: 1}
+                        post: {$first: '$post'},
+                        commentCount: {$sum: '$count'}
                     }
                 },
                 // { //可对获取到的数据进行排序
@@ -184,16 +173,9 @@ module.exports = function (options) {
                     $limit: 5
                 }
             ]);
-            posts = await Post.populate(posts, {
-                path: '_id'
-            });
 
-            // .populate('_id','post','post')
-            // .populate({
-            //     path: '_id',
-            //     select: 'post',
-            //     model: 'post'
-            // })
+            posts = await Post.populate(posts, {path: 'post'});
+
         } else {//查询所有的
             posts = await StatisticsPost.find()
                 .populate('post')
@@ -242,58 +224,55 @@ module.exports = function (options) {
         respond(posts);
     });
 
+
+    // 开启定时任务
+    schedule.scheduleJob('0 2 * * *', async () => {
+        console.log('归档访问记录');
+
+        //统计过去的一天的数据
+        let nowDate = new Date();
+        nowDate.setHours(0);
+        nowDate.setMinutes(0);
+        nowDate.setSeconds(0);
+        nowDate.setMilliseconds(0);
+
+        let preDate = new Date(nowDate.getTime() - 24 * 3600 * 1000);
+
+        const statistics = {};
+        statistics['date'] = preDate;
+        statistics['num'] = await ViewRecord.find({
+            date: {$gte: preDate, $lt: nowDate}
+        }).countDocuments();
+
+        statistics['post'] = await ViewRecord.aggregate([
+            {
+                $match: {
+                    date: {$gte: preDate, $lt: nowDate},
+                    post: {$ne: null}
+                }
+            }, {
+                $group: {
+                    _id: '$post',
+                    num: {$sum: 1}
+                }
+            }
+        ]);
+
+        statistics['comment'] = await Comment.aggregate([
+            {
+                $match: {
+                    date: {$gte: preDate, $lt: nowDate}
+                }
+            }, {
+                $group: {
+                    _id: '$post',
+                    num: {$sum: 1}
+                }
+            }
+        ]);
+
+        await new Statistics(statistics).save();
+    });
+
     return 'statistics';
 };
-
-
-async function viewWebsite(date) {
-    const record = await StatisticsView.findOne({
-        data: date
-    });
-
-    if (record) {
-        record.count++;
-        await StatisticsView.updateOne(record);
-    } else {
-        await StatisticsView.save({
-            date: date,
-            count: 1
-        });
-    }
-}
-
-async function viewPost(date, id) {
-    const record = await StatisticsPost.findOne({
-        data: date,
-        post: id
-    });
-
-    if (record) {
-        record.count++;
-        await StatisticsPost.updateOne(record);
-    } else {
-        await StatisticsPost.save({
-            date: date,
-            post: id,
-            count: 1
-        });
-    }
-}
-
-async function viewComment(date, id) {
-    const record = await StatisticsComment.findOne({
-        data: date,
-        post: id
-    });
-
-    if (record) {
-        record.count++;
-        await StatisticsComment.updateOne(record);
-    } else {
-        await StatisticsComment.save({
-            date: date,
-            post: id,
-            count: 1
-        });
-    }
-}
