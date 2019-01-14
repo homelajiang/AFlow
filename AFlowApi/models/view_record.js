@@ -7,7 +7,7 @@ const viewRecordSchema = new Schema({
     os: String,
     language: String,
     browser: String,
-    date: {type: Date, default: Date.now, required: true},
+    date: {type: Date, default: Date.now},
     post: {type: Schema.Types.ObjectId, ref: 'Post'}
 }, {
     versionKey: false // You should be aware of the outcome after set to false

@@ -12,29 +12,34 @@ describe('statistics_test', () => {
         })
     });
 
-    it('Add record', (done) => {
+    it('No test', (done) => {
         const seneca = test_seneca(done);
-        for (let i = 0; i < 10; i++) {
-            seneca.act({
-                role: 'statistics',
-                cmd: 'add',
-                type: 'comment',
-                id: '5bd3fbd5909a780d548f8c17'
-            });
-
-            // seneca.act({
-            //     role: 'statistics',
-            //     cmd: 'add',
-            //     type: 'post',
-            //     id: '5bd3fbd5909a780d548f8c17'
-            // });
-            // seneca.act({
-            //     role: 'statistics',
-            //     cmd: 'add'
-            // });
-        }
         done();
     });
+
+    // it('Add record', (done) => {
+    //     const seneca = test_seneca(done);
+    //     for (let i = 0; i < 5; i++) {
+    //         seneca.act({
+    //             role: 'statistics',
+    //             cmd: 'add',
+    //             record: {}
+    //         });
+    //
+    //         seneca.act({
+    //             role: 'statistics',
+    //             cmd: 'add',
+    //             record: {
+    //                 post: '5c14ba42f1a28c2998d0efb1'
+    //             }
+    //         });
+    //         // seneca.act({
+    //         //     role: 'statistics',
+    //         //     cmd: 'add'
+    //         // });
+    //     }
+    //     done();
+    // });
 
     // it('Get Statistics', (done) => {
     //     const seneca = test_seneca(done);
