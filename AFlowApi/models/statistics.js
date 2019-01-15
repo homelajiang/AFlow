@@ -9,11 +9,11 @@ const statisticsSchema = new Schema({
         _id: {type: Schema.Types.ObjectId, ref: 'Post'},
         num: Number
     }],
-    //评论统计量
-    comment: [{
-        _id: {type: Schema.Types.ObjectId, ref: 'Post'},
-        num: Number
-    }]
+    // //评论统计量
+    // comment: [{
+    //     _id: {type: Schema.Types.ObjectId, ref: 'Post'},
+    //     num: Number
+    // }]
 }, {
     versionKey: false
 });

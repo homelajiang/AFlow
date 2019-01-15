@@ -12,11 +12,6 @@ describe('statistics_test', () => {
         })
     });
 
-    it('No test', (done) => {
-        const seneca = test_seneca(done);
-        done();
-    });
-
     // it('Add record', (done) => {
     //     const seneca = test_seneca(done);
     //     for (let i = 0; i < 5; i++) {
@@ -52,18 +47,18 @@ describe('statistics_test', () => {
     //     });
     // });
 
-    // it('查询文章排行（按评论）', (done) => {
-    //     const seneca = test_seneca(done);
-    //     seneca.act({
-    //         role: 'statistics',
-    //         cmd: 'sort',
-    //         by: 'comment',
-    //         date_range: 'year'
-    //     }, (err, res) => {
-    //         console.log(res);
-    //         done();
-    //     })
-    // });
+    it('查询文章排行（按评论）', (done) => {
+        const seneca = test_seneca(done);
+        seneca.act({
+            role: 'statistics',
+            cmd: 'sort',
+            by: 'view',
+            date_range: 'three day'
+        }, (err, res) => {
+            console.log(res);
+            done();
+        })
+    });
 });
 
 function test_seneca(cb) {

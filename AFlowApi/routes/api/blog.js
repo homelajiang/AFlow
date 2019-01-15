@@ -581,7 +581,7 @@ module.exports = [
                 try {
                     const res = await act({
                         role: 'statistics',
-                        cmd: 'blog'
+                        cmd: 'all'
                     });
                     return Util.ifErrorBoom(res);
                 } catch (err) {
@@ -625,6 +625,34 @@ module.exports = [
                     failAction: Util.validateErr
                 }
             }
+    },
+    //按浏览数(评论数)排列文章
+    {
+        method: 'GET',
+        path: UtilApi.api_v1 + '/statistics/post',
+        handler: async (request, h) => {
+            try {
+                const res = await act({
+                    role: 'statistics',
+                    cmd: 'sort',
+                    by: request.query.sort_by,
+                    limit: request.query.limit,
+                    range: request.query.sort_range
+                });
+                return Util.ifErrorBoom(res);
+            } catch (e) {
+                return Util.errorToBoom(e);
+            }
+        },
+        config: {
+            validate: {
+                query: {
+                    limit: Joi.number().integer().default(5),
+                    sort_by: Joi.string().valid(['view', 'comment']).default('view'),
+                    sort_range: Joi.string().valid(['day', 'three day', 'week', 'month', 'year']).default('week')
+                },
+                failAction: Util.validateErr
+            }
+        }
     }
-    //获取热门文章排行
 ];

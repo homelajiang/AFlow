@@ -33,6 +33,18 @@ module.exports = {
             const end = new Date(year, month, 7 * (index + 1) + nowDay - dayOfWeek + 1);
             return [start, end];
         }
+    },
+    //获取一天的开始时间和结束时间
+    getDayRange: function (nowDate, index) {
+        let temp = new Date(nowDate.getTime());
+        temp.setHours(0);
+        temp.setMinutes(0);
+        temp.setSeconds(0);
+        temp.setMilliseconds(0);
+
+        temp = new Date(temp.getTime() + index * 24 * 3600 * 1000);
+
+        return [temp, new Date(temp.getTime() + 24 * 3600 * 1000)];
     }
 };
 

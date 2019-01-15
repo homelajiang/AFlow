@@ -39,6 +39,11 @@ export class DashboardComponent implements OnInit {
   statistics_comments = [];
   statistics_views = [];
   statistics_posts = [];
+  statistics_storage = {
+    'used': 0,
+    'total': 100,
+    'mediaCount': 0
+  };
   scale = [{
     dataKey: 'sales',
     tickInterval: 20,
@@ -86,7 +91,14 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.profile = this.authService.profile;
     setTimeout(() => {
-      this.statistics_comments = [
+      this.blogService.getStatistics()
+        .subscribe((res) => {
+          this.statistics_views = res.view.statistics;
+          this.statistics_posts = res.post.statistics;
+          this.statistics_comments = res.comment.statistics;
+          this.statistics_storage = res.storage;
+        });
+      /*this.statistics_comments = [
         {year: '1951 年', sales: 38},
         {year: '1952 年', sales: 52},
         {year: '1956 年', sales: 61},
@@ -119,7 +131,7 @@ export class DashboardComponent implements OnInit {
         {year: '1997', value: 7},
         {year: '1998', value: 9},
         {year: '1999', value: 13},
-      ];
+      ];*/
     }, 0);
 
     this.getTodoList(this.todoPage);

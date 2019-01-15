@@ -21,8 +21,8 @@
           <div *ngIf="statistics_posts.length>0">
             <v-chart [forceFit]="true" [height]="46" [data]="statistics_posts" [scale]="lineScale" padding="5">
               <v-tooltip></v-tooltip>
-              <v-line position="year*value"></v-line>
-              <v-point position="year*value" shape="circle"></v-point>
+              <v-line position="date*value"></v-line>
+              <v-point position="date*value" shape="circle"></v-point>
             </v-chart>
           </div>
         </div>
@@ -54,7 +54,7 @@
             <v-chart [forceFit]='true' [height]="46" [data]="statistics_views" [scale]="scale" [padding]="0"
                      renderer="svg">
               <v-tooltip></v-tooltip>
-              <v-smooth-area position="year*value"></v-smooth-area>
+              <v-smooth-area position="date*value"></v-smooth-area>
             </v-chart>
           </div>
         </div>
@@ -85,7 +85,7 @@
           <div *ngIf="statistics_comments.length>0">
             <v-chart forceFit="true" [padding]="0" [height]="46" [data]="statistics_comments" renderer="svg">
               <v-tooltip></v-tooltip>
-              <v-bar position="year*sales"></v-bar>
+              <v-bar position="date*value"></v-bar>
             </v-chart>
           </div>
         </div>
