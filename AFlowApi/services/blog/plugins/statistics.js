@@ -41,9 +41,10 @@ module.exports = function (options) {
                 statistics: []
             },
             storage: { // todo 多媒体统计
-                used: 70,
-                total: 100,
-                mediaCount: 4000
+                used: "7Gb",
+                total: "10Gb",
+                percent: 70,
+                mediaCount: 0
             }
         };
         const nowDate = new Date();
@@ -192,7 +193,7 @@ module.exports = function (options) {
                 $group: {
                     _id: '$post',
                     post: {$first: '$post'},
-                    commentCount: {$sum: 1}
+                    comments: {$sum: 1}
                 }
             },
             // { //可对获取到的数据进行过滤
@@ -200,7 +201,7 @@ module.exports = function (options) {
             // },
             {
                 $sort: {
-                    commentCount: -1
+                    comments: -1
                 }
             },
             {
@@ -209,6 +210,13 @@ module.exports = function (options) {
         ]);
 
         posts = await Post.populate(posts, {path: 'post'});
+
+        //查找post浏览数
+        for (let i = 0; i < posts.length; i++) {
+            posts[i].views = await ViewRecord.find({post: posts[i]._id}).countDocuments();
+            posts[i].post = posts[i].post.simple_model;
+        }
+
         respond(posts);
     });
 
@@ -261,18 +269,23 @@ module.exports = function (options) {
             { // 重新分组
                 $group: {
                     _id: "$post",
-                    num: {$sum: "$count"},
+                    views: {$sum: "$count"},
                     post: {$first: '$post'}
                 }
             },
             {
-                $sort: {num: -1}
+                $sort: {views: -1}
             },
             {
                 $limit: parseInt(args.limit)
             }
         ]);
         posts = await Post.populate(posts, {path: 'post'});
+        //查找post评论数
+        for (let i = 0; i < posts.length; i++) {
+            posts[i].comments = await Comment.find({post: posts[i]._id}).countDocuments();
+            posts[i].post = posts[i].post.simple_model;
+        }
         respond(posts);
     });
 

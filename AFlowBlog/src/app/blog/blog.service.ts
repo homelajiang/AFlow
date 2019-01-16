@@ -197,8 +197,8 @@ export class BlogService {
   getPostStatistics(sort_by: string, sort_rang: string): Observable<any> {
     const p: HttpParams = new HttpParams()
       .set('sort_by', sort_by)
-      .set('sort_rang', sort_rang);
-    return this.http.get(`api/statistics/post`, {params: p})
+      .set('sort_range', sort_rang);
+    return this.http.get(`api/v1/statistics/post`, {params: p})
       .pipe(catchError(Utils.handleError));
   }
 

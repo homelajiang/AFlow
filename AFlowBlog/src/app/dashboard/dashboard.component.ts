@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
-import {PageModel, Profile} from '../app.component';
+import {PageModel, Post, Profile} from '../app.component';
 import {AuthService} from '../auth/auth.service';
 import {BlogService} from '../blog/blog.service';
 
@@ -20,32 +20,33 @@ export class DashboardComponent implements OnInit {
     padding: '20px 24px 8px',
   };
 
-  data = [
-    {
-      title: 'Ant Design Title 1'
-    },
-    {
-      title: 'Ant Design Title 2'
-    },
-    {
-      title: 'Ant Design Title 3'
-    },
-    {
-      title: 'Ant Design Title 4'
-    }
-  ];
-
   height = 46;
-  statistics_comments = [];
-  statistics_views = [];
-  statistics_posts = [];
-  statistics_storage = {
-    'used': 0,
-    'total': 100,
-    'mediaCount': 0
+
+  statistics = {
+    blog: {
+      statistics: [],
+      current: 0,
+      total: 0
+    },
+    view: {
+      statistics: [],
+      current: 0,
+      total: 0
+    },
+    comment: {
+      statistics: [],
+      current: 0,
+      total: 0
+    },
+    storage: {
+      used: '',
+      total: '',
+      percent: '',
+      mediaCount: 0
+    }
   };
   scale = [{
-    dataKey: 'sales',
+    dataKey: 'date',
     tickInterval: 20,
   }];
 
@@ -53,7 +54,7 @@ export class DashboardComponent implements OnInit {
     dataKey: 'value',
     min: 0,
   }, {
-    dataKey: 'year',
+    dataKey: 'date',
     min: 0,
     max: 1,
   }];
@@ -71,7 +72,8 @@ export class DashboardComponent implements OnInit {
   rejectCommentId: string;
   reject_reason: string;
   reject_other_reason: string;
-
+  sort_range = 'week';
+  sort_posts: Post[] = [];
 
   handleChange({file, fileList}): void {
     const status = file.status;
@@ -90,51 +92,14 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.profile = this.authService.profile;
-    setTimeout(() => {
-      this.blogService.getStatistics()
-        .subscribe((res) => {
-          this.statistics_views = res.view.statistics;
-          this.statistics_posts = res.post.statistics;
-          this.statistics_comments = res.comment.statistics;
-          this.statistics_storage = res.storage;
-        });
-      /*this.statistics_comments = [
-        {year: '1951 年', sales: 38},
-        {year: '1952 年', sales: 52},
-        {year: '1956 年', sales: 61},
-        {year: '1957 年', sales: 145},
-        {year: '1958 年', sales: 48},
-        {year: '1959 年', sales: 38},
-        {year: '1960 年', sales: 38},
-        {year: '1962 年', sales: 38},
-      ];
-
-      this.statistics_views = [
-        {year: '1991', value: 15468},
-        {year: '1992', value: 16100},
-        {year: '1993', value: 15900},
-        {year: '1994', value: 17409},
-        {year: '1995', value: 17000},
-        {year: '1996', value: 31056},
-        {year: '1997', value: 31982},
-        {year: '1998', value: 32040},
-        {year: '1999', value: 33233}
-      ];
-
-      this.statistics_posts = [
-        {year: '1991', value: 3},
-        {year: '1992', value: 4},
-        {year: '1993', value: 3.5},
-        {year: '1994', value: 5},
-        {year: '1995', value: 4.9},
-        {year: '1996', value: 6},
-        {year: '1997', value: 7},
-        {year: '1998', value: 9},
-        {year: '1999', value: 13},
-      ];*/
-    }, 0);
-
     this.getTodoList(this.todoPage);
+    this.getSortPosts(this.sort_range);
+
+    this.blogService.getStatistics()
+      .subscribe((res) => {
+        this.statistics = res;
+      });
+
 
   }
 
@@ -193,6 +158,15 @@ export class DashboardComponent implements OnInit {
         this.toast.error(`拒绝失败：\n${err}`);
       });
 
+  }
+
+  getSortPosts(sort_range: string) {
+    this.blogService.getPostStatistics('view', sort_range)
+      .subscribe((res) => {
+        this.sort_posts = res;
+      }, (err) => {
+        this.toast.error(`获取热门文章失败：\n${err}`);
+      });
   }
 
   getTodoList(page: number) {

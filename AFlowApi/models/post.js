@@ -59,6 +59,15 @@ PostSchema.virtual('model')
         return temp;
     });
 
+PostSchema.virtual('simple_model')
+    .get(function () {
+        return {
+            id: this.id,
+            title: this.title,
+            description: this.description,
+        };
+    });
+
 PostSchema.virtual('list_model')
     .get(function () {
         const temp = {

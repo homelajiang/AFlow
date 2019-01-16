@@ -649,7 +649,7 @@ module.exports = [
                 query: {
                     limit: Joi.number().integer().default(5),
                     sort_by: Joi.string().valid(['view', 'comment']).default('view'),
-                    sort_range: Joi.string().valid(['day', 'three day', 'week', 'month', 'year']).default('week')
+                    sort_range: Joi.string().valid(['day', 'three day', 'week', 'month', 'year','all']).default('week')
                 },
                 failAction: Util.validateErr
             }

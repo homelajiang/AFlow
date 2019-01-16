@@ -14,12 +14,13 @@
           </span>
         </div>
         <div style="margin-top: 4px;">
-          <span style="font-size: 30px;line-height: 38px;color:rgba(0,0,0,.85)">33</span>
+          <span style="font-size: 30px;line-height: 38px;color:rgba(0,0,0,.85)">{{statistics.blog.current}}</span>
         </div>
 
         <div style="height:46px;">
-          <div *ngIf="statistics_posts.length>0">
-            <v-chart [forceFit]="true" [height]="46" [data]="statistics_posts" [scale]="lineScale" padding="5">
+          <div *ngIf="statistics.blog.statistics.length>0">
+            <v-chart [forceFit]="true" [height]="46" [data]="statistics.blog.statistics" [scale]="lineScale"
+                     padding="5">
               <v-tooltip></v-tooltip>
               <v-line position="date*value"></v-line>
               <v-point position="date*value" shape="circle"></v-point>
@@ -28,8 +29,8 @@
         </div>
         <nz-divider style="margin:12px 0 8px 0;"></nz-divider>
         <div>
-          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">周博客数</span>
-          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">3</span>
+          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">本周博客数</span>
+          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">{{statistics.blog.current}}</span>
         </div>
       </nz-card>
     </div>
@@ -46,12 +47,12 @@
           </span>
         </div>
         <div style="margin-top: 4px;">
-          <span style="font-size: 30px;line-height: 38px;color:rgba(0,0,0,.85)">26,560</span>
+          <span style="font-size: 30px;line-height: 38px;color:rgba(0,0,0,.85)">{{statistics.view.total}}</span>
         </div>
 
         <div style="height:46px;">
-          <div *ngIf="statistics_views.length>0">
-            <v-chart [forceFit]='true' [height]="46" [data]="statistics_views" [scale]="scale" [padding]="0"
+          <div *ngIf="statistics.view.statistics.length>0">
+            <v-chart [forceFit]='true' [height]="46" [data]="statistics.view.statistics" [scale]="scale" [padding]="0"
                      renderer="svg">
               <v-tooltip></v-tooltip>
               <v-smooth-area position="date*value"></v-smooth-area>
@@ -61,7 +62,7 @@
         <nz-divider style="margin:12px 0 8px 0;"></nz-divider>
         <div>
           <span style="color:rgba(0,0,0,.85);margin-left: 8px;">日访问量</span>
-          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">23</span>
+          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">{{statistics.view.current}}</span>
         </div>
       </nz-card>
     </div>
@@ -78,12 +79,12 @@
           </span>
         </div>
         <div style="margin-top: 4px;">
-          <span style="font-size: 30px;line-height: 38px;color:rgba(0,0,0,.85)">6,560</span>
+          <span style="font-size: 30px;line-height: 38px;color:rgba(0,0,0,.85)">{{statistics.comment.total}}</span>
         </div>
 
         <div style="height:46px;">
-          <div *ngIf="statistics_comments.length>0">
-            <v-chart forceFit="true" [padding]="0" [height]="46" [data]="statistics_comments" renderer="svg">
+          <div *ngIf="statistics.comment.statistics.length>0">
+            <v-chart forceFit="true" [padding]="0" [height]="46" [data]="statistics.comment.statistics" renderer="svg">
               <v-tooltip></v-tooltip>
               <v-bar position="date*value"></v-bar>
             </v-chart>
@@ -92,7 +93,7 @@
         <nz-divider style="margin:12px 0 8px 0;"></nz-divider>
         <div>
           <span style="color:rgba(0,0,0,.85);margin-left: 8px;">日评论数</span>
-          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">3</span>
+          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">{{statistics.comment.current}}</span>
         </div>
       </nz-card>
     </div>
@@ -117,17 +118,17 @@
             <div nz-col nzSpan="12">
             </div>
             <div nz-col nzSpan="12" style="text-align: end;">
-              <b>7Gb</b>
+              <b>{{statistics.storage.used}}</b>
               of
-              <b>10Gb</b>
+              <b>{{statistics.storage.total}}</b>
             </div>
           </div>
-          <nz-progress [nzPercent]="70" [nzShowInfo]="false"></nz-progress>
+          <nz-progress [nzPercent]=statistics.storage.percent [nzShowInfo]="false"></nz-progress>
         </div>
         <nz-divider style="margin:12px 0 8px 0;"></nz-divider>
         <div>
           <span style="color:rgba(0,0,0,.85);margin-left: 8px;">存储数量</span>
-          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">12,423</span>
+          <span style="color:rgba(0,0,0,.85);margin-left: 8px;">{{statistics.storage.mediaCount}}</span>
         </div>
       </nz-card>
     </div>
@@ -198,16 +199,16 @@
             <nz-upload
               nzType="drag"
               [nzMultiple]="true"
-              [nzLimit]="2"
+              [nzLimit]="0"
+              [nzSize]="5*1024"
               nzListType="picture"
               nzAction="https://jsonplaceholder.typicode.com/posts/"
               (nzChange)="handleChange($event)">
               <p class="ant-upload-drag-icon">
                 <i class="anticon anticon-inbox"></i>
               </p>
-              <p class="ant-upload-text">Click or drag file to this area to upload</p>
-              <p class="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company
-                data or other band files</p>
+              <p class="ant-upload-text">点击或者拖拽文件开始上传</p>
+              <p class="ant-upload-hint">支持多文件上传，单个文件大小不能超过5M</p>
             </nz-upload>
           </nz-card>
         </div>
@@ -215,18 +216,15 @@
         <div nz-col [nzSpan]="24" style="margin-top: 24px;">
 
           <nz-card nzTitle="热门博客" [nzExtra]="popularPostsTemplate">
-            <app-post-dashboard></app-post-dashboard>
-            <app-post-dashboard></app-post-dashboard>
-            <app-post-dashboard></app-post-dashboard>
-            <app-post-dashboard></app-post-dashboard>
-            <app-post-dashboard></app-post-dashboard>
+            <div *ngFor="let post of sort_posts">
+              <app-post-dashboard [statistics_post]="post"></app-post-dashboard>
+            </div>
           </nz-card>
           <ng-template #popularPostsTemplate>
-            <!--[(ngModel)]="searchType" (ngModelChange)="changeType($event)"-->
-            <nz-radio-group>
-              <label nz-radio-button nzValue="0">所有</label>
-              <label nz-radio-button nzValue="1">月</label>
-              <label nz-radio-button nzValue="2">周</label>
+            <nz-radio-group [(ngModel)]="sort_range" (ngModelChange)="getSortPosts($event)">
+              <label nz-radio-button nzValue="all">所有</label>
+              <label nz-radio-button nzValue="month">月</label>
+              <label nz-radio-button nzValue="week">周</label>
             </nz-radio-group>
           </ng-template>
         </div>
