@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, TemplateRef, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,67 +6,102 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
-}
+  title = 'AFlowBlog';
+  isCollapsed = false;
+  triggerTemplate = null;
+  @ViewChild('trigger') customTrigger: TemplateRef<void>;
 
-export class Post {
-  public _id: string;
-  public title: string;
-  public description: string;
-  public content: string;
-  public md_content: string;
-  public create_date: string;
-  public modify_date: string;
-  public tags: Tag[];
-  public categories: Category;
-  public creator: Profile;
-  public status: number;
-}
-
-export class Profile {
-  public _id: string;
-  public confirmed: string;
-  public username: string;
-  public userImg: string;
-  public gender: number;
-  public email: string;
-  public signature: string;
-  public lastLoginDate: string;
-  public joinDate: string;
-  public mobile: string;
-  public exp: number;
-  public time: number;
-}
-
-export class Tag {
-  public name: string;
-  public image: string;
-  public _id: string;
-
-}
-
-export class Category {
-  public name: string;
-  public image: string;
-  public _id: string;
-}
-
-export interface MediaFile {
-  name: string;
-  path: string;
-  mimetype: string;
-  size: number;
-  createDate: string;
-  id: string;
+  /** custom trigger can be TemplateRef **/
+  changeTrigger(): void {
+    this.triggerTemplate = this.customTrigger;
+  }
 }
 
 export interface PageModel<T> {
-  firstPage: boolean;
-  lastPage: boolean;
   hasNextPage: boolean;
-  hasPreviousPage: boolean;
   pageSize: number;
   pageNum: number;
-  size: number;
+  count: number;
   list: Array<T>;
+}
+
+export class Media {
+  id: string;
+  name: string;
+  path: string;
+  description: string;
+  mimetype: string;
+  create_date: string;
+  modify_date: string;
+}
+
+export class Profile {
+  id: string;
+  username: string;
+  nickname: string;
+  userImg: string;
+  gender: number;
+  email: string;
+  signature: string;
+  confirmed: boolean;
+  lastLoginDate: string;
+  joinDate: string;
+  mobile: string;
+  status: number;
+  role: number;
+}
+
+export class Tag {
+  id: string;
+  name: string;
+  alias: string;
+  image: string;
+  description: string;
+  color: string;
+}
+
+export class Categories {
+  id: string;
+  name = '未分类';
+  alias: string;
+  image: string;
+  description: string;
+}
+
+export class Post {
+  id = '';
+  title = '';
+  description = '';
+  content = '';
+  create_date = '';
+  modify_date = '';
+  publish_date = '';
+  cover = null;
+  stick = false;
+  open = 0;
+  password = '';
+  open_comment = true;
+  need_review = false;
+  status = 0;
+  categories = null;
+  tags: Tag[] = [];
+}
+
+export class Comment {
+  id: string;
+  status: number;
+  content: string;
+  creator: Creator;
+  create_date: string;
+  post: Post;
+  delete_date: string;
+  delete_reason: string;
+
+}
+
+class Creator {
+  name: string;
+  email: string;
+  host: string;
+  img: string;
 }

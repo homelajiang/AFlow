@@ -1,117 +1,67 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 
-import {appRouting} from './app.router';
-
 import {AppComponent} from './app.component';
-import {LoginComponent} from './login/login.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import {NgZorroAntdModule, NZ_I18N, zh_CN} from 'ng-zorro-antd';
+import {registerLocaleData} from '@angular/common';
+import zh from '@angular/common/locales/zh';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
-import {DrawerComponent} from './drawer/drawer.component';
-import {WorkbenchComponent} from './workbench/workbench.component';
-import {BlogsComponent} from './blog/blogs/blogs.component';
-import {CommentsComponent} from './blog/comments/comments.component';
-import {TagsComponent} from './blog/tags/tags.component';
-import {CategoriesComponent} from './blog/categories/categories.component';
-import {EditBlogComponent} from './blog/edit/edit.component';
-import {MediaAddComponent} from './media/media-add/media-add.component';
+import {LoginComponent} from './login/login.component';
 import {MediaListComponent} from './media/media-list/media-list.component';
-import {HttpClientModule} from '@angular/common/http';
-
+import {PostEditComponent} from './post/post-edit/post-edit.component';
+import {PostListComponent} from './post/post-list/post-list.component';
+import {CommentComponent} from './comment/comment.component';
+import {TagComponent} from './tag/tag.component';
+import {CategoriesComponent} from './categories/categories.component';
+import {appRouting} from './app.router';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {PostDashboardComponent} from './post/post-dashboard/post-dashboard.component';
+import {CommentDashboardComponent} from './comment/comment-dashboard/comment-dashboard.component';
+import {MarkdownComponent} from './markdown/markdown.component';
+import {Code404Component} from './code404/code404.component';
+import { MainComponent } from './main/main.component';
+import { SettingComponent } from './setting/setting.component';
 import {ClipboardModule} from 'ngx-clipboard';
+import {ViserModule} from 'viser-ng';
 
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatDividerModule,
-  MatExpansionModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatRippleModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatStepperModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-} from '@angular/material';
+registerLocaleData(zh);
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
     HeaderComponent,
     FooterComponent,
-    DrawerComponent,
-    WorkbenchComponent,
-    BlogsComponent,
-    CommentsComponent,
-    TagsComponent,
+    LoginComponent,
+    MediaListComponent,
+    PostEditComponent,
+    PostListComponent,
+    CommentComponent,
+    TagComponent,
     CategoriesComponent,
-    EditBlogComponent,
-    MediaAddComponent,
-    MediaListComponent
+    DashboardComponent,
+    PostDashboardComponent,
+    CommentDashboardComponent,
+    MarkdownComponent,
+    Code404Component,
+    MainComponent,
+    SettingComponent
   ],
   imports: [
-    BrowserAnimationsModule,
     BrowserModule,
-    appRouting,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
-    MatNativeDateModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MatRippleModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatSnackBarModule,
-    MatSortModule,
-    MatStepperModule,
-    MatTableModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule,
-    ClipboardModule
+    NgZorroAntdModule,
+    appRouting,
+    ClipboardModule,
+    ViserModule
   ],
-  providers: [],
+  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

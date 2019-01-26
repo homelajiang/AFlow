@@ -1,7 +1,3 @@
-mat-grid-tile {
-  background: lightblue;
-}
-
 .media_covered {
   display: block;
 }
@@ -13,4 +9,3 @@ mat-grid-tile {
 .media_covered:hover .media_covered_area {
   display: block;
 }
-
