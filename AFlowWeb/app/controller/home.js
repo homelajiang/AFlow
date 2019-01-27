@@ -7,14 +7,12 @@ class HomeController extends Controller {
         await this.ctx.render('layout.tpl');
     }
 
-    async list() {
-        const dataList = {
-            list: [
-                {id: 1, title: 'this is news 1', url: '/news/1'},
-                {id: 2, title: 'this is news 2', url: '/news/2'}
-            ]
-        };
-        await this.ctx.render('news/list.tpl', dataList);
+    async posts() {
+        await this.ctx.render('posts.tpl');
+    }
+
+    async post() {
+        await this.ctx.render('post.tpl');
     }
 }
 
