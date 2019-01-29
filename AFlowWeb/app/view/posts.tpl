@@ -27,22 +27,18 @@
     <!--pagination-->
     <div class="pagination">
         <div class="pagination__buttons">
-            {{ if .Paginator.HasPrev }}
             <span class="button previous">
         <a href="#">
           <span class="button__icon">←</span>
           <span class="button__text">Newer posts</span>
         </a>
       </span>
-            {{ end }}
-            {{ if .Paginator.HasNext }}
             <span class="button next">
         <a href="#">
           <span class="button__text">Older posts</span>
           <span class="button__icon">→</span>
         </a>
       </span>
-            {{ end }}
         </div>
     </div>
     <!--pagination-->

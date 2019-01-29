@@ -72,7 +72,7 @@
     <!--pagination-->
     <div class="pagination">
         <div class="pagination__title">
-            <span class="pagination__title-h">ReadOtherPosts</span>
+            <span class="pagination__title-h">READ OTHER POSTS</span>
             <hr />
         </div>
         <div class="pagination__buttons">
@@ -92,6 +92,10 @@
             </span>
 
         </div>
+    </div>
+
+    <div>
+
     </div>
 
 </div>
