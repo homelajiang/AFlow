@@ -23,28 +23,48 @@
 
     {% endfor %}
 
-    <div style="margin-top: 60px;">
-        <h3>发表评论</h3>
-        <div>您的留言 （HTML标签部分可用）</div>
-        <textarea style="height: 120px;padding: 10px;width: 100%;background:transparent;border-radius: 5px;"
-                  placeholder="发表你的看法"></textarea>
+    <p style="margin-top: 60px;">
+    <h3>发表评论</h3>
+    <div>您的留言 （HTML标签部分可用）</div>
+
+    <form action="">
+        <!--<textparea rows="6" style="padding: 10px;width: 100%;background:transparent;border-radius: 5px;"-->
+        <!--placeholder="发表你的看法"></textparea>-->
+        <textarea placeholder="发表你的看法" rows="8"
+                  style="padding: 10px;width: 100%;background:transparent;border-radius: 5px;"></textarea>
 
         <div>
-            <label>您的称呼</label>
-            <input style="background: transparent;padding: 5px;" placeholder="姓名（必填）">
-            <div>电子邮箱</div>
-            <input style="background: transparent;padding: 5px;" placeholder="邮箱（必填）">
-            <div>个人网址</div>
-            <input style="background: transparent;padding: 5px;" placeholder="主页（选填）">
-            <span class="button previous">
-                    <a href="#">
-                        <span class="button__text">发表</span>
-                    </a>
-                </span>
-
+            <div style="margin-top: 15px;margin-bottom: 5px;">
+                <label>您的称呼</label>
+            </div>
+            <input style="padding: 5px;border:1px solid #d3d3d3;border-radius: 2px;font-size: 1rem;"
+                   size="30"
+                   placeholder="称呼（必填）">
         </div>
 
-    </div>
+        <div>
+            <div style="margin-top: 15px;margin-bottom: 5px;">
+                <label>电子邮箱</label>
+            </div>
+            <input style="padding: 5px;border:1px solid #d3d3d3;border-radius: 2px;font-size: 1rem;"
+                   size="30"
+                   placeholder="邮箱（必填）">
+        </div>
+
+        <div>
+            <div style="margin-top: 15px;margin-bottom: 5px;">
+                <label>个人网址</label>
+            </div>
+            <input style="padding: 5px;border:1px solid #d3d3d3;border-radius: 2px;font-size: 1rem;"
+                   size="30"
+                   placeholder="主页（选填）">
+        </div>
+
+        <input style="border:1px solid #d3d3d3;width: 10em;padding: 4px 0;margin-top: 20px;" type="submit" value="提交">
+
+    </form>
+
+</div>
 
 </div>
 {% endblock %}
