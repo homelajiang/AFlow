@@ -65,6 +65,9 @@ PostSchema.virtual('simple_model')
             id: this.id,
             title: this.title,
             description: this.description,
+            create_date: Util.defaultFormat(this.create_date),
+            cover: this.cover,
+            status: this.status
         };
     });
 
@@ -95,17 +98,6 @@ PostSchema.virtual('list_model')
         }
         temp.tags = t;
         return temp;
-    });
-
-PostSchema.virtual('simple_model')
-    .get(function () {
-        return {
-            id: this.id,
-            title: this.title,
-            description: this.description,
-            cover: this.cover,
-            status: this.status
-        };
     });
 
 PostSchema.static({

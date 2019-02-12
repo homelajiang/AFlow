@@ -20,10 +20,10 @@
     <span class="header__right">
 <nav class="menu">
   <ul class="menu__inner">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">Categories</a></li>
-      <li><a href="#">Archive</a></li>
-      <li><a href="#">About</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/tags">Categories & Tags</a></li>
+      <li><a href="/archive">Archive</a></li>
+      <li><a href="/about">About</a></li>
   </ul>
 </nav>
         <span class="menu-trigger">

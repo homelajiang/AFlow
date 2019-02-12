@@ -195,8 +195,30 @@ module.exports = function (options) {
     });
 
 
-    // 获取热门post列表
-    this.add('role:post,cmd:popular', async (args, respond) => {
+    //获取文章归档列表
+    this.add('role:post,cmd:archive', async (args, respond) => {
+        try { //按年份分组
+            let posts = await Post.aggregate(
+                [
+                    {
+                        $group: {
+                            _id: {$year: "$create_date"},
+                            count: {$sum: 1},
+                            posts: {$push: "$_id"}
+                        }
+                    }
+                ]);
+            //查询
+            posts = await Post.populate(posts, {path: 'posts'});
+            for (let i = 0; i < posts.length; i++) {
+                for(let j=0;j<posts[i].posts.length;j++){
+                    posts[i].posts[j] = posts[i].posts[j].simple_model;
+                }
+            }
+            respond(posts);
+        } catch (e) {
+            respond(Util.generateErr("获取归档列表失败"));
+        }
     });
 
     //删除post
