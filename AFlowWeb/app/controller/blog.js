@@ -1,6 +1,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
+const marked = require('marked');
 
 class BlogController extends Controller {
     async page() {
@@ -26,6 +27,7 @@ class BlogController extends Controller {
             const post = await ctx.service.blog.getPost(postId);
             result = {};
             result.post = post;
+            result.post.content = marked(post.content);
         }
         await this.ctx.render('post.tpl', result);
 

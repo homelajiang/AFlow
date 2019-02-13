@@ -8,6 +8,7 @@
     "egg": "^2.2.1",
     "egg-scripts": "^2.5.0",
     "egg-view-nunjucks": "^2.2.0",
+    "marked": "^0.6.0",
     "seneca": "^3.8.1",
     "seneca-basic": "^0.6.0",
     "seneca-entity": "^2.5.1"
