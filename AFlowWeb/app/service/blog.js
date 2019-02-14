@@ -12,8 +12,18 @@ class BlogService extends Service {
     // 获取首页博客列表
     async getPosts(page, size) {
         return await act({
-            role: 'post',
-            cmd: 'list',
+            role: 'blog',
+            cmd: 'post_list',
+            pageSize: size,
+            pageNum: page
+        });
+    }
+
+    //获取评论列表
+    async getComments(postId, page, size) {
+        return await act({
+            role: 'blog',
+            cmd: 'comment_list',
             pageSize: size,
             pageNum: page
         });
@@ -21,13 +31,23 @@ class BlogService extends Service {
 
     // 获取博客详情
     async getPost(id) {
+        //获取博客详情
         return await act({
-            role: 'post',
-            cmd: 'query',
+            role: 'blog',
+            cmd: 'post_info',
             id: id
         });
-
     }
+
+    //获取上一篇和下一篇
+    async getAroundPost(id) {
+        return await  act({
+            role: 'blog',
+            cmd: 'post_around',
+            id: id
+        });
+    }
+
 
     //校验博客密码
     async checkPostPassword(id, password) {
@@ -37,30 +57,26 @@ class BlogService extends Service {
     // 获取tag列表
     async getTags() {
 
-        const tagPage = await act({
-            role: 'tag',
-            cmd: 'list',
-            pageSize: '1000',
-            pageNum: '1'
+        const tags = await act({
+            role: 'blog',
+            cmd: 'tags'
         });
 
-        const categoriesPage = await act({
-            role: 'categories',
-            cmd: 'list',
-            pageSize: '1000',
-            pageNum: '1'
+        const categories = await act({
+            role: 'blog',
+            cmd: 'categories'
         });
         return {
-            categories: categoriesPage.list,
-            tags: tagPage.list
+            categories: categories,
+            tags: tags
         };
     }
 
     // 获取归档列表
     async getArchives() {
         return await act({
-            role: 'post',
-            cmd: 'archive'
+            role: 'blog',
+            cmd: 'archives'
         });
     }
 

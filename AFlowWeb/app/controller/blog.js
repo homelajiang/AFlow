@@ -1,7 +1,6 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-const marked = require('marked');
 
 class BlogController extends Controller {
     async page() {
@@ -24,10 +23,19 @@ class BlogController extends Controller {
         let result;
 
         if (postId) {
-            const post = await ctx.service.blog.getPost(postId);
-            result = {};
-            result.post = post;
-            result.post.content = marked(post.content);
+
+            const postInfo = await ctx.service.blog.getPost(postId);
+            const aroundPost = await ctx.service.blog.getAroundPost(postId);
+            const comments = await ctx.service.blog.getComments(postId,1, 10);
+
+            result = {
+                post: postInfo,
+                previous: aroundPost.previous,
+                next: aroundPost.next,
+                comments: comments,
+                showAround: aroundPost.next || aroundPost.previous,
+                postComment: false // todo 是否禁止评论
+            };
         }
         await this.ctx.render('post.tpl', result);
 

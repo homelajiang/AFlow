@@ -18,7 +18,7 @@ const PostSchema = new Schema({
     modify_date: {type: Date},
     publish_date: {type: Date},
     cover: {type: String, default: null},
-    stick: {type: Boolean, default: false},
+    stick: {type: Boolean, default: false}, //置顶
     open: {type: Number, default: 0},//公开性 0 公开  1 密码保护 2 私密
     password: {type: String, default: '000000'},//保护密码
     open_comment: {type: Boolean, default: true},//是否开放评论
@@ -71,6 +71,32 @@ PostSchema.virtual('simple_model')
         };
     });
 
+PostSchema.virtual('blog_model')
+    .get(function () {
+        const temp = {
+            id: this.id,
+            title: this.title,
+            description: this.description,
+            content: null,
+            create_date: Util.defaultFormat(this.create_date),
+            modify_date: Util.defaultFormat(this.modify_date),
+            publish_date: Util.defaultFormat(this.publish_date),
+            stick: this.stick,
+            open: this.open,
+            cover: this.cover,
+            open_comment: this.open_comment
+        };
+        temp.categories = this.categories ? this.categories.model : null;
+        const t = [];
+        if (this.tags) {
+            this.tags.forEach((tag) => {
+                t.push(tag.model);
+            });
+        }
+        temp.tags = t;
+        return temp;
+    });
+
 PostSchema.virtual('list_model')
     .get(function () {
         const temp = {
@@ -84,9 +110,7 @@ PostSchema.virtual('list_model')
             stick: this.stick,
             open: this.open,
             cover: this.cover,
-            password: this.password,
             open_comment: this.open_comment,
-            need_review: this.need_review,
             status: this.status
         };
         temp.categories = this.categories ? this.categories.model : null;

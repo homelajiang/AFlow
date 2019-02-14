@@ -34,6 +34,21 @@ CommentSchema.virtual('model')
         }
     });
 
+CommentSchema.virtual('blog_model')
+    .get(function () {
+        return {
+            id: this._id,
+            content: this.content,
+            create_date: Util.defaultFormat(this.create_date),
+            post: this.post,
+            creator: {
+                name: this.creator.name,
+                host: this.creator.host,
+                img: this.creator.img
+            }
+        }
+    });
+
 CommentSchema.static({
     getInsertModel: function (model) {
         let temp = {};

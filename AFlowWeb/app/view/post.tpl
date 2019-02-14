@@ -25,9 +25,14 @@
     {% endif %}
     <!--content-->
     <div class="post-content">
+        {% markdown %}
+        <!--需要解决转义问题-->
         {{post.content}}
+
+        {% endmarkdown %}
     </div>
 
+    {% if showAround %}
     <!--pagination-->
     <div class="pagination">
         <div class="pagination__title">
@@ -35,24 +40,30 @@
             <hr/>
         </div>
         <div class="pagination__buttons">
-
-            <a href="#">
+            {% if previous %}
+            <a href="/post/{{previous.id}}">
                 <span class="button__icon">←</span>
-                <span class="button__text">上一页</span>
+                <span class="button__text">{{previous.title}}</span>
             </a>
+            {% endif %}
 
-            <a href="#">
-                <span class="button__text">下一页</span>
+            {% if next %}
+            <a href="/post/{{next.id}}">
+                <span class="button__text">{{next.title}}</span>
                 <span class="button__icon">→</span>
             </a>
-
+            {% endif %}
         </div>
     </div>
+    {% endif %}
 
     <div class="posts post on-list">
-        <h3>评论（36）</h3>
 
-        {% for item in [1,2,3,4,5,6] %}
+        {% if comments.count>0%}
+        <h3>评论（{{comments.count}}）</h3>
+        {% endif %}
+
+        {% for item in comments.list %}
         <div style="padding: 20px;">
             <div style="display: flex;">
                 <img style="width: 40px;height: 40px; border-radius:50%;"
