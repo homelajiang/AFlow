@@ -18,9 +18,17 @@
               </a>
             </span>
         </div>
+
+        {% else %}
+
+        <div>没有相关数据</div>
+
         {% endfor %}
 
     </section>
+
+    {% else %}
+    <h2>{{error}}</h2>
     {% endfor %}
 </div>
 

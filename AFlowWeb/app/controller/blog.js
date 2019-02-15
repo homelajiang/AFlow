@@ -25,16 +25,16 @@ class BlogController extends Controller {
         if (postId) {
 
             const postInfo = await ctx.service.blog.getPost(postId);
+            // todo 文章不存在处理 (错误处理)
             const aroundPost = await ctx.service.blog.getAroundPost(postId);
-            const comments = await ctx.service.blog.getComments(postId,1, 10);
+            const comments = await ctx.service.blog.getComments(postId, 1, 10);
 
             result = {
                 post: postInfo,
                 previous: aroundPost.previous,
                 next: aroundPost.next,
                 comments: comments,
-                showAround: aroundPost.next || aroundPost.previous,
-                postComment: false // todo 是否禁止评论
+                showAround: aroundPost.next || aroundPost.previous
             };
         }
         await this.ctx.render('post.tpl', result);
@@ -51,6 +51,42 @@ class BlogController extends Controller {
         const {ctx} = this;
         const archives = await ctx.service.blog.getArchives();
         await this.ctx.render('archives.tpl', {archives: archives});
+    }
+
+    async searchTag() {
+        const {ctx} = this;
+        const posts = await ctx.service.blog.search('tag', this.ctx.params.tagName);
+        let archives;
+        if (posts.error) {
+            archives = {error: posts.message};
+        } else {
+            archives = {archives: [{_id: this.ctx.params.tagName, count: posts.length, posts: posts}]}
+        }
+        await this.ctx.render('archives.tpl', archives);
+    }
+
+    async searchCategories() {
+        const {ctx} = this;
+        const posts = await ctx.service.blog.search('categories', this.ctx.params.categoriesName);
+        let archives;
+        if (posts.error) {
+            archives = {error: posts.message};
+        } else {
+            archives = {archives: [{_id: this.ctx.params.categoriesName, count: posts.length, posts: posts}]}
+        }
+        await this.ctx.render('archives.tpl', archives);
+    }
+
+    async searchKeyword() {
+        const {ctx} = this;
+        const posts = await ctx.service.blog.search('keyword', this.ctx.query.key);
+        let archives;
+        if (posts.error) {
+            archives = {error: posts.message};
+        } else {
+            archives = {archives: [{_id: this.ctx.query.key, count: posts.length, posts: posts}]}
+        }
+        await this.ctx.render('archives.tpl', archives);
     }
 
 }

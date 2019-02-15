@@ -3,6 +3,7 @@
 
 const Post = require('../../../models/post');
 const Tag = require('../../../models/tag');
+const Comment = require('../../../models/comment');
 const Categories = require('../../../models/categories');
 const Util = require('../../util');
 
@@ -28,7 +29,6 @@ module.exports = function (options) {
             });
             respond(null, Util.generatePageModel(pageSize, pageNum, count, tempList));
         } catch (e) {
-            this.logger.error(e);
             respond(Util.generateErr("获取文章列表失败"));
         }
 
@@ -40,8 +40,8 @@ module.exports = function (options) {
             const pageNum = parseInt(args.pageNum);
 
             // 审核通过的
-            const count = await Comment.find({status: 0}).countDocuments();
-            const comments = await Comment.find({status: 0})
+            const count = await Comment.find({post: args.id, status: 0}).countDocuments();
+            const comments = await Comment.find({post: args.id, status: 0})
                 .skip((pageNum - 1) * pageSize)
                 .limit(pageSize)
                 .sort({create_date: -1});
@@ -52,7 +52,6 @@ module.exports = function (options) {
             });
             respond(Util.generatePageModel(pageSize, pageNum, count, tempList));
         } catch (e) {
-            this.logger.error(e);
             respond(Util.generateErr("获取评论列表失败"));
         }
 
@@ -69,7 +68,6 @@ module.exports = function (options) {
                 respond(Util.generateErr("文章不存在", 404));
             }
         } catch (e) {
-            this.logger.error(e);
             respond(Util.generateErr("获取文章信息失败"));
         }
     });
@@ -92,7 +90,6 @@ module.exports = function (options) {
                 next: nextPost.length > 0 ? nextPost[0].simple_model : null
             });
         } catch (e) {
-            this.logger.error(e);
             respond(Util.generateErr("查询文章失败"));
         }
     });
@@ -102,7 +99,6 @@ module.exports = function (options) {
             const tags = await Tag.find();
             respond(tags);
         } catch (e) {
-            this.logger.error(e);
             respond(Util.generateErr("获取标签列表失败"));
         }
 
@@ -113,7 +109,6 @@ module.exports = function (options) {
             const categories = await Categories.find();
             respond(categories);
         } catch (e) {
-            this.logger.error(e);
             respond(Util.generateErr("获取分类列表失败"));
         }
     });
@@ -139,12 +134,46 @@ module.exports = function (options) {
             }
             respond(posts);
         } catch (e) {
-            this.logger.error(e);
             respond(Util.generateErr("获取归档列表失败"));
         }
     });
     //获取搜索结果（tag categories keyword）
     this.add('role:blog,cmd:search', async (args, respond) => {
+        try {
+            let posts;
+            if (args.type === 'tag') {
+                //搜索tag
+                const tag = await Tag.findOne({name: args.keyword});
+                if (tag) {
+                    posts = await Post.find({status: 1, open: {$lt: 2}, tags: {$elemMatch: {$eq: tag._id}}});
+                } else {
+                    respond(Util.generateErr('标签不存在', 404));
+                }
+            } else if (args.type === 'categories') {
+                //搜索categories
+                const categories = await Categories.findOne({name: args.keyword});
+                if (categories) {
+                    posts = await Post.find({status: 1, open: {$lt: 2}, categories: categories});
+                } else {
+                    respond(Util.generateErr('分类不存在', 404));
+                }
+            } else {
+                //搜索关键字
+                posts = await Post.find({status: 1, open: {$lt: 2}})
+                    .or([
+                        {title: {$regex: new RegExp(args.keyword, 'i')}},
+                        {description: {$regex: new RegExp(args.keyword, 'i')}},
+                    ]);
+            }
+
+            const tempList = [];
+            posts.forEach((element) => {
+                tempList.push(element.simple_model);
+            });
+            respond(tempList);
+        } catch (e) {
+            respond(Util.generateErr("搜索失败"));
+        }
 
     });
 

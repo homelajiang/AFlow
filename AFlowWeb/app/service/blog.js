@@ -24,6 +24,7 @@ class BlogService extends Service {
         return await act({
             role: 'blog',
             cmd: 'comment_list',
+            id: postId,
             pageSize: size,
             pageNum: page
         });
@@ -41,7 +42,7 @@ class BlogService extends Service {
 
     //获取上一篇和下一篇
     async getAroundPost(id) {
-        return await  act({
+        return await act({
             role: 'blog',
             cmd: 'post_around',
             id: id
@@ -81,8 +82,13 @@ class BlogService extends Service {
     }
 
     // 检索搜索结果（keyword、tag、categories）
-    async search(keyword, tag, categories) {
-
+    async search(type, keyword) {
+        return await act({
+            role: 'blog',
+            cmd: 'search',
+            type: type,
+            keyword: keyword
+        });
     }
 }
 

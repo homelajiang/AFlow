@@ -77,7 +77,7 @@ PostSchema.virtual('blog_model')
             id: this.id,
             title: this.title,
             description: this.description,
-            content: null,
+            content: this.content,
             create_date: Util.defaultFormat(this.create_date),
             modify_date: Util.defaultFormat(this.modify_date),
             publish_date: Util.defaultFormat(this.publish_date),
