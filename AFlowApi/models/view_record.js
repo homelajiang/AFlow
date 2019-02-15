@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const viewRecordSchema = new Schema({
     user: String,
     ip: String,
-    os: String,
+    path: String,
     language: String,
     browser: String,
     date: {type: Date, default: Date.now},

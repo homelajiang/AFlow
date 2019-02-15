@@ -90,6 +90,15 @@ class BlogService extends Service {
             keyword: keyword
         });
     }
+
+    // 记录访问记录
+    async recordView(record) {
+        return await act({
+            role: 'statistics',
+            cmd: 'add',
+            record: record
+        })
+    }
 }
 
 module.exports = BlogService;
