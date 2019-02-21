@@ -132,6 +132,7 @@ module.exports = [
             }
         },
         config: {
+            auth: "simple",// 开启验证
             validate: {
                 query: {
                     pageSize: Joi.number().default(10),
@@ -649,7 +650,7 @@ module.exports = [
                 query: {
                     limit: Joi.number().integer().default(5),
                     sort_by: Joi.string().valid(['view', 'comment']).default('view'),
-                    sort_range: Joi.string().valid(['day', 'three day', 'week', 'month', 'year','all']).default('week')
+                    sort_range: Joi.string().valid(['day', 'three day', 'week', 'month', 'year', 'all']).default('week')
                 },
                 failAction: Util.validateErr
             }
