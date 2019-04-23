@@ -67,13 +67,13 @@ const init = async () => {
         //https://github.com/hapijs/yar
         await server.register({
             plugin: require('yar'),
-            // cache: {
-            //     expiresIn: 5 * 1000
-            // },
             options: {
                 name: 'JSESSION',
                 // maxCookieSize: 0, //Defaults to 1K. Set to zero to always use server-side storage.
                 storeBlank: false,
+                // cache: {
+                //     expiresIn: 5 * 1000
+                // },
                 cookieOptions: {
                     password: 'the-password-must-be-at-least-32-characters-long',
                     isSecure: false
@@ -85,8 +85,8 @@ const init = async () => {
     }
 
     await server.register(require('./plugin/hapi-auth-session'));
-    server.auth.strategy('simple', 'session', {});
-    // server.auth.default('simple');
+    server.auth.strategy('simple', 'session', {}); //server.auth.strategy(name, scheme, [options])
+    // server.auth.default('simple'); //设置一个默认的 strategy。
 
     /*        await server.register(hapiAuthJWT);
             server.auth.strategy('jwt', 'jwt', {

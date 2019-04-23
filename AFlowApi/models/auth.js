@@ -14,13 +14,15 @@ const authSchema = new Schema({
 
 authSchema.virtual('model')
     .get(function () {
+        const temp = this.profile.model;
         return {
             auth: {
+                id: temp.id,
                 username: this.username,
                 status: this.status,
                 role: this.role
             },
-            profile: this.profile.model
+            profile: temp
         };
     });
 

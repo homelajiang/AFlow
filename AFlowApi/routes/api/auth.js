@@ -30,9 +30,8 @@ module.exports = [
                     return Util.generateBoom(res);
                 } else {
                     // res.profile.token = Util.generateJWT(res.auth);
-                    res.profile.status = res.auth.status;
-                    res.profile.role = res.auth.role;
-                    request.yar.set('user', res.profile);
+                    //写入cookie
+                    request.yar.set('user', res.auth);
                     return res.profile;
                 }
 
