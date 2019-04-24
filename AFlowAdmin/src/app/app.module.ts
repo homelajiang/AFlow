@@ -23,8 +23,8 @@ import {PostDashboardComponent} from './post/post-dashboard/post-dashboard.compo
 import {CommentDashboardComponent} from './comment/comment-dashboard/comment-dashboard.component';
 import {MarkdownComponent} from './markdown/markdown.component';
 import {Code404Component} from './code404/code404.component';
-import { MainComponent } from './main/main.component';
-import { SettingComponent } from './setting/setting.component';
+import {MainComponent} from './main/main.component';
+import {SettingComponent} from './setting/setting.component';
 import {ClipboardModule} from 'ngx-clipboard';
 import {ViserModule} from 'viser-ng';
 
@@ -61,7 +61,7 @@ registerLocaleData(zh);
     ClipboardModule,
     ViserModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  providers: [{provide: NZ_I18N, useValue: zh_CN}],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -86,7 +86,7 @@ const init = async () => {
 
     await server.register(require('./plugin/hapi-auth-session'));
     server.auth.strategy('simple', 'session', {}); //server.auth.strategy(name, scheme, [options])
-    // server.auth.default('simple'); //设置一个默认的 strategy。
+    server.auth.default('simple'); //设置一个默认的 strategy。
 
     /*        await server.register(hapiAuthJWT);
             server.auth.strategy('jwt', 'jwt', {
@@ -98,6 +98,7 @@ const init = async () => {
                 }
             });
             server.auth.default('jwt');*/
+    // TODO 接口默认返回信息
     server.route(require('./routes/index'));
 
     routes.forEach(function (r) {

@@ -3,6 +3,8 @@ import {Observable, throwError} from 'rxjs';
 import {Profile} from '../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {routerNgProbeToken} from '@angular/router/src/router_module';
 
 @Injectable({
   providedIn: 'root'
@@ -16,30 +18,24 @@ export class AuthService implements OnInit {
 
   redirectUrl: string;
 
-  constructor(private http: HttpClient) {
-    // this.isLoggedIn = true;
-    // this.profile = new Profile();
-    // this.profile.id = '5bceea05a7ebdd1938a6fa9d';
-    // this.profile.username = 'homelajiang';
-    // this.profile.nickname = 'homelajiang';
-    // this.profile.gender = 1;
-    // this.profile.email = '807598374@qq.com';
-    // this.profile.signature = '我这个人很勤，但是什么都不想写。';
-    // this.profile.confirmed = false;
-    // this.profile.lastLoginDate = '2018-10-23 17:29:41';
-    // this.profile.joinDate = '2018-10-23 17:29:41';
-    // this.profile.mobile = '12345678945';
-    // this.profile.status = 0;
-    // this.profile.role = 0;
+  constructor(private http: HttpClient, private router: Router) {
   }
 
-  private static handleError(error: HttpErrorResponse) {
+  // 错误处理
+  public handleError(error: HttpErrorResponse) {
     let errorMsg;
     if (error.error instanceof ErrorEvent) {
       errorMsg = `错误：${error.error.message}`;
     } else {
       errorMsg = error.error.message ? error.error.message : error.error;
     }
+
+    if (error.status === 401) {
+      // TODO 保存redirectUrl
+      // this.authService.redirectUrl = url;
+      // this.router.navigate(['/login']);
+    }
+
     return throwError(errorMsg);
   }
 
@@ -61,15 +57,39 @@ export class AuthService implements OnInit {
         }, httpOptions)
       .pipe(
         tap((profile: Profile) => {
-          this.profile = profile;
-          this.isLoggedIn = true;
+          this.saveProfile(profile);
         }),
-        catchError(AuthService.handleError)
+        catchError(this.handleError)
       );
   }
 
   logout(): void {
-    this.isLoggedIn = false;
+    this.removeProfile();
   }
 
+  // 保存profile
+  saveProfile(profile: Profile): void {
+    console.log('init');
+    if (profile === null) {
+      return;
+    }
+    sessionStorage.setItem('profile', JSON.stringify(profile));
+    this.profile = profile;
+    this.isLoggedIn = true;
+  }
+
+  // 移除profile
+  removeProfile(): void {
+    this.profile = null;
+    this.isLoggedIn = false;
+    sessionStorage.removeItem('profile');
+  }
+
+  // 初始化登陆状态
+  initLoginStatus() {
+    this.profile = JSON.parse(sessionStorage.getItem('profile'));
+    if (this.profile != null) {
+      this.isLoggedIn = true;
+    }
+  }
 }

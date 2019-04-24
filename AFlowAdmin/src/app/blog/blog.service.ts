@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Categories, Comment, PageModel, Post, Tag} from '../app.component';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {Utils} from '../utils';
+import {Router} from '@angular/router';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,28 +17,28 @@ export class BlogService {
     })
   };
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
   }
 
 
   createCategories(categories: Categories): Observable<Categories> {
     return this.http.post<Categories>('api/v1/categories', categories, this.commentHttpOptions)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   removeCategories(id: string): Observable<{}> {
     return this.http.delete(`api/v1/categories/${id}`)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   updateCategories(id: string, categories: Categories): Observable<Categories> {
     return this.http.post<Categories>(`api/v1/categories/${id}`, categories, this.commentHttpOptions)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
@@ -50,35 +51,35 @@ export class BlogService {
     }
     return this.http.get<PageModel<Categories>>('api/v1/categories', {params: p})
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   getCategoriesInfo(id: string): Observable<Categories> {
     return this.http.get<Categories>(`api/v1/categories/${id}`)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   createTags(tag: Tag): Observable<Tag> {
     return this.http.post<Tag>('api/v1/tag', tag, this.commentHttpOptions)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   removeTag(id: string): Observable<{}> {
     return this.http.delete(`api/v1/tag/${id}`)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   updateTag(id: string, tag: Tag): Observable<Tag> {
     return this.http.post<Tag>(`api/v1/tag/${id}`, tag, this.commentHttpOptions)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
@@ -91,21 +92,21 @@ export class BlogService {
     }
     return this.http.get<PageModel<Tag>>('api/v1/tag', {params: p})
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   removeComment(id: String): Observable<{}> {
     return this.http.delete(`api/v1/comment/${id}`)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   updateComment(id: string, comment: any): Observable<Comment> {
     return this.http.post<Comment>(`api/v1/comment/${id}`, comment, this.commentHttpOptions)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
@@ -126,35 +127,35 @@ export class BlogService {
 
     return this.http.get<PageModel<Comment>>('api/v1/comment', {params: p})
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   getTagInfo(id: string): Observable<Tag> {
     return this.http.get<Tag>(`api/v1/tag/${id}`)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   createPost(post): Observable<Post> {
     return this.http.post<Post>('api/v1/post', post, this.commentHttpOptions)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   removePost(id: string): Observable<{}> {
     return this.http.delete(`api/v1/post/${id}`)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   updatePost(id: string, post): Observable<Post> {
     return this.http.post<Post>(`api/v1/post/${id}`, post, this.commentHttpOptions)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
@@ -173,25 +174,25 @@ export class BlogService {
 
     return this.http.get<PageModel<Post>>('api/v1/post', {params: p})
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   getPostInfo(id: string): Observable<Post> {
     return this.http.get<Post>(`api/v1/post/${id}`)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   getTodos(page: number): Observable<PageModel<any>> {
     return this.http.get<PageModel<any>>(`api/v1/todos`)
-      .pipe(catchError(Utils.handleError));
+      .pipe(catchError(this.authService.handleError));
   }
 
   getStatistics(): Observable<any> {
     return this.http.get(`api/v1/statistics`)
-      .pipe(catchError(Utils.handleError));
+      .pipe(catchError(this.authService.handleError));
   }
 
   getPostStatistics(sort_by: string, sort_rang: string): Observable<any> {
@@ -199,7 +200,7 @@ export class BlogService {
       .set('sort_by', sort_by)
       .set('sort_range', sort_rang);
     return this.http.get(`api/v1/statistics/post`, {params: p})
-      .pipe(catchError(Utils.handleError));
+      .pipe(catchError(this.authService.handleError));
   }
 
 }

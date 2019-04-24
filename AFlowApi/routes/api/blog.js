@@ -132,7 +132,6 @@ module.exports = [
             }
         },
         config: {
-            auth: "simple",// 开启验证
             validate: {
                 query: {
                     pageSize: Joi.number().default(10),

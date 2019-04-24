@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Media, PageModel, Profile} from '../app.component';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Utils} from '../utils';
 import {catchError, tap} from 'rxjs/operators';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class MediaService {
     })
   };
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
   }
 
   getMedias(page: number, keyword?: string): Observable<PageModel<Media>> {
@@ -28,7 +28,7 @@ export class MediaService {
     }
     return this.http.get<PageModel<Media>>('api/v1/file', {params: p})
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
@@ -51,14 +51,14 @@ export class MediaService {
       .post<Media>(`api/v1/file/${id}`,
         reqBody, httpOptions)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
   deleteMedia(id: string): Observable<{}> {
     return this.http.delete(`api/v1/file/${id}`)
       .pipe(
-        catchError(Utils.handleError)
+        catchError(this.authService.handleError)
       );
   }
 
