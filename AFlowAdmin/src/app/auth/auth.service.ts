@@ -19,23 +19,6 @@ export class AuthService implements OnInit {
   constructor(private http: HttpClient, private router: Router) {
   }
 
-  // 错误处理
-  public handleError(error: HttpErrorResponse) {
-    let errorMsg;
-    if (error.error instanceof ErrorEvent) {
-      errorMsg = `错误：${error.error.message}`;
-    } else {
-      errorMsg = error.error.message ? error.error.message : error.error;
-    }
-
-    if (error.status === 401) {
-      // TODO 保存redirectUrl
-      // this.authService.redirectUrl = url;
-      // this.router.navigate(['/login']);
-    }
-
-    return throwError(errorMsg);
-  }
 
   ngOnInit(): void {
   }
@@ -58,8 +41,7 @@ export class AuthService implements OnInit {
           if (auth.access_token !== null && auth.access_token !== undefined) {
             localStorage.setItem('access_token', auth.access_token);
           }
-        }),
-        catchError(this.handleError)
+        })
       );
   }
 

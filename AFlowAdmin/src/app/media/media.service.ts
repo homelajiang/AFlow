@@ -26,10 +26,7 @@ export class MediaService {
     if (keyword && keyword.trim()) {
       p = p.set('keyword', keyword.trim());
     }
-    return this.http.get<PageModel<Media>>('api/v1/file', {params: p})
-      .pipe(
-        catchError(this.authService.handleError)
-      );
+    return this.http.get<PageModel<Media>>('api/v1/file', {params: p});
   }
 
   updateMedia(id: string, media: Media): Observable<Media> {
@@ -49,17 +46,11 @@ export class MediaService {
 
     return this.http
       .post<Media>(`api/v1/file/${id}`,
-        reqBody, httpOptions)
-      .pipe(
-        catchError(this.authService.handleError)
-      );
+        reqBody, httpOptions);
   }
 
   deleteMedia(id: string): Observable<{}> {
-    return this.http.delete(`api/v1/file/${id}`)
-      .pipe(
-        catchError(this.authService.handleError)
-      );
+    return this.http.delete(`api/v1/file/${id}`);
   }
 
 

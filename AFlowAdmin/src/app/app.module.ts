@@ -71,7 +71,7 @@ registerLocaleData(zh);
     })
   ],
   providers: [{provide: NZ_I18N, useValue: zh_CN},
-    // httpInterceptorProviders // 拦截器
+    httpInterceptorProviders // 拦截器
   ],
   bootstrap: [AppComponent]
 })
