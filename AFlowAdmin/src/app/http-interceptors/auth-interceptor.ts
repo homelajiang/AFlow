@@ -15,7 +15,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(req)
       .pipe(
-        retry(1),
+        // retry(1),
         catchError((error: HttpErrorResponse) => {
           let errorMessage = '';
           if (error.error instanceof ErrorEvent) {

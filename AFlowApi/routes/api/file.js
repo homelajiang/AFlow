@@ -122,7 +122,11 @@ module.exports = [
 
                 const datetimeDir = Util.datetimePathFormat(Date.now());
 
-                const targetDir = Path.join(IMAGE_ROOT, "uploads/" + datetimeDir + "/");
+                const parentDir = Path.join(IMAGE_ROOT, 'uploads');
+                if (!fs.existsSync(parentDir))
+                    fs.mkdirSync(parentDir);
+
+                const targetDir = Path.join(parentDir, datetimeDir);
 
                 if (!fs.existsSync(targetDir))
                     fs.mkdirSync(targetDir);
