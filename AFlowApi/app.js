@@ -3,31 +3,6 @@ const Path = require('path');
 const Hapi = require('hapi');
 const Inert = require('inert');
 const routes = require('./routes/api/index');
-const hapiAuthJWT = require('hapi-auth-jwt2');
-
-
-const JWT = require('jsonwebtoken');  // used to sign our content
-const jwtSecret = 'NeverShareYourSecret'; // Never Share This! even in private GitHub repos!
-
-// const token = JWT.sign(people[1], jwtSecret); // synchronous
-
-const validate = async function (decoded, request, h) {
-    console.log(" - - - - - - - decoded token:");
-    console.log(decoded);
-    console.log(" - - - - - - - request info:");
-    console.log(request.info);
-    console.log(" - - - - - - - user agent:");
-    console.log(request.headers['user-agent']);
-
-    // do your checks to see if the person is valid
-    /*    if (!people[decoded.id]) {
-            return {isValid: false};
-        }
-        else {
-            return {isValid: true};
-        }*/
-    return {isValid: true};
-};
 
 // Create a server with a host and port
 const server = Hapi.server({
@@ -63,43 +38,34 @@ const init = async () => {
     });
     await server.register(Inert);
 
-    try {
-        //https://github.com/hapijs/yar
-        await server.register({
-            plugin: require('yar'),
-            options: {
-                name: 'JSESSION',
-                // maxCookieSize: 0, //Defaults to 1K. Set to zero to always use server-side storage.
-                storeBlank: false,
-                // cache: {
-                //     expiresIn: 5 * 1000
-                // },
-                cookieOptions: {
-                    password: 'the-password-must-be-at-least-32-characters-long',
-                    isSecure: false
-                }
-            }
-        });
-    } catch (err) {
-        console.error(err);
-    }
+    // https://github.com/now-ims/hapi-now-auth
+    await server.register(require('@now-ims/hapi-now-auth'));
 
-    await server.register(require('./plugin/hapi-auth-session'));
-    server.auth.strategy('simple', 'session', {}); //server.auth.strategy(name, scheme, [options])
-    server.auth.default('simple'); //设置一个默认的 strategy。
+    server.auth.strategy('jwt-strategy', 'hapi-now-auth', {
+        verifyJWT: true,
+        keychain: ['NeverShareYourSecret'],
+        validate: async (request, token, h) => {
+            let isValid = true, artifacts;
+            const credentials = token.decodedJWT;
 
-    /*        await server.register(hapiAuthJWT);
-            server.auth.strategy('jwt', 'jwt', {
-                key: jwtSecret,
-                validate,
-                verifyOptions: {
-                    ignoreExpiration: false,    // do not reject expired tokens
-                    // algorithms: ['HS256']    // specify your secure algorithm}
-                }
-            });
-            server.auth.default('jwt');*/
-    // TODO 接口默认返回信息
-    server.route(require('./routes/index'));
+            /*            redis.get(token, (error, result) => { // TODO 使用redis管理token的周期
+                            if (error) {
+                                isValid = false;
+                                artifacts.error = error
+                                return { isValid, credentials, artifacts };
+                            }
+                            isValid = true;
+                            artifacts.info = result;
+                            return { isValid, credentials, artifacts }
+                        })*/
+
+            return {isValid, credentials};
+        }
+    });
+
+    server.auth.default('jwt-strategy');
+
+    server.route(require('./routes/index'));// TODO 接口默认返回信息
 
     routes.forEach(function (r) {
         server.route(r);

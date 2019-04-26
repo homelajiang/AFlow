@@ -99,9 +99,16 @@ export class Comment {
 
 }
 
-class Creator {
+export class Creator {
   name: string;
   email: string;
   host: string;
   img: string;
+}
+
+export class Auth {
+  access_token: string;
+  // token_type: string;
+  // epires_in: number;
+  // refresh_token: string;
 }

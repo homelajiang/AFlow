@@ -9,7 +9,6 @@ import {AuthService} from './auth.service';
 export class AuthGuard implements CanActivate {
 
   constructor(private authService: AuthService, private router: Router) {
-    this.authService.initLoginStatus();
   }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -18,7 +17,7 @@ export class AuthGuard implements CanActivate {
   }
 
   checkLogin(url: string): boolean {
-    if (this.authService.isLoggedIn) {
+    if (this.authService.loggedIn()) {
       return true;
     }
     // Store the attempted URL for redirecting

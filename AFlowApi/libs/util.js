@@ -7,11 +7,12 @@ const path_format = "YYYYMMDD";
 
 module.exports = {
     //生成token
-    generateJWT: function (id, username, role) {
+    generateJWT: function (auth) {
         return JWT.sign({
-            id: id,
-            username: username,
-            role: role
+            id: auth.id,
+            username: auth.username,
+            role: auth.role,
+            status: auth.status
         }, jwtSecret);
     },
     generateBoom: function (res) {

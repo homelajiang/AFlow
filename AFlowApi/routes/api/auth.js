@@ -29,10 +29,9 @@ module.exports = [
                 if (res.error) {
                     return Util.generateBoom(res);
                 } else {
-                    // res.profile.token = Util.generateJWT(res.auth);
-                    //写入cookie
-                    request.yar.set('user', res.auth);
-                    return res.profile;
+                    return {
+                        access_token: Util.generateJWT(res.auth)
+                    };
                 }
 
             } catch (err) {

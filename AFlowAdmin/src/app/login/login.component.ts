@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../auth/auth.service';
-import {Profile} from '../app.component';
+import {Auth, Profile} from '../app.component';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -26,8 +26,9 @@ export class LoginComponent implements OnInit {
     }
     this.isSpinning = true;
     this.authService.login(this.validateForm.value.userName, this.validateForm.value.password)
-      .subscribe((profile: Profile) => {
+      .subscribe((auth: Auth) => {
         this.isSpinning = false;
+        // TODO 跳转到上个界面
         this.router.navigate(['/dashboard']);
       }, (error) => {
         this.errorMsg = error;

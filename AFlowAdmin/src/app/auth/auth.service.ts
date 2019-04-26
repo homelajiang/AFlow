@@ -1,10 +1,9 @@
 import {Injectable, OnInit} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
-import {Profile} from '../app.component';
+import {Auth, Profile} from '../app.component';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {routerNgProbeToken} from '@angular/router/src/router_module';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,6 @@ export class AuthService implements OnInit {
 
   // store the URL so we can redirect after logging in
 
-  isLoggedIn = false;
   profile: Profile;
 
   redirectUrl: string;
@@ -43,53 +41,34 @@ export class AuthService implements OnInit {
   }
 
 
-  login(username: string, password: string): Observable<Profile> {
+  login(username: string, password: string): Observable<Auth> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     };
     return this.http
-      .post<Profile>('api/v1/signIn',
+      .post<Auth>('api/v1/signIn',
         {
           username: username,
           password: password
         }, httpOptions)
       .pipe(
-        tap((profile: Profile) => {
-          this.saveProfile(profile);
+        tap((auth: Auth) => {
+          if (auth.access_token !== null && auth.access_token !== undefined) {
+            localStorage.setItem('access_token', auth.access_token);
+          }
         }),
         catchError(this.handleError)
       );
   }
 
   logout(): void {
-    this.removeProfile();
+    localStorage.removeItem('access_token');
   }
 
-  // 保存profile
-  saveProfile(profile: Profile): void {
-    console.log('init');
-    if (profile === null) {
-      return;
-    }
-    sessionStorage.setItem('profile', JSON.stringify(profile));
-    this.profile = profile;
-    this.isLoggedIn = true;
+  public loggedIn(): boolean {
+    return localStorage.getItem('access_token') !== null;
   }
 
-  // 移除profile
-  removeProfile(): void {
-    this.profile = null;
-    this.isLoggedIn = false;
-    sessionStorage.removeItem('profile');
-  }
-
-  // 初始化登陆状态
-  initLoginStatus() {
-    this.profile = JSON.parse(sessionStorage.getItem('profile'));
-    if (this.profile != null) {
-      this.isLoggedIn = true;
-    }
-  }
 }

@@ -27,6 +27,8 @@ import {MainComponent} from './main/main.component';
 import {SettingComponent} from './setting/setting.component';
 import {ClipboardModule} from 'ngx-clipboard';
 import {ViserModule} from 'viser-ng';
+import {httpInterceptorProviders} from './http-interceptors';
+import {JwtModule} from '@auth0/angular-jwt';
 
 registerLocaleData(zh);
 
@@ -59,10 +61,23 @@ registerLocaleData(zh);
     NgZorroAntdModule,
     appRouting,
     ClipboardModule,
-    ViserModule
+    ViserModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: [], // 限制 JWT 发送的域名，这样公开 API 将不会接收到 JWT。
+        blacklistedRoutes: [] // 允许我们指定不用接收 JWT 的路径，即使这些路径包含在 whitelisted 域名中。通常我们需要将登陆接口路径加在此处。
+      }
+    })
   ],
-  providers: [{provide: NZ_I18N, useValue: zh_CN}],
+  providers: [{provide: NZ_I18N, useValue: zh_CN},
+    // httpInterceptorProviders // 拦截器
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+}
+
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
 }
