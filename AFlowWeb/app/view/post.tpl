@@ -26,7 +26,7 @@
     <!--content-->
     <div class="post-content">
         {% markdown %}
-        <!--需要解决转义问题-->
+        <!-- todo  需要解决转义问题-->
         {{post.content}}
 
         {% endmarkdown %}
