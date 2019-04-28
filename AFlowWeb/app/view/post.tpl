@@ -20,14 +20,14 @@
     {% endif %}
     <!--Cover-->
 
-    {% if post.cover %}
+<!--    {% if post.cover %}
     <img src="{{post.cover}}" class="post-cover"/>
-    {% endif %}
+    {% endif %}-->
     <!--content-->
     <div class="post-content">
-        {% markdown %}
         <!-- todo  需要解决转义问题-->
-        {{post.content}}
+        {% markdown %}
+        {{post.content | safe}}
 
         {% endmarkdown %}
     </div>

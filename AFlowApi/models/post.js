@@ -65,9 +65,25 @@ PostSchema.virtual('simple_model')
             id: this.id,
             title: this.title,
             description: this.description,
-            create_date: Util.defaultFormat(this.create_date),
             cover: this.cover,
-            status: this.status
+            status: this.status,
+            create_date: Util.defaultFormat(this.create_date),
+            modify_date: Util.defaultFormat(this.modify_date),
+            publish_date: Util.defaultFormat(this.publish_date),
+        };
+    });
+
+PostSchema.virtual('archive_model')
+    .get(function () {
+        return {
+            id: this.id,
+            title: this.title,
+            description: this.description,
+            cover: this.cover,
+            status: this.status,
+            create_date: Util.dateFormat(this.create_date),
+            modify_date: Util.dateFormat(this.modify_date),
+            publish_date: Util.dateFormat(this.publish_date),
         };
     });
 

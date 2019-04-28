@@ -112,27 +112,53 @@ module.exports = function (options) {
             respond(Util.generateErr("获取分类列表失败"));
         }
     });
+
     //获取archives数据
     this.add('role:blog,cmd:archives', async (args, respond) => {
+
         try { //按年份分组
+
+            const pageSize = parseInt(args.pageSize);
+            const pageNum = parseInt(args.pageNum);
+
+            const count = await Post.find({status: 1, open: {$lt: 2}}).countDocuments();
             let posts = await Post.aggregate(
                 [
                     {
+                        $match: {
+                            status: 1, // 已发布
+                            open: {$lt: 2} // 0或1 公开，密码保护
+                        }
+                    },
+                    {
+                        $sort: {publish_date: -1}
+                    },
+                    {
+                        $skip: (pageNum - 1) * pageSize
+                    },
+                    {
+                        $limit: pageSize
+                    },
+                    {
                         $group: {
-                            _id: {$year: "$create_date"},
+                            _id: {$year: "$publish_date"},
                             count: {$sum: 1},
                             posts: {$push: "$_id"}
                         }
+                    },
+                    {
+                        $sort: {_id: -1}
                     }
                 ]);
+
             //查询
             posts = await Post.populate(posts, {path: 'posts'});
             for (let i = 0; i < posts.length; i++) {
                 for (let j = 0; j < posts[i].posts.length; j++) {
-                    posts[i].posts[j] = posts[i].posts[j].simple_model;
+                    posts[i].posts[j] = posts[i].posts[j].archive_model;
                 }
             }
-            respond(posts);
+            respond(null, Util.generatePageModel(pageSize, pageNum, count, posts));
         } catch (e) {
             respond(Util.generateErr("获取归档列表失败"));
         }

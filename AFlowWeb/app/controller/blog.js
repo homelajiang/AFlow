@@ -3,91 +3,102 @@
 const Controller = require('egg').Controller;
 
 class BlogController extends Controller {
-    async page() {
-        const {ctx} = this;
-        const num = ctx.params.pageNo ? ctx.params.pageNo : '1';
-        const posts = await ctx.service.blog.getPosts(num, 10);
-        posts.hasPrePage = posts.pageNum > 1;
-        posts.hasNextPage = posts.count > posts.pageSize * posts.pageNum;
-        if (posts.hasPrePage)
-            posts.prePage = posts.pageNum - 1;
-        if (posts.hasNextPage)
-            posts.nextPage = posts.pageNum + 1;
-        await this.ctx.render('post_list.tpl', posts);
+  async page() {
+    const { ctx } = this;
+    const num = ctx.params.pageNo ? ctx.params.pageNo : '1';
+    const posts = await ctx.service.blog.getPosts(num, 10);
+    posts.hasPrePage = posts.pageNum > 1;
+    posts.hasNextPage = posts.count > posts.pageSize * posts.pageNum;
+    if (posts.hasPrePage) {
+      posts.prePage = posts.pageNum - 1;
     }
-
-    async post() {
-        const {ctx} = this;
-        const postId = ctx.params.id;
-
-        let result;
-
-        if (postId) {
-
-            const postInfo = await ctx.service.blog.getPost(postId);
-            // todo 文章不存在处理 (错误处理)
-            const aroundPost = await ctx.service.blog.getAroundPost(postId);
-            const comments = await ctx.service.blog.getComments(postId, 1, 10);
-
-            result = {
-                post: postInfo,
-                previous: aroundPost.previous,
-                next: aroundPost.next,
-                comments: comments,
-                showAround: aroundPost.next || aroundPost.previous
-            };
-        }
-        await this.ctx.render('post.tpl', result);
-
+    if (posts.hasNextPage) {
+      posts.nextPage = posts.pageNum + 1;
     }
+    await this.ctx.render('post_list.tpl', posts);
+  }
 
-    async tags() {
-        const {ctx} = this;
-        const tagsAndCategories = await ctx.service.blog.getTags();
-        await this.ctx.render('tags.tpl', tagsAndCategories);
-    }
+  // 文章详情
+  async post() {
+    const { ctx } = this;
+    const postId = ctx.params.id;
 
-    async archive() {
-        const {ctx} = this;
-        const archives = await ctx.service.blog.getArchives();
-        await this.ctx.render('archives.tpl', {archives: archives});
-    }
+    let result;
 
-    async searchTag() {
-        const {ctx} = this;
-        const posts = await ctx.service.blog.search('tag', this.ctx.params.tagName);
-        let archives;
-        if (posts.error) {
-            archives = {error: posts.message};
-        } else {
-            archives = {archives: [{_id: this.ctx.params.tagName, count: posts.length, posts: posts}]}
-        }
-        await this.ctx.render('archives.tpl', archives);
-    }
+    if (postId) {
 
-    async searchCategories() {
-        const {ctx} = this;
-        const posts = await ctx.service.blog.search('categories', this.ctx.params.categoriesName);
-        let archives;
-        if (posts.error) {
-            archives = {error: posts.message};
-        } else {
-            archives = {archives: [{_id: this.ctx.params.categoriesName, count: posts.length, posts: posts}]}
-        }
-        await this.ctx.render('archives.tpl', archives);
-    }
+      const postInfo = await ctx.service.blog.getPost(postId);
+      // todo 文章不存在处理 (错误处理)
+       // TODO 判断文章私密度
+      const aroundPost = await ctx.service.blog.getAroundPost(postId);
+      const comments = await ctx.service.blog.getComments(postId, 1, 10);
 
-    async searchKeyword() {
-        const {ctx} = this;
-        const posts = await ctx.service.blog.search('keyword', this.ctx.query.key);
-        let archives;
-        if (posts.error) {
-            archives = {error: posts.message};
-        } else {
-            archives = {archives: [{_id: this.ctx.query.key, count: posts.length, posts: posts}]}
-        }
-        await this.ctx.render('archives.tpl', archives);
+      result = {
+        post: postInfo,
+        previous: aroundPost.previous,
+        next: aroundPost.next,
+        comments: comments,
+        showAround: aroundPost.next || aroundPost.previous
+      };
     }
+    await this.ctx.render('post.tpl', result);
+
+  }
+
+
+  // 标签和分类页面
+  async tags() {
+    const { ctx } = this;
+    const tagsAndCategories = await ctx.service.blog.getTags();
+    await this.ctx.render('tags.tpl', tagsAndCategories);
+  }
+
+  // 归档页面
+  async archive() {
+    const { ctx } = this;
+    const num = ctx.params.pageNo ? ctx.params.pageNo : '1';
+    const archives = await ctx.service.blog.getArchives(num, 15);
+    await this.ctx.render('archives.tpl',archives);
+  }
+
+  // 标签搜索页面
+  async searchTag() {
+    const { ctx } = this;
+    const posts = await ctx.service.blog.search('tag', this.ctx.params.tagName);
+    let results;
+    if (posts.error) {
+      results = { error: posts.message };
+    } else {
+      results = { archives: [{ _id: this.ctx.params.tagName, count: posts.length, posts: posts }] };
+    }
+    await this.ctx.render('search.tpl', results);
+  }
+
+  // 分类搜索界面
+  async searchCategories() {
+    const { ctx } = this;
+    const posts = await ctx.service.blog.search('categories', this.ctx.params.categoriesName);
+    let results;
+    if (posts.error) {
+      results = { error: posts.message };
+    } else {
+      results = { archives: [{ _id: this.ctx.params.categoriesName, count: posts.length, posts: posts }] };
+    }
+    await this.ctx.render('search.tpl', results);
+  }
+
+  // 关键字搜索界面
+  async searchKeyword() {
+    const { ctx } = this;
+    const posts = await ctx.service.blog.search('keyword', this.ctx.query.key);
+    let results;
+    if (posts.error) {
+      results = { error: posts.message };
+    } else {
+      results = { archives: [{ _id: this.ctx.query.key, count: posts.length, posts: posts }] };
+    }
+    await this.ctx.render('search.tpl', results);
+  }
 
 }
 

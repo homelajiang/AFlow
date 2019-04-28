@@ -3,6 +3,7 @@ const jwtSecret = 'NeverShareYourSecret'; // Never Share This! even in private G
 const Boom = require('boom');
 const moment = require('moment');
 const default_format = "YYYY-MM-DD HH:mm:ss";
+const date_format = "YYYY-MM-DD";
 const path_format = "YYYYMMDD";
 
 module.exports = {
@@ -41,6 +42,9 @@ module.exports = {
 
     defaultFormat: (date) => {
         return moment(date).format(default_format);
+    },
+    dateFormat: (date) => {
+        return moment(date).format(date_format);
     },
     datetimePathFormat: (date) => {
         return moment(date).format(path_format);

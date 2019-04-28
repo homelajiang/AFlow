@@ -74,10 +74,12 @@ class BlogService extends Service {
     }
 
     // 获取归档列表
-    async getArchives() {
+    async getArchives(page, size) {
         return await act({
             role: 'blog',
-            cmd: 'archives'
+            cmd: 'archives',
+            pageSize: size,
+            pageNum: page
         });
     }
 
