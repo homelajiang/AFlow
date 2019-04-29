@@ -62,7 +62,8 @@ module.exports = function (options) {
             const post = await Post.findById(args.id)
                 .populate('categories')
                 .populate('tags');
-            if (post) {
+            // 文章存在，并且文章已发布
+            if (post && post.status === 1) {
                 respond(post.blog_model);
             } else {
                 respond(Util.generateErr("文章不存在", 404));

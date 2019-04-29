@@ -25,24 +25,64 @@ class BlogController extends Controller {
 
     let result;
 
-    if (postId) {
+    const postInfo = await ctx.service.blog.getPost(postId);
+    // todo 文章不存在处理 (错误处理)
+    // TODO 判断文章私密度
+    const aroundPost = await ctx.service.blog.getAroundPost(postId);
+    const comments = await ctx.service.blog.getComments(postId, 1, 10);
 
-      const postInfo = await ctx.service.blog.getPost(postId);
-      // todo 文章不存在处理 (错误处理)
-       // TODO 判断文章私密度
-      const aroundPost = await ctx.service.blog.getAroundPost(postId);
-      const comments = await ctx.service.blog.getComments(postId, 1, 10);
+    result = {
+      post: postInfo,
+      previous: aroundPost.previous,
+      next: aroundPost.next,
+      comments: comments,
+      showAround: aroundPost.next || aroundPost.previous
+    };
 
-      result = {
-        post: postInfo,
-        previous: aroundPost.previous,
-        next: aroundPost.next,
-        comments: comments,
-        showAround: aroundPost.next || aroundPost.previous
-      };
+      await this.ctx.render('post.tpl', result);
+
+  }
+
+  // 添加评论
+  async comment() {
+    const { ctx } = this;
+    const postId = ctx.params.id;
+    const createRule = {
+      content: {
+        type: 'string',
+        required: true,
+        max: 1000
+      },
+      name: {
+        type: 'string',
+        require: true,
+        min: 1,
+        max: 50,
+        trim: true
+      },
+      email: {
+        type: 'email'
+      },
+      host: {
+        type: 'url'
+      }
+    };
+
+    // 验证评论 校验不通过会抛出异常
+    ctx.validate(createRule, ctx.request.body);
+
+    const postInfo = await ctx.service.blog.getPost(postId);
+
+    if (postInfo.error) {
+      await this.ctx.renderString(postInfo.message);
+      return;
     }
-    await this.ctx.render('post.tpl', result);
 
+    // 添加评论 // TOOD 添加评论
+    // await this.ctx.service.blog.commitComment(postId, ctx.request.body);
+
+    //内部重定向到文章详情页面
+    this.app.router.redirect('/', '/blog/' + postId, app.controller.blog.post);
   }
 
 
@@ -58,7 +98,7 @@ class BlogController extends Controller {
     const { ctx } = this;
     const num = ctx.params.pageNo ? ctx.params.pageNo : '1';
     const archives = await ctx.service.blog.getArchives(num, 15);
-    await this.ctx.render('archives.tpl',archives);
+    await this.ctx.render('archives.tpl', archives);
   }
 
   // 标签搜索页面

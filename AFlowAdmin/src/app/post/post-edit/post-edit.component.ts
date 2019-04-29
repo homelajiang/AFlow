@@ -93,7 +93,7 @@ export class PostEditComponent implements OnInit {
   toggleCommentMenu(status: boolean) {
     this.commentStatusEditing = status;
     if (status) {
-      this.commentStatus = this.post.open_comment.toString() ? '0' : '1';
+      this.commentStatus = this.post.open_comment ? '0' : '1';
       this.needReview = this.post.need_review;
     }
   }

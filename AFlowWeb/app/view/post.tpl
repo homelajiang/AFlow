@@ -20,9 +20,9 @@
     {% endif %}
     <!--Cover-->
 
-<!--    {% if post.cover %}
-    <img src="{{post.cover}}" class="post-cover"/>
-    {% endif %}-->
+    <!--    {% if post.cover %}
+        <img src="{{post.cover}}" class="post-cover"/>
+        {% endif %}-->
     <!--content-->
     <div class="post-content">
         <!-- todo  需要解决转义问题-->
@@ -85,22 +85,22 @@
 
         {% endfor %}
 
+
         {% if post.open_comment %}
         <div style="margin-top: 60px;">
             <h3>发表评论</h3>
-            <div>您的留言 （HTML标签部分可用）</div>
+            <div>您的留言 （电子邮件地址不会被公开。）</div>
 
-            <form action="">
-                <!--<textparea rows="6" style="padding: 10px;width: 100%;background:transparent;border-radius: 5px;"-->
-                <!--placeholder="发表你的看法"></textparea>-->
-                <textarea placeholder="发表你的看法" rows="8"
-                          style="padding: 10px;width: 100%;background:transparent;border-radius: 5px;"></textarea>
+            <form action="{{'/post/'+post.id}}" method="post">
+                <textarea placeholder="发表你的看法" rows="8" name="content"
+                          style="padding: 10px;width: 100%;border-radius: 5px;font-size:1.1rem;margin-top: 10px;"></textarea>
 
                 <div>
                     <div style="margin-top: 15px;margin-bottom: 5px;">
                         <label>您的称呼</label>
                     </div>
                     <input style="padding: 5px;border:1px solid #d3d3d3;border-radius: 2px;font-size: 1rem;"
+                           name="name"
                            size="30"
                            placeholder="称呼（必填）">
                 </div>
@@ -111,6 +111,7 @@
                     </div>
                     <input style="padding: 5px;border:1px solid #d3d3d3;border-radius: 2px;font-size: 1rem;"
                            size="30"
+                           name="email"
                            placeholder="邮箱（必填）">
                 </div>
 
@@ -120,11 +121,12 @@
                     </div>
                     <input style="padding: 5px;border:1px solid #d3d3d3;border-radius: 2px;font-size: 1rem;"
                            size="30"
+                           name="host"
                            placeholder="主页（选填）">
                 </div>
 
                 <input style="border:1px solid #d3d3d3;width: 10em;padding: 4px 0;margin-top: 20px;" type="submit"
-                       value="提交">
+                       value="发表">
 
             </form>
         </div>

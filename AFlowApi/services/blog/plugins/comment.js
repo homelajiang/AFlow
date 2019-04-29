@@ -25,7 +25,6 @@ module.exports = function (options) {
 
             const res = await new Comment(comment).save();
             respond(res.model);
-
         } catch (e) {
             respond(Util.generateErr("评论失败"));
         }

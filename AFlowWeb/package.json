@@ -7,6 +7,7 @@
     "bluebird": "^3.5.3",
     "egg": "^2.2.1",
     "egg-scripts": "^2.5.0",
+    "egg-validate": "^2.0.2",
     "egg-view-nunjucks": "^2.2.0",
     "marked": "^0.6.0",
     "nunjucks-markdown": "^2.0.1",
