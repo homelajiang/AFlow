@@ -213,15 +213,27 @@ module.exports = function (options) {
     //更新post
     this.add('role:post,cmd:update', async (args, respond) => {
         try {
-            await Post.updateOne({_id: args.id}, Post.getUpdateModel(args.post));
+
+            // 发布日期不能更改，只能更在修改日期
+            const temp = await Post.findOne({_id: args.id});
+
+            if (!temp) {
+                respond(Util.generateErr("该文章不存在", 404))
+                return;
+            }
+
+            const updateModel = Post.getUpdateModel(args.post);
+
+            // 当第一次发布并且没有发不过，设置发布日期和修改日期相同，其他情况不允许修改发布日期
+            if (!temp.publish_date && updateModel.status === 1) {
+                updateModel.publish_date = updateModel.modify_date;
+            }
+
+            await Post.updateOne({_id: args.id}, updateModel);
             const post = await Post.findOne({_id: args.id})
                 .populate('categories')
                 .populate('tags');
-            if (post) {
-                respond(post.model);
-            } else {
-                respond(Util.generateErr("该文章不存在", 404))
-            }
+            respond(post.model);
         } catch (e) {
             respond(Util.generateErr("更新失败"));
         }

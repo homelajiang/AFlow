@@ -174,10 +174,6 @@ PostSchema.static({
             modify_date: current_date//默认的修改时间
         };
 
-        if (model.status === 1) {//发布post
-            temp.publish_date = current_date;
-        }
-
         temp.title = model.title;
         temp.description = model.description;
         temp.content = model.content;
@@ -189,7 +185,6 @@ PostSchema.static({
         temp.tags = model.tags;
         temp.stick = model.stick;
         model.categories ? temp.categories = model.categories : temp.categories = null;
-        temp.categories = model.categories;
         temp.status = model.status;
         return temp;
     },

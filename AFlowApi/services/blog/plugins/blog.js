@@ -194,7 +194,7 @@ module.exports = function (options) {
 
             const tempList = [];
             posts.forEach((element) => {
-                tempList.push(element.simple_model);
+                tempList.push(element.archive_model);
             });
             respond(tempList);
         } catch (e) {
