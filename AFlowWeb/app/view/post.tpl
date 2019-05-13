@@ -65,7 +65,7 @@
         <div style="padding: 20px;">
             <div style="display: flex;">
                 <img style="width: 40px;height: 40px; border-radius:50%;"
-                     src="{{comment.creator.img}}">
+                     src="{{comment.creator.img if comment.creator.img else '/public/img/default_avatar.png'}}">
                 <div style="padding: 0 20px;">
                     <div>
                         <span style="vertical-align:middle;"><b>{{comment.creator.name}}</b></span>&nbsp;

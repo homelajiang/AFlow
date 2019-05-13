@@ -39,7 +39,7 @@ class BlogController extends Controller {
       showAround: aroundPost.next || aroundPost.previous
     };
 
-      await this.ctx.render('post.tpl', result);
+    await this.ctx.render('post.tpl', result);
 
   }
 
@@ -61,28 +61,32 @@ class BlogController extends Controller {
         trim: true
       },
       email: {
-        type: 'email'
-      },
-      host: {
-        type: 'url'
+        type: 'email',
+        require: true
       }
     };
 
     // 验证评论 校验不通过会抛出异常
-    ctx.validate(createRule, ctx.request.body);
+    try {
+      this.ctx.validate(createRule, ctx.request.body);
+    } catch (e) {
+      ctx.body = await ctx.renderString("参数验证失败");
+      return;
+    }
 
     const postInfo = await ctx.service.blog.getPost(postId);
 
     if (postInfo.error) {
-      await this.ctx.renderString(postInfo.message);
+      ctx.body = await ctx.renderString(postInfo.message);
       return;
     }
 
-    // 添加评论 // TOOD 添加评论
-    // await this.ctx.service.blog.commitComment(postId, ctx.request.body);
+    // 添加评论;
+    // TOOD 添加评论
+    await this.ctx.service.blog.commitComment(postId, ctx.request.body);
 
-    //内部重定向到文章详情页面
-    this.app.router.redirect('/', '/blog/' + postId, app.controller.blog.post);
+    // 内部重定向到文章详情页面;
+    this.ctx.redirect('/post/' + postId);
   }
 
 
@@ -109,7 +113,7 @@ class BlogController extends Controller {
     if (posts.error) {
       results = { error: posts.message };
     } else {
-      results = { archives: [{ _id: this.ctx.params.tagName, count: posts.length, posts: posts }] };
+      results = { archives: [ { _id: this.ctx.params.tagName, count: posts.length, posts: posts } ] };
     }
     await this.ctx.render('search.tpl', results);
   }
@@ -122,7 +126,7 @@ class BlogController extends Controller {
     if (posts.error) {
       results = { error: posts.message };
     } else {
-      results = { archives: [{ _id: this.ctx.params.categoriesName, count: posts.length, posts: posts }] };
+      results = { archives: [ { _id: this.ctx.params.categoriesName, count: posts.length, posts: posts } ] };
     }
     await this.ctx.render('search.tpl', results);
   }
@@ -135,7 +139,7 @@ class BlogController extends Controller {
     if (posts.error) {
       results = { error: posts.message };
     } else {
-      results = { archives: [{ _id: this.ctx.query.key, count: posts.length, posts: posts }] };
+      results = { archives: [ { _id: this.ctx.query.key, count: posts.length, posts: posts } ] };
     }
     await this.ctx.render('search.tpl', results);
   }

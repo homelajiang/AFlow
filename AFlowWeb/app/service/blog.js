@@ -32,10 +32,16 @@ class BlogService extends Service {
 
   // 添加评论
   async commitComment(postId, comment) {
+    comment.creator = {
+      name: comment.name,
+      host: comment.host,
+      img: comment.img
+    };
     return await act({
-      role: 'blog',
-      cmd: 'commit_comment',
-      id: postId
+      role: 'comment',
+      cmd: 'add',
+      id: postId,
+      comment: comment
     });
   }
 
